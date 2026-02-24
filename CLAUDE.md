@@ -33,11 +33,16 @@ hackathon/
 ├── app/                    # Next.js App Router
 │   ├── globals.css         # 글로벌 스타일 (Tailwind CSS 4)
 │   ├── layout.tsx          # Root Layout
-│   ├── page.tsx            # 홈 페이지
-│   └── generated/prisma/   # Prisma 생성 클라이언트 (gitignored)
+│   └── page.tsx            # 홈 페이지
+├── docs/                   # 프로젝트 문서
+│   ├── YYYYMMDD-*.md       # 설계서/기획서
+│   └── logs/               # 개발 일지
+│       └── YYYYMMDD-*.md   # 일자별 커밋 내용 정리
+├── generated/prisma/       # Prisma 생성 클라이언트 (gitignored)
 ├── lib/                    # 공유 유틸리티
 │   ├── prisma.ts           # Prisma 싱글톤 클라이언트
-│   └── utils.ts            # cn() 등 헬퍼 함수
+│   ├── utils.ts            # cn() 등 헬퍼 함수
+│   └── validations/        # Zod 등 유효성 검사 스키마
 ├── prisma/
 │   └── schema.prisma       # Prisma 스키마
 ├── prisma.config.ts        # Prisma 설정
@@ -53,3 +58,18 @@ hackathon/
 - **클래스 병합**: `cn()` 함수 사용 (`lib/utils.ts`) — clsx + tailwind-merge
 - **Server Components**: 기본값, 필요시 `"use client"` 명시
 - **경로 별칭**: `@/*` → 프로젝트 루트
+
+## 문서 관리
+
+### 설계서/기획서 (`docs/`)
+
+- 파일명: `YYYYMMDD-{제목}.md` (예: `20260224-team-registration.md`)
+- 프로젝트 설계, 기획, 아키텍처 결정 등을 기록
+- 한 주제당 하나의 파일로 관리
+
+### 개발 일지 (`logs/`)
+
+- 파일명: `YYYYMMDD-{제목}.md` (예: `20260224-initial-setup.md`)
+- 하루 작업 종료 시 해당 일자의 커밋 내용을 정리
+- 커밋 타입별로 그룹화하여 작성
+- 기존 파일이 있으면 내용 추가
