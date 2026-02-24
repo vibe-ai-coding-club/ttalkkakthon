@@ -13,8 +13,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Hackathon",
-  description: "Hackathon project",
+  title: "AI 해커톤 2026 - 참가 신청",
+  description:
+    "GPT x Claude x Gemini — AI 해커톤 2026 참가 신청 페이지. 48시간 동안 혁신적인 프로젝트를 만들어보세요.",
+  openGraph: {
+    title: "AI 해커톤 2026 - 참가 신청",
+    description:
+      "GPT x Claude x Gemini — AI 해커톤 2026 참가 신청 페이지. 48시간 동안 혁신적인 프로젝트를 만들어보세요.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
