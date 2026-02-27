@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Hackathon project.
+Ttalkkakthon(Hackathon with AI) project.
 
 - **Framework**: Next.js 16 (App Router)
 - **Language**: TypeScript (strict mode)
@@ -29,7 +29,7 @@ pnpm prisma migrate dev # DB 마이그레이션 (개발)
 ## Architecture
 
 ```
-hackathon/
+ttalkkakthon/
 ├── app/                    # Next.js App Router
 │   ├── globals.css         # 글로벌 스타일 (Tailwind CSS 4)
 │   ├── layout.tsx          # Root Layout

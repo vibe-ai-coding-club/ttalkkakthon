@@ -1,4 +1,4 @@
-# Hackathon
+# ttalkkakthon
 
 해커톤 프로젝트
 
@@ -35,11 +35,11 @@ pnpm dev
 
 ## 스크립트
 
-| 명령어 | 설명 |
-|--------|------|
-| `pnpm dev` | 개발 서버 실행 |
-| `pnpm build` | 프로덕션 빌드 |
-| `pnpm start` | 프로덕션 서버 실행 |
-| `pnpm lint` | ESLint 실행 |
-| `pnpm prisma generate` | Prisma 클라이언트 생성 |
+| 명령어                    | 설명                   |
+| ------------------------- | ---------------------- |
+| `pnpm dev`                | 개발 서버 실행         |
+| `pnpm build`              | 프로덕션 빌드          |
+| `pnpm start`              | 프로덕션 서버 실행     |
+| `pnpm lint`               | ESLint 실행            |
+| `pnpm prisma generate`    | Prisma 클라이언트 생성 |
 | `pnpm prisma migrate dev` | DB 마이그레이션 (개발) |
