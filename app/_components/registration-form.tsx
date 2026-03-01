@@ -1,151 +1,334 @@
 "use client";
 
-import { registerTeam, type ActionState } from "@/app/actions/register-team";
-import type { TeamMember } from "@/lib/validations/team";
-import { useActionState, useState } from "react";
-import { MemberFieldset } from "./member-fieldset";
+import { useState, type FormEvent } from "react";
 
-const createMember = (isLeader = false): TeamMember => ({
+type ParticipationType = "individual" | "team";
+type Experience = "beginner" | "junior" | "senior" | "vibe-coder";
+
+const experienceOptions: { value: Experience; label: string }[] = [
+  { value: "beginner", label: "비개발자 / 입문" },
+  { value: "junior", label: "주니어" },
+  { value: "senior", label: "시니어" },
+  { value: "vibe-coder", label: "바이브코더" },
+];
+
+type FormState = {
+  name: string;
+  email: string;
+  phone: string;
+  participationType: ParticipationType | "";
+  teamName: string;
+  teamSize: string;
+  experience: Experience | "";
+  motivation: string;
+};
+
+const initialForm: FormState = {
   name: "",
   email: "",
   phone: "",
-  isLeader,
-});
-
-const initialState: ActionState = {
-  success: false,
-  message: "",
+  participationType: "",
+  teamName: "",
+  teamSize: "",
+  experience: "",
+  motivation: "",
 };
 
+const inputClass =
+  "w-full rounded-md border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-accent transition-colors";
+
 export const RegistrationForm = () => {
-  const [state, formAction, isPending] = useActionState(registerTeam, initialState);
-  const [members, setMembers] = useState<TeamMember[]>([createMember(true)]);
+  const [form, setForm] = useState<FormState>(initialForm);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isPending, setIsPending] = useState(false);
+  const [result, setResult] = useState<{ success: boolean; message: string } | null>(null);
 
-  const updateMember = (index: number, member: TeamMember) => {
-    setMembers((prev) => prev.map((m, i) => (i === index ? member : m)));
+  const update = (field: keyof FormState, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => {
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
   };
 
-  const removeMember = (index: number) => {
-    setMembers((prev) => prev.filter((_, i) => i !== index));
+  const validate = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    if (!form.name.trim()) newErrors.name = "이름을 입력해주세요";
+    if (!form.email.trim()) newErrors.email = "이메일을 입력해주세요";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+      newErrors.email = "올바른 이메일 주소를 입력해주세요";
+    if (!form.phone.trim()) newErrors.phone = "연락처를 입력해주세요";
+    else if (!/^01[016789]-?\d{3,4}-?\d{4}$/.test(form.phone))
+      newErrors.phone = "올바른 전화번호를 입력해주세요";
+    if (!form.participationType) newErrors.participationType = "참가 유형을 선택해주세요";
+    if (form.participationType === "team") {
+      if (!form.teamName.trim()) newErrors.teamName = "팀 이름을 입력해주세요";
+      if (!form.teamSize) newErrors.teamSize = "팀 인원을 입력해주세요";
+      else {
+        const size = Number(form.teamSize);
+        if (size < 2 || size > 5) newErrors.teamSize = "팀 인원은 2~5명이어야 합니다";
+      }
+    }
+    if (!form.experience) newErrors.experience = "개발 경험을 선택해주세요";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  const addMember = () => {
-    if (members.length >= 4) return;
-    setMembers((prev) => [...prev, createMember()]);
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    setIsPending(true);
+    setResult(null);
+
+    // TODO: 스키마 변경 후 서버 액션으로 교체
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          teamSize: form.teamSize ? Number(form.teamSize) : undefined,
+        }),
+      });
+      const data = await res.json();
+      setResult(data);
+      if (data.success) setForm(initialForm);
+    } catch {
+      setResult({ success: false, message: "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요." });
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
-    <form action={formAction} className="space-y-6">
-      {state.message && !state.success && (
-        <div className="rounded-lg border border-error/30 bg-error/5 p-4 text-sm text-error">{state.message}</div>
+    <form onSubmit={handleSubmit} className="space-y-10">
+      {result && !result.success && (
+        <div className="rounded-lg border border-error/30 bg-error/5 p-4 text-sm text-error">
+          {result.message}
+        </div>
+      )}
+      {result?.success && (
+        <div className="rounded-lg border border-success/30 bg-success/5 p-4 text-sm text-success">
+          {result.message}
+        </div>
       )}
 
-      {state.success && (
-        <div className="rounded-lg border border-success/30 bg-success/5 p-4 text-sm text-success">{state.message}</div>
-      )}
+      {/* 기본 정보 */}
+      <fieldset className="space-y-4">
+        <legend className="text-lg font-bold">기본 정보</legend>
 
-      <div className="space-y-4">
-        <div>
-          <label htmlFor="team-name" className="block text-sm font-medium mb-1">
-            팀 이름 *
-          </label>
-          <input
-            id="team-name"
-            name="name"
-            type="text"
-            required
-            maxLength={50}
-            placeholder="팀 이름을 입력하세요"
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-accent"
-          />
-          {state.errors?.name?.map((e) => (
-            <p key={e} className="mt-1 text-xs text-error">
-              {e}
-            </p>
-          ))}
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label htmlFor="reg-name" className="block text-sm font-medium mb-1">
+              이름 <span className="text-error">*</span>
+            </label>
+            <input
+              id="reg-name"
+              type="text"
+              value={form.name}
+              onChange={(e) => update("name", e.target.value)}
+              placeholder="홍길동"
+              maxLength={50}
+              className={inputClass}
+            />
+            {errors.name && <p className="mt-1 text-xs text-error">{errors.name}</p>}
+          </div>
+          <div>
+            <label htmlFor="reg-email" className="block text-sm font-medium mb-1">
+              이메일 <span className="text-error">*</span>
+            </label>
+            <input
+              id="reg-email"
+              type="email"
+              value={form.email}
+              onChange={(e) => update("email", e.target.value)}
+              placeholder="hello@example.com"
+              className={inputClass}
+            />
+            {errors.email && <p className="mt-1 text-xs text-error">{errors.email}</p>}
+          </div>
         </div>
 
         <div>
-          <label htmlFor="team-topic" className="block text-sm font-medium mb-1">
-            주제 *
+          <label htmlFor="reg-phone" className="block text-sm font-medium mb-1">
+            연락처 <span className="text-error">*</span>
           </label>
           <input
-            id="team-topic"
-            name="topic"
-            type="text"
-            required
-            maxLength={200}
-            placeholder="프로젝트 주제를 입력하세요"
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-accent"
+            id="reg-phone"
+            type="tel"
+            value={form.phone}
+            onChange={(e) => update("phone", e.target.value)}
+            placeholder="010-0000-0000"
+            className={inputClass}
           />
-          {state.errors?.topic?.map((e) => (
-            <p key={e} className="mt-1 text-xs text-error">
-              {e}
-            </p>
-          ))}
+          {errors.phone && <p className="mt-1 text-xs text-error">{errors.phone}</p>}
+        </div>
+      </fieldset>
+
+      {/* 참가 유형 */}
+      <fieldset className="space-y-3">
+        <legend className="text-lg font-bold">
+          참가 유형 <span className="text-error">*</span>
+        </legend>
+
+        <label
+          className={`flex items-center gap-3 rounded-lg border p-4 cursor-pointer transition-colors ${
+            form.participationType === "individual"
+              ? "border-accent bg-accent/5"
+              : "border-border hover:border-accent/30"
+          }`}
+        >
+          <input
+            type="radio"
+            name="participationType"
+            value="individual"
+            checked={form.participationType === "individual"}
+            onChange={(e) => update("participationType", e.target.value)}
+            className="accent-accent"
+          />
+          <div>
+            <span className="font-medium">개인 참여</span>
+            <span className="ml-2 text-sm text-muted-foreground">혼자서 참가합니다</span>
+          </div>
+        </label>
+
+        <label
+          className={`flex items-center gap-3 rounded-lg border p-4 cursor-pointer transition-colors ${
+            form.participationType === "team"
+              ? "border-accent bg-accent/5"
+              : "border-border hover:border-accent/30"
+          }`}
+        >
+          <input
+            type="radio"
+            name="participationType"
+            value="team"
+            checked={form.participationType === "team"}
+            onChange={(e) => update("participationType", e.target.value)}
+            className="accent-accent"
+          />
+          <div>
+            <span className="font-medium">팀 참여</span>
+            <span className="ml-2 text-sm text-muted-foreground">팀으로 참가합니다</span>
+          </div>
+        </label>
+
+        {errors.participationType && (
+          <p className="text-xs text-error">{errors.participationType}</p>
+        )}
+      </fieldset>
+
+      {/* 팀 정보 (팀 참여 시) */}
+      {form.participationType === "team" && (
+        <fieldset className="space-y-4">
+          <legend className="text-lg font-bold">
+            팀 정보 <span className="text-sm font-normal text-muted-foreground">(팀 참여 시 작성)</span>
+          </legend>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label htmlFor="reg-team-name" className="block text-sm font-medium mb-1">
+                팀 이름
+              </label>
+              <input
+                id="reg-team-name"
+                type="text"
+                value={form.teamName}
+                onChange={(e) => update("teamName", e.target.value)}
+                placeholder="예: 바이브코더즈"
+                maxLength={50}
+                className={inputClass}
+              />
+              {errors.teamName && <p className="mt-1 text-xs text-error">{errors.teamName}</p>}
+            </div>
+            <div>
+              <label htmlFor="reg-team-size" className="block text-sm font-medium mb-1">
+                팀 인원
+              </label>
+              <input
+                id="reg-team-size"
+                type="number"
+                min={2}
+                max={5}
+                value={form.teamSize}
+                onChange={(e) => update("teamSize", e.target.value)}
+                placeholder="2-5명"
+                className={inputClass}
+              />
+              {errors.teamSize && <p className="mt-1 text-xs text-error">{errors.teamSize}</p>}
+            </div>
+          </div>
+        </fieldset>
+      )}
+
+      {/* 추가 정보 */}
+      <fieldset className="space-y-4">
+        <legend className="text-lg font-bold">추가 정보</legend>
+
+        <div>
+          <p className="text-sm font-medium mb-3">개발 경험</p>
+          <div className="flex flex-wrap gap-2">
+            {experienceOptions.map((opt) => (
+              <label
+                key={opt.value}
+                className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm cursor-pointer transition-colors ${
+                  form.experience === opt.value
+                    ? "border-accent bg-accent/5 text-accent"
+                    : "border-border hover:border-accent/30"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="experience"
+                  value={opt.value}
+                  checked={form.experience === opt.value}
+                  onChange={(e) => update("experience", e.target.value)}
+                  className="accent-accent"
+                />
+                {opt.label}
+              </label>
+            ))}
+          </div>
+          {errors.experience && <p className="mt-1 text-xs text-error">{errors.experience}</p>}
         </div>
 
         <div>
-          <label htmlFor="team-description" className="block text-sm font-medium mb-1">
-            설명 <span className="text-muted-foreground font-normal">(선택)</span>
+          <label htmlFor="reg-motivation" className="block text-sm font-medium mb-1">
+            참가 동기 또는 하고 싶은 말
           </label>
           <textarea
-            id="team-description"
-            name="description"
+            id="reg-motivation"
+            value={form.motivation}
+            onChange={(e) => update("motivation", e.target.value)}
+            placeholder="자유롭게 작성해 주세요. 진지함은 빼고!"
             maxLength={1000}
-            rows={3}
-            placeholder="프로젝트에 대한 간단한 설명을 입력하세요"
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-accent resize-y"
+            rows={4}
+            className={`${inputClass} resize-y`}
           />
         </div>
-      </div>
+      </fieldset>
 
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-medium">팀원 ({members.length}/4)</h3>
-          {members.length < 4 && (
-            <button
-              type="button"
-              onClick={addMember}
-              className="rounded-md bg-muted px-3 py-1.5 text-sm hover:bg-muted/80 cursor-pointer"
-            >
-              + 팀원 추가
-            </button>
-          )}
-        </div>
-
-        {state.errors?.members?.map((e) => (
-          <p key={e} className="text-xs text-error">
-            {e}
-          </p>
-        ))}
-
-        {members.map((member, index) => (
-          <MemberFieldset
-            key={index}
-            index={index}
-            member={member}
-            onChange={updateMember}
-            onRemove={removeMember}
-            removable={members.length > 1}
-            errors={state.errors}
-          />
-        ))}
-      </div>
-
-      <input type="hidden" name="members" value={JSON.stringify(members)} />
-
+      {/* 허니팟 */}
       <div className="absolute opacity-0 -z-10" aria-hidden="true">
         <input type="text" name="website" tabIndex={-1} autoComplete="off" />
       </div>
 
+      {/* 제출 */}
       <button
         type="submit"
         disabled={isPending}
-        className="w-full rounded-md bg-accent py-3 text-sm font-semibold text-white hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+        className="w-full rounded-lg bg-accent py-4 text-base font-bold text-white hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
       >
-        {isPending ? "등록 중..." : "참가 신청하기"}
+        {isPending ? "등록 중..." : "참가 신청 완료하기"}
       </button>
+
+      <p className="text-center text-xs text-muted-foreground">
+        제출된 정보는 행사 운영 목적으로만 사용됩니다.
+      </p>
     </form>
   );
 };
