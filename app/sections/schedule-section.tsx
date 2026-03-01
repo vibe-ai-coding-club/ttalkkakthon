@@ -10,7 +10,7 @@ const schedule = [
 export const ScheduleSection = () => {
   return (
     <section id="schedule" className="scroll-mt-16 bg-muted py-24 min-h-[85vh] flex flex-col justify-center">
-      <div className="mx-auto max-w-6xl px-4">
+      <div className="mx-auto w-full max-w-5xl px-4 lg:max-w-4xl">
         {/* 라벨 */}
         <div className="flex items-center gap-3 mb-4">
           <span className="inline-block w-8 h-0.5 bg-accent" />
