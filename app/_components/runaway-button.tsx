@@ -19,13 +19,14 @@ export const RunawayButton = () => {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [isProximityPhase, setIsProximityPhase] = useState(false);
   const [isSettled, setIsSettled] = useState(false);
+  const [isDone, setIsDone] = useState(false);
   const [label, setLabel] = useState("지금 신청하기");
+  const [toast, setToast] = useState(false);
 
   // 호버 시 랜덤 방향으로 점프
   const flee = useCallback(() => {
     hoverCount.current++;
 
-    // 10회째: 원위치로 복귀, 다음 호버에 텍스트 변경
     if (hoverCount.current >= SETTLE_COUNT) {
       setOffset({ x: 0, y: 0 });
       setIsSettled(true);
@@ -48,6 +49,23 @@ export const RunawayButton = () => {
   const handleSettle = useCallback(() => {
     setLabel("후원하기");
   }, []);
+
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (!isSettled || isDone) return;
+      if (label !== "후원하기") return;
+
+      e.preventDefault();
+      setToast(true);
+
+      setTimeout(() => {
+        setToast(false);
+        setLabel("지금 신청하기");
+        setIsDone(true);
+      }, 2000);
+    },
+    [isSettled, isDone, label],
+  );
 
   // Phase 2: 마우스가 가까워지면 슬슬 도망
   useEffect(() => {
@@ -86,18 +104,32 @@ export const RunawayButton = () => {
   }, []);
 
   return (
-    <Link
-      ref={ref}
-      href="/register"
-      className={`mt-6 inline-block rounded-lg bg-accent px-10 py-3.5 text-sm font-semibold text-white hover:bg-accent-hover ${
-        isProximityPhase
-          ? "transition-transform duration-75 ease-out"
-          : "transition-all duration-300 ease-out"
-      }`}
-      style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
-      onMouseEnter={isSettled ? handleSettle : flee}
-    >
-      {label}
-    </Link>
+    <>
+      <Link
+        ref={ref}
+        href="/register"
+        className={`mt-6 inline-block rounded-lg bg-accent px-10 py-3.5 text-sm font-semibold text-white hover:bg-accent-hover ${
+          isProximityPhase
+            ? "transition-transform duration-75 ease-out"
+            : "transition-all duration-300 ease-out"
+        }`}
+        style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
+        onMouseEnter={isSettled && !isDone ? handleSettle : isDone ? undefined : flee}
+        onClick={handleClick}
+      >
+        {label}
+      </Link>
+
+      {/* 토스트 */}
+      <div
+        className={`fixed bottom-8 left-1/2 -translate-x-1/2 rounded-lg bg-foreground px-6 py-3 text-sm font-medium text-background shadow-lg transition-all duration-300 ${
+          toast
+            ? "translate-y-0 opacity-100"
+            : "translate-y-4 opacity-0 pointer-events-none"
+        }`}
+      >
+        감사합니다!
+      </div>
+    </>
   );
 };
