@@ -19,7 +19,7 @@ export const RunawayButton = () => {
   const [isProximityPhase, setIsProximityPhase] = useState(false);
   const [isSettled, setIsSettled] = useState(false);
   const [isDone, setIsDone] = useState(false);
-  const [label, setLabel] = useState("딸깍톤 신청하기");
+  const [label, setLabel] = useState("지금 신청하기");
   const [toast, setToast] = useState(false);
 
   // 호버 시 랜덤 방향으로 점프
@@ -59,7 +59,7 @@ export const RunawayButton = () => {
 
       setTimeout(() => {
         setToast(false);
-        setLabel("딸깍톤 신청하기");
+        setLabel("지금 신청하기");
         setIsDone(true);
       }, 2000);
     },
@@ -104,7 +104,7 @@ export const RunawayButton = () => {
       <div className="relative mt-6">
         {/* 고스트 버튼 — 원래 위치에 대시 보더로 표시 */}
         <div
-          className={`typo-btn3 pointer-events-none rounded-lg border-2 border-dashed border-accent/40 px-10 py-3.5 text-transparent transition-opacity duration-300 ${
+          className={`typo-btn3 pointer-events-none rounded-lg border-2 border-dashed border-gray-300 px-10 py-3.5 text-transparent transition-opacity duration-300 ${
             isMoving ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -115,7 +115,7 @@ export const RunawayButton = () => {
         <Link
           ref={ref}
           href="/register"
-          className={`typo-btn3 absolute inset-0 inline-flex items-center justify-center rounded-lg bg-accent px-10 py-3.5 text-white hover:bg-accent-hover ${
+          className={`typo-btn3 absolute inset-0 inline-flex items-center justify-center rounded-lg bg-primary-400 px-10 py-3.5 text-white hover:bg-primary-500 ${
             isProximityPhase ? "transition-transform duration-75 ease-out" : "transition-all duration-300 ease-out"
           }`}
           style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
