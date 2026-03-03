@@ -1,4 +1,5 @@
 import { HeroSection } from "./sections/hero-section";
+import { CountdownSection } from "./sections/countdown-section";
 import { IntroSection } from "./sections/intro-section";
 import { AboutSection } from "./sections/about-section";
 import { ScheduleSection } from "./sections/schedule-section";
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <div>
       <HeroSection />
+      <CountdownSection />
       <IntroSection />
       <AboutSection />
       <ScheduleSection />
