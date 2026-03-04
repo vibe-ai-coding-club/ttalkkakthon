@@ -1,8 +1,12 @@
 "use server";
 
 import { adminLoginSchema } from "@/lib/validations/admin";
-import type { ActionState } from "./register-team";
 import { cookies } from "next/headers";
+
+type ActionState = {
+  success: boolean;
+  message: string;
+};
 import { createHmac, timingSafeEqual } from "crypto";
 
 const COOKIE_NAME = "admin_session";
