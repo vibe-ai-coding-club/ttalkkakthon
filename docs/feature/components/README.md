@@ -8,6 +8,7 @@
 ## 인덱스
 - `button.md`
 - `chip.md`
+- `section-title.md`
 - `header.md`
 - `footer.md`
 - `runaway-button.md`
@@ -28,3 +29,4 @@
 - `stats-cards.md`
 - `team-table.md`
 - `team-detail-modal.md`
+- `icon.md`
