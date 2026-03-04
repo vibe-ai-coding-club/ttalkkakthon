@@ -8,7 +8,21 @@ import { ApplySection } from "./sections/apply-section";
 import { NoticeSection } from "./sections/notice-section";
 import { ContactSection } from "./sections/contact-section";
 
+const UnderConstruction = () => (
+  <div className="flex min-h-dvh flex-col items-center justify-center gap-6 px-4 text-center">
+    <span className="text-6xl">🚧</span>
+    <h1 className="typo-h4">페이지 준비 중입니다</h1>
+    <p className="typo-body2 text-gray-500">
+      더 나은 모습으로 곧 찾아뵙겠습니다
+    </p>
+  </div>
+);
+
+const UNDER_CONSTRUCTION = true;
+
 export default function Home() {
+  if (UNDER_CONSTRUCTION) return <UnderConstruction />;
+
   return (
     <div>
       <HeroSection />
