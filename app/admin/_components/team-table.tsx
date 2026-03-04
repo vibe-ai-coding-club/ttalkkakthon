@@ -3,14 +3,23 @@
 import { useState, useMemo } from "react";
 import { TeamDetailModal } from "./team-detail-modal";
 
+export type SerializedMember = {
+  id: string;
+  name: string;
+  contact: string;
+  isLeader: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type SerializedTeam = {
   id: string;
   name: string;
   email: string;
-  phone: string;
+  phone: string | null;
   participationType: string;
   teamName: string | null;
-  members: unknown;
+  members: SerializedMember[];
   experienceLevel: string;
   motivation: string | null;
   createdAt: string;
@@ -84,13 +93,14 @@ export const TeamTable = ({ teams }: TeamTableProps) => {
               <th className="px-4 py-3 text-left font-medium text-muted-foreground">참가유형</th>
               <th className="px-4 py-3 text-left font-medium text-muted-foreground">경험수준</th>
               <th className="px-4 py-3 text-left font-medium text-muted-foreground">팀명</th>
+              <th className="px-4 py-3 text-left font-medium text-muted-foreground">멤버</th>
               <th className="px-4 py-3 text-left font-medium text-muted-foreground">신청일</th>
             </tr>
           </thead>
           <tbody>
             {paged.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-4 py-8 text-center text-muted-foreground">
+                <td colSpan={8} className="px-4 py-8 text-center text-muted-foreground">
                   {search ? "검색 결과가 없습니다." : "신청 데이터가 없습니다."}
                 </td>
               </tr>
@@ -122,6 +132,11 @@ export const TeamTable = ({ teams }: TeamTableProps) => {
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">
                     {team.teamName ?? "-"}
+                  </td>
+                  <td className="px-4 py-3 text-muted-foreground">
+                    {team.participationType === "TEAM"
+                      ? `${team.members.filter((m) => !m.isLeader).length}명`
+                      : "-"}
                   </td>
                   <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                     {new Date(team.createdAt).toLocaleDateString("ko-KR")}

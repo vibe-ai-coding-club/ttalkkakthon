@@ -11,6 +11,7 @@ const AdminPage = async () => {
   const [teams, totalTeams, byParticipationType, byExperienceLevel, recentWeekCount] =
     await Promise.all([
       prisma.team.findMany({
+        include: { members: true },
         orderBy: { createdAt: "desc" },
       }),
       prisma.team.count(),
@@ -29,6 +30,11 @@ const AdminPage = async () => {
 
   const serializedTeams = teams.map((team) => ({
     ...team,
+    members: team.members.map((m) => ({
+      ...m,
+      createdAt: m.createdAt.toISOString(),
+      updatedAt: m.updatedAt.toISOString(),
+    })),
     createdAt: team.createdAt.toISOString(),
     updatedAt: team.updatedAt.toISOString(),
   }));
