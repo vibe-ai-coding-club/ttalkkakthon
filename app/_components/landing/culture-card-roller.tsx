@@ -8,8 +8,6 @@ import type { Swiper as SwiperInstance } from "swiper/types";
 import type { CultureItem } from "@/app/sections/landing-data";
 import { CultureCard } from "./culture-card";
 
-import "swiper/css";
-
 type CultureCardRollerProps = {
   items: CultureItem[];
 };
