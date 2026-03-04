@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 
+import { Button } from "@/app/_components/button";
+
 type ParticipationType = "INDIVIDUAL" | "TEAM";
 type ExperienceLevel = "BEGINNER" | "JUNIOR" | "SENIOR" | "VIBE_CODER";
 
@@ -495,17 +497,16 @@ export const RegistrationForm = () => {
 
       {/* 제출 */}
       <div className="text-center pt-4">
-        <button
+        <Button
           type="submit"
+          color={isReady ? "primary" : "gray"}
+          size="medium"
+          state="default"
           disabled={isPending}
-          className={`typo-btn2 rounded-xl px-12 py-4 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors ${
-            isReady
-              ? "bg-primary-400 text-white hover:bg-primary-500"
-              : "bg-gray-100 text-foreground hover:bg-gray-200"
-          }`}
+          className="w-full sm:w-auto sm:min-w-56"
         >
           {isPending ? "등록 중..." : "딸깍톤 신청하기"}
-        </button>
+        </Button>
         <p className="typo-caption1 mt-3 text-gray-500">
           제출된 정보는 행사 운영 목적으로만 사용돼요
         </p>
