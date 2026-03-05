@@ -478,15 +478,20 @@ export const HeroSection = () => {
     <section
       id="hero"
       ref={sectionRef}
-      className="relative h-[100svh] min-h-[640px] overflow-hidden pt-[180px] pb-[100px] md:min-h-[900px] md:pt-[380px] md:pb-[300px]"
+      className="relative flex h-[100svh] min-h-[640px] items-center overflow-hidden px-4 pt-[120px] pb-[80px] md:min-h-[900px] md:px-8 md:pt-[170px] md:pb-[130px]"
     >
       {/* TODO: 배경 이미지 확정 후 교체 */}
       <div className="absolute inset-0 bg-[linear-gradient(135deg,#7b8794_0%,#9aa5b1_50%,#6c7983_100%)]" />
       <div className="absolute inset-0 bg-black/20" />
 
-      <div className="relative mx-auto flex w-full max-w-[1280px] flex-col items-center px-9 text-center md:px-8">
-        <h1 className="text-[60px] leading-[1.1] font-bold tracking-[-0.4px] text-white md:text-[100px] md:leading-[0.95]">
-          TTALKKAKTHON
+      <div className="relative mx-auto flex w-full max-w-[1280px] flex-col items-center text-center">
+        <h1 className="max-w-full text-[56px] leading-[1.06] font-bold tracking-[-0.4px] text-white break-all md:text-[100px] md:leading-[0.95] md:break-normal">
+          <span className="md:hidden">
+            TTALKKAK
+            <br />
+            THON
+          </span>
+          <span className="hidden md:inline">TTALKKAKTHON</span>
         </h1>
         <p className="mt-4 text-[20px] leading-[30px] font-bold tracking-[-0.4px] text-white md:mt-6 md:text-[34px] md:leading-[52px]">
           <span className="md:hidden">
@@ -500,7 +505,7 @@ export const HeroSection = () => {
         <div ref={ctaSlotRef} className="relative mt-10 inline-flex md:mt-15">
           <button
             type="button"
-            className={`inline-flex min-w-[160px] items-center justify-center rounded-xl bg-primary-400 px-5 py-3 text-[18px] leading-[26px] font-semibold tracking-[-0.4px] text-white transition-[opacity,colors] duration-300 ease-out hover:bg-primary-500 md:min-w-[420px] md:rounded-2xl md:px-8 md:py-4 md:text-[24px] md:leading-[34px] md:font-bold ${
+            className={`inline-flex h-[50px] min-w-[160px] items-center justify-center rounded-xl bg-primary-400 px-5 text-[18px] leading-[26px] font-semibold tracking-[-0.4px] text-white whitespace-nowrap transition-[opacity,colors] duration-300 ease-out hover:bg-primary-500 md:h-[66px] md:min-w-[420px] md:rounded-2xl md:px-8 md:text-[24px] md:leading-[34px] md:font-bold ${
               phase === "idle" ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
             }`}
             onMouseEnter={onIdleButtonMouseEnter}
@@ -510,7 +515,7 @@ export const HeroSection = () => {
           </button>
 
           <div
-            className={`absolute inset-0 inline-flex min-w-[160px] items-center justify-center rounded-xl border px-5 py-3 text-center text-[14px] leading-[22px] font-semibold tracking-[-0.3px] transition-[opacity,colors] duration-500 ease-out md:min-w-[420px] md:rounded-2xl md:px-8 md:py-4 md:text-[18px] md:leading-[28px] ${
+            className={`absolute inset-0 inline-flex h-[50px] min-w-[160px] items-center justify-center rounded-xl border px-5 text-center text-[14px] leading-[22px] font-semibold tracking-[-0.3px] transition-[opacity,colors] duration-500 ease-out md:h-[66px] md:min-w-[420px] md:rounded-2xl md:px-8 md:text-[18px] md:leading-[28px] ${
               phase === "active" ? "pointer-events-none opacity-100" : "pointer-events-none opacity-0"
             } ${
               isOverDropZone ? "border-primary-200 bg-primary-050 text-primary-200" : "border-white/50 bg-white/15 text-white/85"
@@ -524,7 +529,7 @@ export const HeroSection = () => {
       {phase !== "idle" && (
         <button
           type="button"
-          className={`absolute z-30 inline-flex min-w-[160px] touch-none select-none items-center justify-center rounded-xl bg-primary-400 px-5 py-3 text-[18px] leading-[26px] font-semibold tracking-[-0.4px] text-white transition-[transform,opacity] md:min-w-[420px] md:rounded-2xl md:px-8 md:py-4 md:text-[24px] md:leading-[34px] md:font-bold ${
+          className={`absolute z-30 inline-flex h-[50px] min-w-[160px] touch-none select-none items-center justify-center rounded-xl bg-primary-400 px-5 text-[18px] leading-[26px] font-semibold tracking-[-0.4px] text-white whitespace-nowrap transition-[transform,opacity] md:h-[66px] md:min-w-[420px] md:rounded-2xl md:px-8 md:text-[24px] md:leading-[34px] md:font-bold ${
             phase === "active" ? "pointer-events-auto" : "pointer-events-none"
           }`}
           style={{

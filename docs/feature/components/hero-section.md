@@ -12,6 +12,7 @@
   - 도망다니는 CTA 버튼은 드래그 가능.
   - 드래그 중 버튼이 placeholder와 겹치기 시작하면 placeholder의 테두리/텍스트를 동일한 파란 계열 색상으로 변경해 drop 가능 상태를 안내.
   - drop 성공 순간 placeholder는 즉시 숨기고, 도망 버튼 텍스트는 투명 처리해 버튼 높이는 유지.
+  - 상태 전환(`지금 신청하기` ↔ `미션 성공`) 시 버튼 높이는 고정되어 점프가 발생하지 않아야 함.
   - placeholder에 drop 성공 시 화면 인터랙션/스크롤만 막는 투명 오버레이를 노출(시각 변화 없음).
   - 도망 버튼이 원래 위치로 부드럽게 복귀한 뒤 같은 버튼 내부 텍스트가 `미션 성공`으로 바뀌고, 텍스트 좌측에 check 아이콘을 `10px` gap으로 노출.
   - `미션 성공` 상태에서 `canvas-confetti` 기반의 `fireworks + side cannon` 빵빠레를 재생한 뒤 2초 후 `/register`로 이동.
@@ -29,6 +30,10 @@
   - 기본: `100svh` (뷰포트 높이를 꽉 채움)
   - 최소 높이: Mobile `640px`, Desktop `900px`
   - 화면 높이가 최소 높이보다 작아도 콘텐츠가 너무 눌리지 않도록 최소 높이 유지
+  - Hero 내부 콘텐츠(타이틀/서브타이틀/CTA)는 섹션 내 세로 중앙 정렬.
+- 타이틀 줄바꿈 정책
+  - Mobile: `TTALKKAK` / `THON` 2줄 개행으로 노출.
+  - Desktop: `TTALKKAKTHON` 1줄 노출.
 - 반응형 기준
-  - Mobile: `pt-180 / pb-100`
-  - Desktop: `pt-380 / pb-300`
+  - Mobile: `pt-120 / pb-80`
+  - Desktop: `pt-170 / pb-130`
