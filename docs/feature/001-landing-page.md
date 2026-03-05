@@ -78,6 +78,7 @@
 
 ### 8) Footer
 - 소셜 링크(Instagram, LinkedIn), 운영 주체 텍스트, 문의 이메일 노출.
+- 소셜 링크는 각 텍스트 왼쪽에 브랜드 아이콘(Instagram/LinkedIn)을 포함한다.
 
 ## 공통 레이아웃/내비게이션
 - 상단 고정 `Navigation` 사용.
