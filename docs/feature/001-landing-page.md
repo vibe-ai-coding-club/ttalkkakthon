@@ -30,6 +30,9 @@
 ### 2) Stopwatch
 - 마감 시각(`2026-03-27T23:59:59+09:00`) 기준 남은 시간(일/시/분/초) 1초 주기 갱신.
 - 마감 후에는 마감 문구 노출.
+- 랜딩 본문 `StopwatchSection`이 화면 위로 지나간 뒤부터 하단 `FloatingStopwatch` 노출.
+- `FloatingStopwatch` 기본 위치는 화면 하단 50px 고정.
+- Footer가 20px 이상 보이면 Footer 상단 기준 30px 위로 위치를 올려 sticky처럼 보이도록 동작.
 
 ### 3) About
 - 행사 소개 카드 3개 노출.

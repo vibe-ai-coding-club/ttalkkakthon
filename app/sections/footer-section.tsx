@@ -2,7 +2,7 @@ import { Logo } from "@/app/_components/logo";
 
 export const FooterSection = () => {
   return (
-    <footer className="bg-primary-400 px-4 pt-5 pb-[30px] text-white md:px-[60px] md:py-10">
+    <footer id="landing-footer" className="bg-primary-400 px-4 pt-5 pb-[30px] text-white md:px-[60px] md:py-10">
       <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-[50px]">
         <div className="space-y-3 md:space-y-4">
           <Logo className="bg-white/25" />

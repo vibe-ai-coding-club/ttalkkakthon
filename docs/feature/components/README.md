@@ -14,6 +14,7 @@
 - `logo.md`
 - `hero-section.md`
 - `stopwatch-section.md`
+- `floating-stopwatch.md`
 - `about-section.md`
 - `schedule-section.md`
 - `timetable.md`

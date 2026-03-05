@@ -1,6 +1,7 @@
 import { AboutSection } from "./sections/about-section";
 import { CultureSection } from "./sections/culture-section";
 import { FooterSection } from "./sections/footer-section";
+import { FloatingStopwatch } from "./sections/floating-stopwatch";
 import { HeroSection } from "./sections/hero-section";
 import { InfoSection } from "./sections/info-section";
 import { ScheduleSection } from "./sections/schedule-section";
@@ -31,6 +32,7 @@ export default function Home() {
       <CultureSection />
       <InfoSection />
       <SponsorSection />
+      <FloatingStopwatch />
       <FooterSection />
     </div>
   );

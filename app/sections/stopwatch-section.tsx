@@ -3,29 +3,12 @@
 import { useEffect, useState } from "react";
 
 import { Icon } from "@/app/_components/icon";
-
-const DEADLINE = new Date("2026-03-27T23:59:59+09:00");
-
-type TimeLeft = {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-};
-
-const calcTimeLeft = (): TimeLeft | null => {
-  const diff = DEADLINE.getTime() - Date.now();
-  if (diff <= 0) return null;
-
-  return {
-    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-    minutes: Math.floor((diff / (1000 * 60)) % 60),
-    seconds: Math.floor((diff / 1000) % 60),
-  };
-};
-
-const pad = (num: number) => String(num).padStart(2, "0");
+import {
+  calcTimeLeft,
+  padTimeUnit,
+  type TimeLeft,
+  ZERO_TIME_LEFT,
+} from "./stopwatch-time";
 
 const TimeBlock = ({ label, value }: { label: string; value: string }) => {
   return (
@@ -44,18 +27,33 @@ const Colon = () => (
 );
 
 export const StopwatchSection = () => {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(calcTimeLeft());
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>(ZERO_TIME_LEFT);
+  const [isExpired, setIsExpired] = useState(false);
 
   useEffect(() => {
-    const timerId = setInterval(() => {
-      setTimeLeft(calcTimeLeft());
-    }, 1000);
+    const updateTime = () => {
+      const next = calcTimeLeft();
+
+      if (next) {
+        setTimeLeft(next);
+        setIsExpired(false);
+        return;
+      }
+
+      setIsExpired(true);
+    };
+
+    updateTime();
+    const timerId = setInterval(updateTime, 1000);
 
     return () => clearInterval(timerId);
   }, []);
 
   return (
-    <section className="bg-[linear-gradient(178deg,#1AB0FF_44%,#7AD2FF_99%)] px-4 py-9 backdrop-blur-[10px] md:px-8 md:py-[60px]">
+    <section
+      id="stopwatch-section"
+      className="bg-[linear-gradient(178deg,#1AB0FF_44%,#7AD2FF_99%)] px-4 py-9 backdrop-blur-[10px] md:px-8 md:py-[60px]"
+    >
       <div className="mx-auto max-w-[1280px]">
         <div className="flex items-center justify-center gap-2.5 md:gap-3.5">
           <Icon type="twinkle" width={16} height={16} className="text-white md:size-6" />
@@ -66,15 +64,15 @@ export const StopwatchSection = () => {
         </div>
 
         <div className="mt-3 flex flex-wrap items-center justify-center gap-3.5 md:mt-[14px] md:gap-7">
-          {timeLeft ? (
+          {!isExpired ? (
             <>
-              <TimeBlock value={pad(timeLeft.days)} label="일" />
+              <TimeBlock value={padTimeUnit(timeLeft.days)} label="일" />
               <Colon />
-              <TimeBlock value={pad(timeLeft.hours)} label="시" />
+              <TimeBlock value={padTimeUnit(timeLeft.hours)} label="시" />
               <Colon />
-              <TimeBlock value={pad(timeLeft.minutes)} label="분" />
+              <TimeBlock value={padTimeUnit(timeLeft.minutes)} label="분" />
               <Colon />
-              <TimeBlock value={pad(timeLeft.seconds)} label="초" />
+              <TimeBlock value={padTimeUnit(timeLeft.seconds)} label="초" />
             </>
           ) : (
             <p className="typo-h6 text-white md:typo-h3">신청이 마감되었어요</p>
