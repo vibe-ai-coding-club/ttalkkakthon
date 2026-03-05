@@ -59,20 +59,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --accent: #38bdf8;
-    --accent-hover: #0ea5e9;
-    --muted: #1c1c1c;
-    --muted-foreground: #a3a3a3;
-    --border: #2e2e2e;
-    --error: #f87171;
-    --success: #4ade80;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
@@ -80,6 +66,44 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+.culture-card-roller-track {
+  display: flex;
+  width: max-content;
+  animation-name: culture-card-roller-scroll;
+  animation-duration: var(--culture-roll-duration, 24s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.culture-card-roller-track-paused {
+  animation-play-state: paused;
+}
+
+.culture-card-roller-row {
+  display: flex;
+  flex-shrink: 0;
+  gap: 24px;
+  padding-right: 24px;
+}
+
+@media (min-width: 768px) {
+  .culture-card-roller-row {
+    gap: 28px;
+    padding-right: 28px;
+  }
+}
+
+@keyframes culture-card-roller-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
 /* ===== Typography Tokens ===== */

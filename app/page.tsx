@@ -1,12 +1,12 @@
-import { HeroSection } from "./sections/hero-section";
-import { CountdownSection } from "./sections/countdown-section";
-import { IntroSection } from "./sections/intro-section";
 import { AboutSection } from "./sections/about-section";
+import { CultureSection } from "./sections/culture-section";
+import { FooterSection } from "./sections/footer-section";
+import { FloatingStopwatch } from "./sections/floating-stopwatch";
+import { HeroSection } from "./sections/hero-section";
+import { InfoSection } from "./sections/info-section";
 import { ScheduleSection } from "./sections/schedule-section";
-import { RulesSection } from "./sections/rules-section";
-import { ApplySection } from "./sections/apply-section";
-import { NoticeSection } from "./sections/notice-section";
-import { ContactSection } from "./sections/contact-section";
+import { SponsorSection } from "./sections/sponsor-section";
+import { StopwatchSection } from "./sections/stopwatch-section";
 
 const UnderConstruction = () => (
   <div className="flex min-h-dvh flex-col items-center justify-center gap-6 px-4 text-center">
@@ -18,7 +18,7 @@ const UnderConstruction = () => (
   </div>
 );
 
-const UNDER_CONSTRUCTION = true;
+const UNDER_CONSTRUCTION = false;
 
 export default function Home() {
   if (UNDER_CONSTRUCTION) return <UnderConstruction />;
@@ -26,14 +26,14 @@ export default function Home() {
   return (
     <div>
       <HeroSection />
-      <CountdownSection />
-      <IntroSection />
+      <StopwatchSection />
       <AboutSection />
       <ScheduleSection />
-      <RulesSection />
-      <ApplySection />
-      <NoticeSection />
-      <ContactSection />
+      <CultureSection />
+      <InfoSection />
+      <SponsorSection />
+      <FloatingStopwatch />
+      <FooterSection />
     </div>
   );
 }

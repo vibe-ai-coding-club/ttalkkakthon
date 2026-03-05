@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Header } from "./_components/header";
-import { Footer } from "./_components/footer";
+import { Navigation } from "./_components/navigation";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -38,12 +37,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body
-        className={`${geistMono.variable} font-sans antialiased`}
-      >
-        <Header />
+      <body className={`${geistMono.variable} font-sans antialiased`}>
+        <Navigation />
         <main className="min-h-screen">{children}</main>
-        <Footer />
       </body>
     </html>
   );

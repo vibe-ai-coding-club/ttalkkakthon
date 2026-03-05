@@ -1,19 +1,566 @@
-import { RunawayButton } from "@/app/_components/runaway-button";
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import confetti from "canvas-confetti";
+
+import { Icon } from "@/app/_components/icon";
+
+type Position = {
+  x: number;
+  y: number;
+};
+
+type Size = {
+  width: number;
+  height: number;
+};
+
+type GamePhase = "idle" | "active" | "returning" | "success";
+
+const MOBILE_BREAKPOINT = 768;
+const CATCHABLE_AFTER_MS = 5000;
+
+const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+
+const lerp = (start: number, end: number, ratio: number) => start + (end - start) * ratio;
+
+const hasOverlap = (
+  draggable: { left: number; top: number; right: number; bottom: number },
+  target: { left: number; top: number; right: number; bottom: number }
+) => {
+  const overlapLeft = Math.max(draggable.left, target.left);
+  const overlapTop = Math.max(draggable.top, target.top);
+  const overlapRight = Math.min(draggable.right, target.right);
+  const overlapBottom = Math.min(draggable.bottom, target.bottom);
+
+  return overlapRight > overlapLeft && overlapBottom > overlapTop;
+};
 
 export const HeroSection = () => {
+  const router = useRouter();
+  const sectionRef = useRef<HTMLElement>(null);
+  const ctaSlotRef = useRef<HTMLDivElement>(null);
+  const dragPointerIdRef = useRef<number | null>(null);
+  const dragOffsetRef = useRef({ x: 0, y: 0 });
+  const startPositionRef = useRef<Position>({ x: 0, y: 0 });
+  const runawaySizeRef = useRef<Size>({ width: 0, height: 0 });
+  const gameStartedAtRef = useRef<number | null>(null);
+  const desktopEscapeTimerRef = useRef<number | null>(null);
+  const mobileTeleportTimerRef = useRef<number | null>(null);
+  const mobileRevealTimerRef = useRef<number | null>(null);
+  const mobileJumpCountRef = useRef(0);
+  const successTimerRef = useRef<number | null>(null);
+  const navigateTimerRef = useRef<number | null>(null);
+  const celebrationTimerRefs = useRef<number[]>([]);
+
+  const [isMobile, setIsMobile] = useState(false);
+  const [phase, setPhase] = useState<GamePhase>("idle");
+  const [runawayPosition, setRunawayPosition] = useState<Position>({ x: 0, y: 0 });
+  const [dragging, setDragging] = useState(false);
+  const [isOverDropZone, setIsOverDropZone] = useState(false);
+  const [isRunawayVisible, setIsRunawayVisible] = useState(true);
+  const [transitionMs, setTransitionMs] = useState(240);
+
+  const clearDesktopEscapeTimer = useCallback(() => {
+    if (desktopEscapeTimerRef.current !== null) {
+      window.clearTimeout(desktopEscapeTimerRef.current);
+      desktopEscapeTimerRef.current = null;
+    }
+  }, []);
+
+  const clearMobileTimers = useCallback(() => {
+    if (mobileTeleportTimerRef.current !== null) {
+      window.clearTimeout(mobileTeleportTimerRef.current);
+      mobileTeleportTimerRef.current = null;
+    }
+    if (mobileRevealTimerRef.current !== null) {
+      window.clearTimeout(mobileRevealTimerRef.current);
+      mobileRevealTimerRef.current = null;
+    }
+  }, []);
+
+  const clearSuccessTimers = useCallback(() => {
+    if (successTimerRef.current !== null) {
+      window.clearTimeout(successTimerRef.current);
+      successTimerRef.current = null;
+    }
+    if (navigateTimerRef.current !== null) {
+      window.clearTimeout(navigateTimerRef.current);
+      navigateTimerRef.current = null;
+    }
+  }, []);
+
+  const clearCelebrationTimers = useCallback(() => {
+    if (celebrationTimerRefs.current.length === 0) {
+      return;
+    }
+
+    for (const timerId of celebrationTimerRefs.current) {
+      window.clearTimeout(timerId);
+    }
+    celebrationTimerRefs.current = [];
+  }, []);
+
+  const getRects = useCallback(() => {
+    const sectionRect = sectionRef.current?.getBoundingClientRect();
+    const slotRect = ctaSlotRef.current?.getBoundingClientRect();
+
+    if (!sectionRect || !slotRect) {
+      return null;
+    }
+
+    return { sectionRect, slotRect };
+  }, []);
+
+  const getBounds = useCallback(
+    (sectionRect: DOMRect) => {
+      const runawayWidth = runawaySizeRef.current.width;
+      const runawayHeight = runawaySizeRef.current.height;
+      const paddingX = isMobile ? 8 : 12;
+      const paddingY = isMobile ? 8 : 12;
+
+      return {
+        minX: paddingX,
+        maxX: Math.max(paddingX, sectionRect.width - runawayWidth - paddingX),
+        minY: paddingY,
+        maxY: Math.max(paddingY, sectionRect.height - runawayHeight - paddingY),
+      };
+    },
+    [isMobile]
+  );
+
+  const randomizeRunawayPosition = useCallback(() => {
+    if (phase !== "active") {
+      return;
+    }
+    const rects = getRects();
+    if (!rects) {
+      return;
+    }
+
+    const { sectionRect } = rects;
+    const elapsed = gameStartedAtRef.current ? performance.now() - gameStartedAtRef.current : 0;
+    const progress = clamp(elapsed / CATCHABLE_AFTER_MS, 0, 1);
+    const bounds = getBounds(sectionRect);
+    const nextX = bounds.minX + Math.random() * Math.max(1, bounds.maxX - bounds.minX);
+    const nextY = bounds.minY + Math.random() * Math.max(1, bounds.maxY - bounds.minY);
+    const moveDuration = isMobile ? 120 : Math.round(lerp(170, 720, progress));
+
+    setTransitionMs(moveDuration);
+    setRunawayPosition({ x: nextX, y: nextY });
+  }, [getBounds, getRects, isMobile, phase]);
+
+  const scheduleDesktopEscape = useCallback(() => {
+    clearDesktopEscapeTimer();
+    if (isMobile || phase !== "active" || dragging) {
+      return;
+    }
+
+    const queueNextEscape = () => {
+      const elapsed = gameStartedAtRef.current ? performance.now() - gameStartedAtRef.current : 0;
+      if (elapsed >= CATCHABLE_AFTER_MS) {
+        return;
+      }
+
+      const progress = clamp(elapsed / CATCHABLE_AFTER_MS, 0, 1);
+      const delay = Math.round(lerp(220, 980, progress));
+
+      desktopEscapeTimerRef.current = window.setTimeout(() => {
+        randomizeRunawayPosition();
+        queueNextEscape();
+      }, delay);
+    };
+
+    queueNextEscape();
+  }, [clearDesktopEscapeTimer, dragging, isMobile, phase, randomizeRunawayPosition]);
+
+  const scheduleMobileTeleport = useCallback(() => {
+    clearMobileTimers();
+    if (!isMobile || phase !== "active" || dragging) {
+      return;
+    }
+
+    const queueNextTeleport = () => {
+      const interval = 100 * Math.pow(1.5, Math.floor(mobileJumpCountRef.current / 3));
+
+      mobileTeleportTimerRef.current = window.setTimeout(() => {
+        setIsRunawayVisible(false);
+        mobileRevealTimerRef.current = window.setTimeout(() => {
+          randomizeRunawayPosition();
+          setIsRunawayVisible(true);
+          mobileJumpCountRef.current += 1;
+          queueNextTeleport();
+        }, 120);
+      }, interval);
+    };
+
+    queueNextTeleport();
+  }, [clearMobileTimers, dragging, isMobile, phase, randomizeRunawayPosition]);
+
+  const initializeGame = useCallback(() => {
+    const rects = getRects();
+    if (!rects || phase !== "idle") {
+      return;
+    }
+
+    const { sectionRect, slotRect } = rects;
+    const initialX = slotRect.left - sectionRect.left;
+    const initialY = slotRect.top - sectionRect.top;
+
+    setRunawayPosition({ x: initialX, y: initialY });
+    startPositionRef.current = { x: initialX, y: initialY };
+    runawaySizeRef.current = { width: slotRect.width, height: slotRect.height };
+    setPhase("active");
+    setTransitionMs(220);
+    setIsRunawayVisible(true);
+    gameStartedAtRef.current = performance.now();
+    mobileJumpCountRef.current = 0;
+
+    if (isMobile) {
+      scheduleMobileTeleport();
+      return;
+    }
+
+    randomizeRunawayPosition();
+    scheduleDesktopEscape();
+  }, [getRects, isMobile, phase, randomizeRunawayPosition, scheduleDesktopEscape, scheduleMobileTeleport]);
+
+  const evaluateDropOverlap = useCallback(
+    (position: Position) => {
+      const rects = getRects();
+      if (!rects) {
+        return false;
+      }
+
+      const { sectionRect, slotRect } = rects;
+      const dropZone = {
+        left: slotRect.left - sectionRect.left,
+        top: slotRect.top - sectionRect.top,
+        right: slotRect.left - sectionRect.left + slotRect.width,
+        bottom: slotRect.top - sectionRect.top + slotRect.height,
+      };
+      const draggable = {
+        left: position.x,
+        top: position.y,
+        right: position.x + runawaySizeRef.current.width,
+        bottom: position.y + runawaySizeRef.current.height,
+      };
+
+      return hasOverlap(draggable, dropZone);
+    },
+    [getRects]
+  );
+
+  const completeMission = useCallback(() => {
+    clearDesktopEscapeTimer();
+    clearMobileTimers();
+    clearSuccessTimers();
+    setDragging(false);
+    setIsOverDropZone(false);
+    setIsRunawayVisible(true);
+    setTransitionMs(480);
+    setRunawayPosition(startPositionRef.current);
+    setPhase("returning");
+
+    successTimerRef.current = window.setTimeout(() => {
+      setPhase("success");
+      navigateTimerRef.current = window.setTimeout(() => {
+        router.push("/register");
+      }, 2000);
+    }, 520);
+  }, [clearDesktopEscapeTimer, clearMobileTimers, clearSuccessTimers, router]);
+
+  const onRunawayPointerDown = useCallback(
+    (event: ReactPointerEvent<HTMLButtonElement>) => {
+      if (phase !== "active") {
+        return;
+      }
+
+      const buttonRect = event.currentTarget.getBoundingClientRect();
+      event.currentTarget.setPointerCapture(event.pointerId);
+      dragPointerIdRef.current = event.pointerId;
+      dragOffsetRef.current = { x: event.clientX - buttonRect.left, y: event.clientY - buttonRect.top };
+
+      clearDesktopEscapeTimer();
+      clearMobileTimers();
+      setTransitionMs(80);
+      setDragging(true);
+      setIsRunawayVisible(true);
+    },
+    [clearDesktopEscapeTimer, clearMobileTimers, phase]
+  );
+
+  const onRunawayPointerMove = useCallback(
+    (event: ReactPointerEvent<HTMLButtonElement>) => {
+      if (!dragging || dragPointerIdRef.current !== event.pointerId) {
+        return;
+      }
+      const sectionRect = sectionRef.current?.getBoundingClientRect();
+      if (!sectionRect) {
+        return;
+      }
+
+      const bounds = getBounds(sectionRect);
+      const nextX = clamp(event.clientX - sectionRect.left - dragOffsetRef.current.x, bounds.minX, bounds.maxX);
+      const nextY = clamp(event.clientY - sectionRect.top - dragOffsetRef.current.y, bounds.minY, bounds.maxY);
+      const nextPosition = { x: nextX, y: nextY };
+
+      setRunawayPosition(nextPosition);
+      setIsOverDropZone(evaluateDropOverlap(nextPosition));
+    },
+    [dragging, evaluateDropOverlap, getBounds]
+  );
+
+  const onRunawayPointerEnd = useCallback(
+    (event: ReactPointerEvent<HTMLButtonElement>) => {
+      if (!dragging || dragPointerIdRef.current !== event.pointerId) {
+        return;
+      }
+
+      event.currentTarget.releasePointerCapture(event.pointerId);
+      dragPointerIdRef.current = null;
+      setDragging(false);
+
+      if (evaluateDropOverlap(runawayPosition)) {
+        completeMission();
+        return;
+      }
+
+      setIsOverDropZone(false);
+      if (isMobile) {
+        scheduleMobileTeleport();
+        return;
+      }
+      scheduleDesktopEscape();
+    },
+    [
+      completeMission,
+      dragging,
+      evaluateDropOverlap,
+      isMobile,
+      runawayPosition,
+      scheduleDesktopEscape,
+      scheduleMobileTeleport,
+    ]
+  );
+
+  const onIdleButtonPointerDown = useCallback(
+    (event: ReactPointerEvent<HTMLButtonElement>) => {
+      if (!isMobile || phase !== "idle") {
+        return;
+      }
+      event.preventDefault();
+      initializeGame();
+    },
+    [initializeGame, isMobile, phase]
+  );
+
+  const onIdleButtonMouseEnter = useCallback(() => {
+    if (isMobile || phase !== "idle") {
+      return;
+    }
+    initializeGame();
+  }, [initializeGame, isMobile, phase]);
+
+  const onRunawayMouseEnter = useCallback(() => {
+    if (isMobile || phase !== "active" || dragging) {
+      return;
+    }
+    const elapsed = gameStartedAtRef.current ? performance.now() - gameStartedAtRef.current : 0;
+    if (elapsed >= CATCHABLE_AFTER_MS) {
+      return;
+    }
+    randomizeRunawayPosition();
+    scheduleDesktopEscape();
+  }, [dragging, isMobile, phase, randomizeRunawayPosition, scheduleDesktopEscape]);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  useEffect(() => {
+    if (phase !== "success") {
+      return;
+    }
+
+    const launchSideCannon = (originX: number, angle: number) => {
+      confetti({
+        particleCount: 90,
+        angle,
+        spread: 62,
+        startVelocity: 66,
+        gravity: 1.2,
+        ticks: 140,
+        scalar: 1.05,
+        origin: { x: originX, y: 0.74 },
+        disableForReducedMotion: true,
+      });
+    };
+
+    const cannonWaveTimes = [0, 120, 240, 360];
+    for (const waveTime of cannonWaveTimes) {
+      const timerId = window.setTimeout(() => {
+        launchSideCannon(0, 58);
+        launchSideCannon(1, 122);
+      }, waveTime);
+      celebrationTimerRefs.current.push(timerId);
+    }
+
+    const fireworksIntervalId = window.setInterval(() => {
+      confetti({
+        particleCount: 62,
+        angle: 90,
+        spread: 90,
+        startVelocity: 42,
+        gravity: 0.9,
+        ticks: 125,
+        origin: { x: 0.2 + Math.random() * 0.6, y: 0.2 + Math.random() * 0.2 },
+        disableForReducedMotion: true,
+      });
+    }, 130);
+    celebrationTimerRefs.current.push(fireworksIntervalId);
+
+    const fireworksStopId = window.setTimeout(() => {
+      window.clearInterval(fireworksIntervalId);
+    }, 950);
+    celebrationTimerRefs.current.push(fireworksStopId);
+
+    return () => {
+      clearCelebrationTimers();
+    };
+  }, [clearCelebrationTimers, phase]);
+
+  useEffect(() => {
+    if (phase !== "returning" && phase !== "success") {
+      return;
+    }
+
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.documentElement.style.overflow = previousHtmlOverflow;
+      document.body.style.overflow = previousBodyOverflow;
+    };
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase !== "active" || dragging) {
+      return;
+    }
+
+    if (isMobile) {
+      scheduleMobileTeleport();
+      return;
+    }
+    scheduleDesktopEscape();
+  }, [dragging, isMobile, phase, scheduleDesktopEscape, scheduleMobileTeleport]);
+
+  useEffect(() => {
+    return () => {
+      clearDesktopEscapeTimer();
+      clearMobileTimers();
+      clearSuccessTimers();
+      clearCelebrationTimers();
+    };
+  }, [clearCelebrationTimers, clearDesktopEscapeTimer, clearMobileTimers, clearSuccessTimers]);
+
   return (
-    <section className="relative flex min-h-screen flex-col items-center justify-center gap-6 bg-gray-400 px-4 text-center">
-      {/* 타이틀 */}
-      <h1 className="typo-h2 sm:typo-h1 text-white">TTALKKAKTHON</h1>
+    <section
+      id="hero"
+      ref={sectionRef}
+      className="relative flex h-[100svh] min-h-[640px] items-center overflow-hidden px-4 pt-[120px] pb-[80px] md:min-h-[900px] md:px-8 md:pt-[170px] md:pb-[130px]"
+    >
+      {/* TODO: 배경 이미지 확정 후 교체 */}
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,#7b8794_0%,#9aa5b1_50%,#6c7983_100%)]" />
+      <div className="absolute inset-0 bg-black/20" />
 
-      {/* 서브타이틀 */}
-      <p className="typo-subtitle3 sm:typo-subtitle1 text-white/60">
-        엉뚱한 상상이
-        <br className="sm:hidden" /> 딸깍하고 현실이 되는 곳
-      </p>
+      <div className="relative mx-auto flex w-full max-w-[1280px] flex-col items-center text-center">
+        <h1 className="max-w-full text-[56px] leading-[1.06] font-bold tracking-[-0.4px] text-white break-all md:text-[100px] md:leading-[0.95] md:break-normal">
+          <span className="md:hidden">
+            TTALKKAK
+            <br />
+            THON
+          </span>
+          <span className="hidden md:inline">TTALKKAKTHON</span>
+        </h1>
+        <p className="mt-4 text-[20px] leading-[30px] font-bold tracking-[-0.4px] text-white md:mt-6 md:text-[34px] md:leading-[52px]">
+          <span className="md:hidden">
+            엉뚱한 상상이
+            <br />
+            딸깍하고 현실이 되는 곳
+          </span>
+          <span className="hidden md:inline">엉뚱한 상상이 딸깍하고 현실이 되는 곳</span>
+        </p>
 
-      {/* CTA */}
-      <RunawayButton />
+        <div ref={ctaSlotRef} className="relative mt-10 inline-flex md:mt-15">
+          <button
+            type="button"
+            className={`inline-flex h-[50px] min-w-[160px] items-center justify-center rounded-xl bg-primary-400 px-5 text-[18px] leading-[26px] font-semibold tracking-[-0.4px] text-white whitespace-nowrap transition-[opacity,colors] duration-300 ease-out hover:bg-primary-500 md:h-[66px] md:min-w-[420px] md:rounded-2xl md:px-8 md:text-[24px] md:leading-[34px] md:font-bold ${
+              phase === "idle" ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+            }`}
+            onMouseEnter={onIdleButtonMouseEnter}
+            onPointerDown={onIdleButtonPointerDown}
+          >
+            지금 신청하기
+          </button>
+
+          <div
+            className={`absolute inset-0 inline-flex h-[50px] min-w-[160px] items-center justify-center rounded-xl border px-5 text-center text-[14px] leading-[22px] font-semibold tracking-[-0.3px] transition-[opacity,colors] duration-500 ease-out md:h-[66px] md:min-w-[420px] md:rounded-2xl md:px-8 md:text-[18px] md:leading-[28px] ${
+              phase === "active" ? "pointer-events-none opacity-100" : "pointer-events-none opacity-0"
+            } ${
+              isOverDropZone ? "border-primary-200 bg-primary-050 text-primary-200" : "border-white/50 bg-white/15 text-white/85"
+            }`}
+          >
+            <span className="md:whitespace-nowrap">Mission: 버튼을 제자리로 돌려놓아라!</span>
+          </div>
+        </div>
+      </div>
+
+      {phase !== "idle" && (
+        <button
+          type="button"
+          className={`absolute z-30 inline-flex h-[50px] min-w-[160px] touch-none select-none items-center justify-center rounded-xl bg-primary-400 px-5 text-[18px] leading-[26px] font-semibold tracking-[-0.4px] text-white whitespace-nowrap transition-[transform,opacity] md:h-[66px] md:min-w-[420px] md:rounded-2xl md:px-8 md:text-[24px] md:leading-[34px] md:font-bold ${
+            phase === "active" ? "pointer-events-auto" : "pointer-events-none"
+          }`}
+          style={{
+            left: 0,
+            top: 0,
+            transform: `translate3d(${runawayPosition.x}px, ${runawayPosition.y}px, 0)`,
+            transitionDuration: `${transitionMs}ms`,
+            transitionTimingFunction: "cubic-bezier(0.2, 0.9, 0.2, 1)",
+            opacity: isRunawayVisible ? 1 : 0,
+            cursor: phase === "active" ? (dragging ? "grabbing" : "grab") : "default",
+          }}
+          onMouseEnter={onRunawayMouseEnter}
+          onPointerDown={onRunawayPointerDown}
+          onPointerMove={onRunawayPointerMove}
+          onPointerUp={onRunawayPointerEnd}
+          onPointerCancel={onRunawayPointerEnd}
+        >
+          <span className={phase === "success" ? "opacity-100" : phase === "active" ? "opacity-100" : "opacity-0"}>
+            {phase === "success" ? (
+              <span className="inline-flex items-center gap-[10px]">
+                <Icon type="check" width={24} height={24} />
+                <span>미션 성공!</span>
+              </span>
+            ) : (
+              "지금 신청하기"
+            )}
+          </span>
+        </button>
+      )}
+
+      {(phase === "returning" || phase === "success") && (
+        <div className="absolute inset-0 z-20 pointer-events-auto" />
+      )}
     </section>
   );
 };

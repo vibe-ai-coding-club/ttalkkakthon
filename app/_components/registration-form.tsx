@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 
+import { Button } from "@/app/_components/button";
+
 type ParticipationType = "INDIVIDUAL" | "TEAM";
 type ExperienceLevel = "BEGINNER" | "JUNIOR" | "SENIOR" | "VIBE_CODER";
 
@@ -606,7 +608,7 @@ export const RegistrationForm = () => {
           <p className="typo-caption1 mt-3 text-gray-500">제출된 정보는 행사 운영 목적으로만 사용돼요</p>
         </div>
       </form>
-
+      
       {/* 토스트 */}
       <div
         className={`fixed bottom-8 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-xl px-6 py-3.5 shadow-lg transition-all duration-300 ${
