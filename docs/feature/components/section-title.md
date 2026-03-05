@@ -17,4 +17,4 @@
 - `chipClassName`/`titleClassName`으로 섹션별 스타일 변형 가능.
 
 ## 사용처
-- `about`, `schedule`, `culture`, `info`, `sponsor` 섹션.
+- `about`, `schedule`, `culture`, `info` 섹션.
