@@ -14,7 +14,7 @@ export const SponsorSection = () => {
 
           <div className="mt-[26px] grid grid-cols-3 gap-3 md:mt-[52px] md:gap-5">
             {Array.from({ length: 3 }).map((_, index) => (
-              <div key={index} className="aspect-[4/3] rounded-xl bg-gray-300 md:aspect-[2/1] md:rounded-none" />
+              <div key={index} className="aspect-[4/3] bg-gray-300 md:aspect-[2/1]" />
             ))}
           </div>
         </div>
