@@ -24,7 +24,17 @@
 
 ### 1) Hero
 - 메인 타이틀/서브타이틀/CTA 노출.
-- CTA 클릭 시 `/register` 이동.
+- CTA는 데스크탑/모바일 분기 게이미피케이션 미션 완료 후 `/register`로 이동.
+- 공통 플로우
+  - 게임 시작 시 원래 버튼 자리 placeholder 노출(opacity ease-out).
+  - placeholder 문구는 `Mission: 버튼을 제자리로 돌려놓아라!`를 사용.
+  - 도망 버튼을 드래그해 원래 자리 placeholder에 drop하면 성공.
+  - drop 영역 겹침 시 placeholder 테두리/텍스트를 동일한 파란 강조색으로 변경.
+  - drop 성공 순간 placeholder는 즉시 숨기고, 도망 버튼 텍스트는 투명 처리해 버튼 높이는 유지.
+  - 성공 시 인터랙션/스크롤만 차단하는 투명 오버레이 적용 후 버튼 복귀 애니메이션, 같은 버튼 텍스트가 `미션 성공`으로 전환되며 좌측 check 아이콘과 `10px` 간격으로 표시됨.
+  - `미션 성공` 상태에서는 `canvas-confetti` 기반의 `fireworks + side cannon` 빵빠레를 재생하고 2초 후 페이지 이동.
+- Desktop(`>=768px`): hover 트리거 기반 랜덤 슬라이딩 회피, 시작 후 5초 동안 점진 감속, placeholder 문구는 개행 없이 한 줄 유지.
+- Mobile(`<=767px`): first press 트리거 기반 텔레포트 회피(0.1초 시작, 3회마다 1.5배 간격 증가).
 - 배경 이미지는 미확정 상태이며 현재 플레이스홀더 배경 사용.
 - Hero 섹션 높이는 `100svh`를 기본으로 하되 최소 높이(Mobile `640px`, Desktop `900px`)를 보장.
 
