@@ -17,7 +17,7 @@ const UnderConstruction = () => (
   </div>
 );
 
-const UNDER_CONSTRUCTION = true;
+const UNDER_CONSTRUCTION = false;
 
 export default function Home() {
   if (UNDER_CONSTRUCTION) return <UnderConstruction />;
