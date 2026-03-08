@@ -44,6 +44,8 @@ model Team {
   refundAccountHolder String            @map("refund_account_holder") // 예금주
   hasDeposited        Boolean           @default(false) @map("has_deposited") // 신청자 자가 입금 여부
   depositConfirmed    Boolean           @default(false) @map("deposit_confirmed") // 관리자 입금 확인
+  privacyConsent      Boolean           @default(false) @map("privacy_consent") // 개인정보 수집·이용 동의
+  consentedAt         DateTime?         @map("consented_at") // 동의 일시
   createdAt         DateTime          @default(now()) @map("created_at")
   updatedAt         DateTime          @updatedAt @map("updated_at")
 
