@@ -742,7 +742,7 @@ export const RegistrationForm = () => {
                 className="mt-0.5 size-5 shrink-0 accent-primary-400 cursor-pointer"
               />
               <span className="typo-body3">
-                <span className="text-error">[필수]</span> 개인정보 수집·이용에 동의합니다.{" "}
+                <span className="text-error">[필수]</span> 개인정보 수집·이용 및 초상권 활용에 동의합니다.{" "}
                 <button
                   type="button"
                   onClick={() => setPrivacyModalOpen(true)}
@@ -790,7 +790,7 @@ export const RegistrationForm = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="typo-subtitle1 text-lg">개인정보 수집·이용 동의</h2>
+              <h2 className="typo-subtitle1 text-lg">개인정보 수집·이용 및 초상권 활용 동의</h2>
               <button
                 type="button"
                 onClick={() => setPrivacyModalOpen(false)}
@@ -835,7 +835,18 @@ export const RegistrationForm = () => {
               </div>
 
               <div>
-                <p className="typo-subtitle2 mb-1">5. 파기 방법</p>
+                <p className="typo-subtitle2 mb-1">5. 현장 촬영 및 초상권 활용 동의</p>
+                <p>
+                  행사 당일 현장 사진 및 영상이 촬영될 수 있으며, 촬영된 자료는{" "}
+                  <span className="font-semibold">딸깍톤 행사 홍보 및 아카이빙 목적</span>으로
+                  공식 웹사이트, SNS 등에 활용될 수 있습니다.
+                  참가 신청 시 이에 동의한 것으로 간주하며, 촬영을 원하지 않을 경우
+                  행사 당일 운영진에게 별도 요청하실 수 있습니다.
+                </p>
+              </div>
+
+              <div>
+                <p className="typo-subtitle2 mb-1">6. 파기 방법</p>
                 <p>전자적 파일 형태의 정보는 복구할 수 없는 방법으로 영구 삭제합니다.</p>
               </div>
             </div>
