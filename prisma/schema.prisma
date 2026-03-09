@@ -26,28 +26,35 @@ enum ExperienceLevel {
 }
 
 model Team {
-  id                String            @id @default(cuid())
+  id    String @id @default(cuid())
   // 기본 정보 (신청자 = 대표자)
-  name              String // 이름 (대표자)
-  email             String            @unique // 이메일 (프로젝트 등록 매칭용)
-  phone             String // 연락처 (필수)
+  name  String // 이름 (대표자)
+  email String @unique // 이메일 (프로젝트 등록 매칭용)
+  phone String // 연락처 (필수)
+
   // 참가 유형
   participationType ParticipationType @default(INDIVIDUAL) @map("participation_type")
+
   // 팀 정보 (팀 참여 시)
-  teamName          String?           @map("team_name") // 팀 이름
+  teamName String? @map("team_name") // 팀 이름
+
   // 추가 정보
-  experienceLevel   ExperienceLevel   @default(BEGINNER) @map("experience_level")
-  motivation        String? // 참가 동기
+  experienceLevel ExperienceLevel @default(BEGINNER) @map("experience_level")
+  motivation      String? // 참가 동기
+
   // 환불 계좌 정보
-  refundBank          String            @map("refund_bank") // 은행명
-  refundAccount       String            @map("refund_account") // 계좌번호
-  refundAccountHolder String            @map("refund_account_holder") // 예금주
-  hasDeposited        Boolean           @default(false) @map("has_deposited") // 신청자 자가 입금 여부
-  depositConfirmed    Boolean           @default(false) @map("deposit_confirmed") // 관리자 입금 확인
-  privacyConsent      Boolean           @default(false) @map("privacy_consent") // 개인정보 수집·이용 동의
-  consentedAt         DateTime?         @map("consented_at") // 동의 일시
-  createdAt         DateTime          @default(now()) @map("created_at")
-  updatedAt         DateTime          @updatedAt @map("updated_at")
+  refundBank          String @map("refund_bank") // 은행명
+  refundAccount       String @map("refund_account") // 계좌번호
+  refundAccountHolder String @map("refund_account_holder") // 예금주
+
+  hasDeposited     Boolean @default(false) @map("has_deposited") // 신청자 자가 입금 여부
+  depositConfirmed Boolean @default(false) @map("deposit_confirmed") // 관리자 입금 확인
+
+  privacyConsent Boolean   @default(false) @map("privacy_consent") // 개인정보 수집·이용 동의
+  consentedAt    DateTime? @map("consented_at") // 동의 일시
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   members  Member[]
   projects Project[]
@@ -56,13 +63,15 @@ model Team {
 }
 
 model Member {
-  id        String   @id @default(cuid())
-  teamId    String   @map("team_id")
-  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  name      String
-  email     String   @unique // 투표 인증용
-  phone     String // 연락처
-  isLeader  Boolean  @default(false) @map("is_leader")
+  id     String @id @default(cuid())
+  teamId String @map("team_id")
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  name     String
+  email    String  @unique // 투표 인증용
+  phone    String // 연락처
+  isLeader Boolean @default(false) @map("is_leader")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -72,17 +81,20 @@ model Member {
 }
 
 model Project {
-  id          String   @id @default(cuid())
-  teamId      String   @map("team_id")
-  team        Team     @relation(fields: [teamId], references: [id])
+  id     String @id @default(cuid())
+  teamId String @map("team_id")
+  team   Team   @relation(fields: [teamId], references: [id])
+
   title       String
   description String
-  githubUrl   String   @map("github_url")
-  demoUrl     String?  @map("demo_url")
-  imageUrl    String?  @map("image_url")
-  linkUrl     String?  @map("link_url")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  githubUrl String  @map("github_url")
+  demoUrl   String? @map("demo_url")
+  imageUrl  String? @map("image_url")
+  linkUrl   String? @map("link_url")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   votes Vote[]
 
@@ -90,11 +102,13 @@ model Project {
 }
 
 model Vote {
-  id        String   @id @default(cuid())
-  memberId  String   @map("member_id")
-  member    Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  projectId String   @map("project_id")
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  id       String @id @default(cuid())
+  memberId String @map("member_id")
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  projectId String  @map("project_id")
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now()) @map("created_at")
 
   @@unique([memberId, projectId])
@@ -102,13 +116,15 @@ model Vote {
 }
 
 model VoteSession {
-  id        String    @id @default(cuid())
-  isActive  Boolean   @default(false) @map("is_active")
-  maxVotes  Int       @default(5) @map("max_votes")
+  id       String  @id @default(cuid())
+  isActive Boolean @default(false) @map("is_active")
+  maxVotes Int     @default(5) @map("max_votes")
+
   startedAt DateTime? @map("started_at")
   endedAt   DateTime? @map("ended_at")
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("vote_sessions")
 }
