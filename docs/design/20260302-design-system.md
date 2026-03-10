@@ -15,52 +15,52 @@
 
 브랜드 메인 컬러. 한 화면 내에서 가장 중요한 버튼이나 강조할 정보에 사용.
 
-| Scale | Hex | CSS Variable | Tailwind Class |
-|-------|---------|---------------------------|---------------------|
-| 900 | #68082F | `--color-primary-900` | `primary-900` |
-| 800 | #850A3C | `--color-primary-800` | `primary-800` |
-| 700 | #B40E51 | `--color-primary-700` | `primary-700` |
-| 600 | #D51060 | `--color-primary-600` | `primary-600` |
-| 500 | #F0146D | `--color-primary-500` | `primary-500` |
-| **400** | **#FE2A80** | `--color-primary-400` | `primary-400` |
-| 300 | #FE3E8C | `--color-primary-300` | `primary-300` |
-| 200 | #FE6CA7 | `--color-primary-200` | `primary-200` |
-| 100 | #FE90BC | `--color-primary-100` | `primary-100` |
-| 075 | #FEA9CB | `--color-primary-075` | `primary-075` |
-| 050 | #FFBDD8 | `--color-primary-050` | `primary-050` |
-| 025 | #FFD6E7 | `--color-primary-025` | `primary-025` |
+| Scale   | Hex         | CSS Variable          | Tailwind Class |
+| ------- | ----------- | --------------------- | -------------- |
+| 900     | #68082F     | `--color-primary-900` | `primary-900`  |
+| 800     | #850A3C     | `--color-primary-800` | `primary-800`  |
+| 700     | #B40E51     | `--color-primary-700` | `primary-700`  |
+| 600     | #D51060     | `--color-primary-600` | `primary-600`  |
+| 500     | #F0146D     | `--color-primary-500` | `primary-500`  |
+| **400** | **#FE2A80** | `--color-primary-400` | `primary-400`  |
+| 300     | #FE3E8C     | `--color-primary-300` | `primary-300`  |
+| 200     | #FE6CA7     | `--color-primary-200` | `primary-200`  |
+| 100     | #FE90BC     | `--color-primary-100` | `primary-100`  |
+| 075     | #FEA9CB     | `--color-primary-075` | `primary-075`  |
+| 050     | #FFBDD8     | `--color-primary-050` | `primary-050`  |
+| 025     | #FFD6E7     | `--color-primary-025` | `primary-025`  |
 
 > Primary 400이 브랜드 기본 컬러
 
 ### Semantic
 
-| Token | Hex | CSS Variable | 용도 |
-|-------|-----|--------------|------|
-| Background | #FFFFFF | `--background` | 기본 페이지 배경 |
-| Foreground | #1A1A1A | `--foreground` | 기본 텍스트/전경색 |
-| Accent | #FE2A80 | `--accent` | 주요 CTA, 강조 정보 |
-| Accent Hover | #F0146D | `--accent-hover` | 주요 CTA hover |
-| Muted | #F9F9F9 | `--muted` | 보조 배경, 패널 배경 |
-| Muted Foreground | #808080 | `--muted-foreground` | 보조 텍스트 |
-| Border | #E5E5E5 | `--border` | 구분선, 기본 테두리 |
+| Token            | Hex     | CSS Variable         | 용도                 |
+| ---------------- | ------- | -------------------- | -------------------- |
+| Background       | #FFFFFF | `--background`       | 기본 페이지 배경     |
+| Foreground       | #1A1A1A | `--foreground`       | 기본 텍스트/전경색   |
+| Accent           | #FE2A80 | `--accent`           | 주요 CTA, 강조 정보  |
+| Accent Hover     | #F0146D | `--accent-hover`     | 주요 CTA hover       |
+| Muted            | #F9F9F9 | `--muted`            | 보조 배경, 패널 배경 |
+| Muted Foreground | #808080 | `--muted-foreground` | 보조 텍스트          |
+| Border           | #E5E5E5 | `--border`           | 구분선, 기본 테두리  |
 
 ### Grayscale
 
-| Scale | Hex | CSS Variable | Tailwind Class |
-|-------|---------|---------------------------|---------------------|
-| 950 | #0A0D0F | `--color-gray-950` | `gray-950` |
-| 900 | #15191E | `--color-gray-900` | `gray-900` |
-| 850 | #333B45 | `--color-gray-850` | `gray-850` |
-| 800 | #454E57 | `--color-gray-800` | `gray-800` |
-| 700 | #5E6973 | `--color-gray-700` | `gray-700` |
-| 600 | #7B8591 | `--color-gray-600` | `gray-600` |
-| 500 | #8F98A3 | `--color-gray-500` | `gray-500` |
-| 400 | #AAB1BC | `--color-gray-400` | `gray-400` |
-| 300 | #CDD3DC | `--color-gray-300` | `gray-300` |
-| 200 | #E5E8ED | `--color-gray-200` | `gray-200` |
-| 100 | #EFF2F5 | `--color-gray-100` | `gray-100` |
-| 50 | #F4F7F9 | `--color-gray-50` | `gray-50` |
-| 0 | #FFFFFF | `--color-gray-0` | `gray-0` |
+| Scale | Hex     | CSS Variable       | Tailwind Class |
+| ----- | ------- | ------------------ | -------------- |
+| 950   | #0A0D0F | `--color-gray-950` | `gray-950`     |
+| 900   | #15191E | `--color-gray-900` | `gray-900`     |
+| 850   | #333B45 | `--color-gray-850` | `gray-850`     |
+| 800   | #454E57 | `--color-gray-800` | `gray-800`     |
+| 700   | #5E6973 | `--color-gray-700` | `gray-700`     |
+| 600   | #7B8591 | `--color-gray-600` | `gray-600`     |
+| 500   | #8F98A3 | `--color-gray-500` | `gray-500`     |
+| 400   | #AAB1BC | `--color-gray-400` | `gray-400`     |
+| 300   | #CDD3DC | `--color-gray-300` | `gray-300`     |
+| 200   | #E5E8ED | `--color-gray-200` | `gray-200`     |
+| 100   | #EFF2F5 | `--color-gray-100` | `gray-100`     |
+| 50    | #F4F7F9 | `--color-gray-50`  | `gray-50`      |
+| 0     | #FFFFFF | `--color-gray-0`   | `gray-0`       |
 
 ---
 
@@ -77,48 +77,48 @@
 
 ### Headline
 
-| Token | Level | font-size | weight | line-height | letter-spacing |
-|-----------|-------|-----------|-----------|-------------|----------------|
-| headline1 | H1 | 46px | Bold/700 | 64px | -0.4px |
-| headline2 | H2 | 42px | Bold/700 | 60px | -0.4px |
-| headline3 | H3 | 34px | Bold/700 | 52px | -0.4px |
-| headline4 | H4 | 28px | Bold/700 | 40px | -0.4px |
-| headline5 | H5 | 24px | Bold/700 | 34px | -0.4px |
-| headline6 | H6 | 20px | Bold/700 | 30px | -0.4px |
-| headline7 | H7 | 18px | Bold/700 | 26px | -0.4px |
+| Token     | Level | font-size | weight   | line-height | letter-spacing |
+| --------- | ----- | --------- | -------- | ----------- | -------------- |
+| headline1 | H1    | 46px      | Bold/700 | 64px        | -0.4px         |
+| headline2 | H2    | 42px      | Bold/700 | 60px        | -0.4px         |
+| headline3 | H3    | 34px      | Bold/700 | 52px        | -0.4px         |
+| headline4 | H4    | 28px      | Bold/700 | 40px        | -0.4px         |
+| headline5 | H5    | 24px      | Bold/700 | 34px        | -0.4px         |
+| headline6 | H6    | 20px      | Bold/700 | 30px        | -0.4px         |
+| headline7 | H7    | 18px      | Bold/700 | 26px        | -0.4px         |
 
 ### Subtitle
 
-| Token | Level | font-size | weight | line-height | letter-spacing |
-|-----------|-----------|-----------|------------|-------------|----------------|
-| subtitle1 | subtitle1 | 16px | Bold/700 | 24px | -0.2px |
-| subtitle2 | subtitle2 | 14px | Bold/700 | 22px | -0.2px |
-| subtitle3 | subtitle3 | 16px | Medium/500 | 24px | -0.2px |
-| subtitle4 | subtitle4 | 14px | Medium/500 | 22px | -0.2px |
+| Token     | Level     | font-size | weight     | line-height | letter-spacing |
+| --------- | --------- | --------- | ---------- | ----------- | -------------- |
+| subtitle1 | subtitle1 | 16px      | Bold/700   | 24px        | -0.2px         |
+| subtitle2 | subtitle2 | 14px      | Bold/700   | 22px        | -0.2px         |
+| subtitle3 | subtitle3 | 16px      | Medium/500 | 24px        | -0.2px         |
+| subtitle4 | subtitle4 | 14px      | Medium/500 | 22px        | -0.2px         |
 
 ### Body
 
-| Token | Level | font-size | weight | line-height | letter-spacing |
-|-------|-------|-----------|-------------|-------------|----------------|
-| body1 | body1 | 16px | Regular/400 | 26px | -0.4px |
-| body2 | body2 | 15px | Regular/400 | 25px | -0.4px |
-| body3 | body3 | 14px | Regular/400 | 24px | -0.4px |
+| Token | Level | font-size | weight      | line-height | letter-spacing |
+| ----- | ----- | --------- | ----------- | ----------- | -------------- |
+| body1 | body1 | 16px      | Regular/400 | 26px        | -0.4px         |
+| body2 | body2 | 15px      | Regular/400 | 25px        | -0.4px         |
+| body3 | body3 | 14px      | Regular/400 | 24px        | -0.4px         |
 
 ### Button
 
-| Token | Level | font-size | weight | line-height | letter-spacing |
-|---------|-------|-----------|------------|-------------|----------------|
-| button1 | btn1 | 18px | Medium/500 | 26px | 0px |
-| button2 | btn2 | 16px | Medium/500 | 24px | 0px |
-| button3 | btn3 | 14px | Medium/500 | 22px | 0px |
-| button4 | btn4 | 12px | Medium/500 | 20px | 0px |
+| Token   | Level | font-size | weight     | line-height | letter-spacing |
+| ------- | ----- | --------- | ---------- | ----------- | -------------- |
+| button1 | btn1  | 18px      | Medium/500 | 26px        | 0px            |
+| button2 | btn2  | 16px      | Medium/500 | 24px        | 0px            |
+| button3 | btn3  | 14px      | Medium/500 | 22px        | 0px            |
+| button4 | btn4  | 12px      | Medium/500 | 20px        | 0px            |
 
 ### Caption
 
-| Token | Level | font-size | weight | line-height | letter-spacing |
-|----------|----------|-----------|-------------|-------------|----------------|
-| caption1 | caption1 | 12px | Regular/400 | 20px | -0.2px |
-| caption2 | caption2 | 10px | Regular/400 | 18px | -0.2px |
+| Token    | Level    | font-size | weight      | line-height | letter-spacing |
+| -------- | -------- | --------- | ----------- | ----------- | -------------- |
+| caption1 | caption1 | 12px      | Regular/400 | 20px        | -0.2px         |
+| caption2 | caption2 | 10px      | Regular/400 | 18px        | -0.2px         |
 
 ---
 
