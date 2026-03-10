@@ -476,11 +476,10 @@ export const HeroSection = () => {
     <section
       id="hero"
       ref={sectionRef}
-      className="relative flex h-[1112px] max-h-[100svh] flex-col items-center justify-center gap-10 overflow-hidden bg-[#FE2A80] px-4 pt-[120px] pb-[80px] md:gap-14 md:px-8 md:pt-[170px] md:pb-[130px]"
+      className="relative bg-primary-400 flex h-[1112px] max-h-[100svh] flex-col items-center justify-center gap-10 overflow-hidden bg-[#FE2A80] px-4 pt-[120px] pb-[80px] md:gap-14 md:px-8 md:pt-[170px] md:pb-[130px]"
     >
-      <div className="absolute inset-0 bg-primary-400" />
       <img
-        src="/images/hero.png"
+        src="/images/hero.webp"
         alt="딸깍톤 히어로"
         className="w-[120%] max-w-[941px] object-contain xl:w-[50%]"
       />
