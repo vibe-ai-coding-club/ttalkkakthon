@@ -65,7 +65,7 @@ export const teamRegistrationSchema = z
     hasDeposited: z.boolean(),
     privacyConsent: z
       .boolean()
-      .refine((val) => val === true, "개인정보 수집·이용에 동의해주세요"),
+      .refine((val) => val === true, "개인정보 수집·이용 및 초상권 활용에 동의해주세요"),
   })
   .refine(
     (data) => {
