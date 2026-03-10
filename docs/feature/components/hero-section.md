@@ -5,6 +5,7 @@
 
 ## 동작/UI
 - 구성: 타이틀, 서브타이틀, CTA 버튼.
+- CTA 버튼(초기 상태/도망 상태 모두)은 `gray-100` 배경과 `gray-850` 텍스트를 사용하며, idle 상태 hover는 `gray-200`.
 - CTA는 게이미피케이션 미션 완료 시 `/register`로 이동.
 - 공통 미션 플로우
   - 게임 시작 시 원래 CTA 위치에 placeholder를 `opacity + ease-out` 전환으로 노출.

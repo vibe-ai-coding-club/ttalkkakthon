@@ -24,6 +24,7 @@
 
 ### 1) Hero
 - 메인 타이틀/서브타이틀/CTA 노출.
+- CTA 버튼은 idle/도망 상태 모두 `gray-100` 배경, `gray-850` 텍스트를 사용하고 idle hover 시 `gray-200`으로 변경.
 - CTA는 데스크탑/모바일 분기 게이미피케이션 미션 완료 후 `/register`로 이동.
 - 공통 플로우
   - 게임 시작 시 원래 버튼 자리 placeholder 노출(opacity ease-out).
