@@ -3,11 +3,11 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-  --accent: #0ea5e9;
-  --accent-hover: #0284c7;
-  --muted: #f5f5f5;
-  --muted-foreground: #737373;
+  --foreground: #1a1a1a;
+  --accent: #fe2a80;
+  --accent-hover: #f0146d;
+  --muted: #f9f9f9;
+  --muted-foreground: #808080;
   --border: #e5e5e5;
   --error: #ef4444;
   --success: #22c55e;
@@ -26,18 +26,18 @@
   --color-success: var(--success);
 
   /* Primary */
-  --color-primary-900: #003B59;
-  --color-primary-800: #004C73;
-  --color-primary-700: #006599;
-  --color-primary-600: #0087CC;
-  --color-primary-500: #0097E6;
-  --color-primary-400: #00A8FF;
-  --color-primary-300: #1AB0FF;
-  --color-primary-200: #4DC2FF;
-  --color-primary-100: #7AD2FF;
-  --color-primary-075: #B0E4FF;
-  --color-primary-050: #D9F2FF;
-  --color-primary-025: #E6F6FF;
+  --color-primary-900: #68082f;
+  --color-primary-800: #850a3c;
+  --color-primary-700: #b40e51;
+  --color-primary-600: #d51060;
+  --color-primary-500: #f0146d;
+  --color-primary-400: #fe2a80;
+  --color-primary-300: #fe3e8c;
+  --color-primary-200: #fe6ca7;
+  --color-primary-100: #fe90bc;
+  --color-primary-075: #fea9cb;
+  --color-primary-050: #ffbdd8;
+  --color-primary-025: #ffd6e7;
 
   /* Grayscale */
   --color-gray-950: #0A0D0F;

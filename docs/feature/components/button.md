@@ -19,10 +19,10 @@
   - `disabled` 시 포인터/투명도 스타일 자동 적용.
 
 ## 스타일 토큰 (Figma 반영)
-- `primary/default`: `bg #00A8FF`, `text #FFFFFF`, hover `#0097E5`
-- `primary/hover`: `bg #0097E5`, `text #FFFFFF`
+- `primary/default`: `bg #FE2A80`, `text #FFFFFF`, hover `#F0146D`
+- `primary/hover`: `bg #F0146D`, `text #FFFFFF`
 - `primary/ghost`: `bg #FFFFFF`, `text #AAB1BC`, `border #CDD3DC dashed 1px`
-- `primary/dragzone`: `bg #FFFFFF`, `text #7AD2FF`, `border #7AD2FF solid 1px`
+- `primary/dragzone`: `bg #FFFFFF`, `text #FE90BC`, `border #FE90BC solid 1px`
 - `gary/default`: `bg #EFF2F5`, `text #333B45`, hover `#E5E8ED`
 - `gary/hover`: `bg #E5E8ED`, `text #333B45`
 

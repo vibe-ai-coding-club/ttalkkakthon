@@ -478,8 +478,7 @@ export const HeroSection = () => {
       ref={sectionRef}
       className="relative flex h-[100svh] min-h-[640px] items-center overflow-hidden px-4 pt-[120px] pb-[80px] md:min-h-[900px] md:px-8 md:pt-[170px] md:pb-[130px]"
     >
-      {/* TODO: 배경 이미지 확정 후 교체 */}
-      <div className="absolute inset-0 bg-[linear-gradient(135deg,#7b8794_0%,#9aa5b1_50%,#6c7983_100%)]" />
+      <div className="absolute inset-0 bg-primary-400" />
       <div className="absolute inset-0 bg-black/20" />
 
       <div className="relative mx-auto flex w-full max-w-[1280px] flex-col items-center text-center">
