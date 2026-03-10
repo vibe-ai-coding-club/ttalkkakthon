@@ -3,11 +3,11 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-  --accent: #0ea5e9;
-  --accent-hover: #0284c7;
-  --muted: #f5f5f5;
-  --muted-foreground: #737373;
+  --foreground: #1a1a1a;
+  --accent: #fe2a80;
+  --accent-hover: #f0146d;
+  --muted: #f9f9f9;
+  --muted-foreground: #808080;
   --border: #e5e5e5;
   --error: #ef4444;
   --success: #22c55e;

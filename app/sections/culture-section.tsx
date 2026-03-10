@@ -7,7 +7,7 @@ export const CultureSection = () => {
   return (
     <section
       id="culture"
-      className="overflow-hidden bg-[linear-gradient(180deg,#FE2A80_0%,#FE6CA7_100%)] py-[50px] md:py-20"
+      className="overflow-hidden bg-primary-300 py-[50px] md:py-20"
     >
       <div className="mx-auto max-w-[1280px]">
         <SectionTitle

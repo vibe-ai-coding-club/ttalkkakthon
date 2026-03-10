@@ -17,20 +17,32 @@
 
 | Scale | Hex | CSS Variable | Tailwind Class |
 |-------|---------|---------------------------|---------------------|
-| 900 | #003B59 | `--color-primary-900` | `primary-900` |
-| 800 | #004C73 | `--color-primary-800` | `primary-800` |
-| 700 | #006599 | `--color-primary-700` | `primary-700` |
-| 600 | #0087CC | `--color-primary-600` | `primary-600` |
-| 500 | #0097E6 | `--color-primary-500` | `primary-500` |
-| **400** | **#00A8FF** | `--color-primary-400` | `primary-400` |
-| 300 | #1AB0FF | `--color-primary-300` | `primary-300` |
-| 200 | #4DC2FF | `--color-primary-200` | `primary-200` |
-| 100 | #7AD2FF | `--color-primary-100` | `primary-100` |
-| 075 | #B0E4FF | `--color-primary-075` | `primary-075` |
-| 050 | #D9F2FF | `--color-primary-050` | `primary-050` |
-| 025 | #E6F6FF | `--color-primary-025` | `primary-025` |
+| 900 | #68082F | `--color-primary-900` | `primary-900` |
+| 800 | #850A3C | `--color-primary-800` | `primary-800` |
+| 700 | #B40E51 | `--color-primary-700` | `primary-700` |
+| 600 | #D51060 | `--color-primary-600` | `primary-600` |
+| 500 | #F0146D | `--color-primary-500` | `primary-500` |
+| **400** | **#FE2A80** | `--color-primary-400` | `primary-400` |
+| 300 | #FE3E8C | `--color-primary-300` | `primary-300` |
+| 200 | #FE6CA7 | `--color-primary-200` | `primary-200` |
+| 100 | #FE90BC | `--color-primary-100` | `primary-100` |
+| 075 | #FEA9CB | `--color-primary-075` | `primary-075` |
+| 050 | #FFBDD8 | `--color-primary-050` | `primary-050` |
+| 025 | #FFD6E7 | `--color-primary-025` | `primary-025` |
 
 > Primary 400이 브랜드 기본 컬러
+
+### Semantic
+
+| Token | Hex | CSS Variable | 용도 |
+|-------|-----|--------------|------|
+| Background | #FFFFFF | `--background` | 기본 페이지 배경 |
+| Foreground | #1A1A1A | `--foreground` | 기본 텍스트/전경색 |
+| Accent | #FE2A80 | `--accent` | 주요 CTA, 강조 정보 |
+| Accent Hover | #F0146D | `--accent-hover` | 주요 CTA hover |
+| Muted | #F9F9F9 | `--muted` | 보조 배경, 패널 배경 |
+| Muted Foreground | #808080 | `--muted-foreground` | 보조 텍스트 |
+| Border | #E5E5E5 | `--border` | 구분선, 기본 테두리 |
 
 ### Grayscale
 
