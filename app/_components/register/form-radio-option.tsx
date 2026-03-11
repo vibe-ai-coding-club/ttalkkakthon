@@ -37,7 +37,7 @@ export const FormRadioOption = ({
     <input type="radio" name={name} value={value} checked={checked} onChange={onChange} className="sr-only" />
     <RadioDot checked={checked} />
     <span>
-      <span className="typo-subtitle2">{label}</span>
+      <span className="typo-subtitle4">{label}</span>
       {description && <span className="typo-body3 ml-2 text-gray-500">{description}</span>}
     </span>
   </label>
