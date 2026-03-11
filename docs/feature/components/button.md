@@ -19,6 +19,7 @@
   - `disabled` 시 포인터/투명도 스타일 자동 적용.
 
 ## 스타일 토큰 (Figma 반영)
+
 - `primary/default`: `bg #FE2A80`, `text #FFFFFF`, hover `#F0146D`
 - `primary/hover`: `bg #F0146D`, `text #FFFFFF`
 - `primary/ghost`: `bg #FFFFFF`, `text #AAB1BC`, `border #CDD3DC dashed 1px`
@@ -27,6 +28,7 @@
 - `gary/hover`: `bg #E5E8ED`, `text #333B45`
 
 ## 사이즈 토큰 (Figma 반영)
+
 - `xsmall`: `h 34`, `px 14`, `py 6`, `radius 8`, `font 12/22/500`
 - `small`: `h 44`, `px 18`, `py 10`, `radius 10`, `font 16/24/600`, `tracking -0.2`
 - `medium`: `h 50`, `px 20`, `py 12`, `radius 12`, `font 18/26/600`, `tracking -0.4`

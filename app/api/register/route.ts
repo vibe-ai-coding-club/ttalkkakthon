@@ -117,7 +117,15 @@ export async function POST(request: NextRequest) {
 
     // Member 데이터 구성
     const memberCreateData = [
-      { name: data.name, email: data.email, phone: data.phone, isLeader: true },
+      {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        isLeader: true,
+        refundBank: data.refundBank,
+        refundAccount: data.refundAccount,
+        refundAccountHolder: data.refundAccountHolder,
+      },
       ...(data.participationType === "TEAM" && data.members
         ? data.members.map((m) => ({
             name: m.name,
@@ -135,7 +143,9 @@ export async function POST(request: NextRequest) {
         email: data.email,
         phone: data.phone,
         participationType: data.participationType,
-        teamName: data.participationType === "TEAM" ? data.teamName : null,
+        teamName: (data.participationType === "TEAM" || data.recruitmentStatus === "RECRUITING") ? data.teamName : null,
+        recruitmentStatus: data.recruitmentStatus,
+        recruitmentNote: data.recruitmentStatus === "RECRUITING" ? (data.recruitmentNote || null) : null,
         experienceLevel: data.experienceLevel,
         motivation: data.motivation || null,
         refundBank: data.refundBank,

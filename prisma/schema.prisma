@@ -25,6 +25,19 @@ enum ExperienceLevel {
   VIBE_CODER // 바이브코더
 }
 
+enum TeamStatus {
+  PENDING // 대기 (입금 확인 전 기본값)
+  CONFIRMED // 확정 (입금 확인 + 참가 확정)
+  WAITLISTED // 예비 (정원 초과 대기)
+  REFUNDED // 환불 (환불 처리 완료)
+}
+
+enum RecruitmentStatus {
+  NOT_RECRUITING // 모집 안함
+  RECRUITING // 모집중
+  CLOSED // 모집완료
+}
+
 model Team {
   id    String @id @default(cuid())
   // 기본 정보 (신청자 = 대표자)
@@ -37,6 +50,11 @@ model Team {
 
   // 팀 정보 (팀 참여 시)
   teamName String? @map("team_name") // 팀 이름
+
+  // 상태 관리
+  status            TeamStatus        @default(PENDING)
+  recruitmentStatus RecruitmentStatus @default(NOT_RECRUITING) @map("recruitment_status")
+  recruitmentNote   String?           @map("recruitment_note") // 팀 모집 소개글
 
   // 추가 정보
   experienceLevel ExperienceLevel @default(BEGINNER) @map("experience_level")
@@ -71,6 +89,11 @@ model Member {
   email    String  @unique // 투표 인증용
   phone    String // 연락처
   isLeader Boolean @default(false) @map("is_leader")
+
+  // 환불 계좌 정보 (멤버 개인)
+  refundBank          String? @map("refund_bank")
+  refundAccount       String? @map("refund_account")
+  refundAccountHolder String? @map("refund_account_holder")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
