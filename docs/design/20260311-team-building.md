@@ -193,20 +193,33 @@ JWT 세션 발급 (memberId, name, teamId 포함)
 
 #### 3-3. 추가할 파일/패키지
 
-| 대상                                  | 내용                                                   |
-| ------------------------------------- | ------------------------------------------------------ |
-| `pnpm add next-auth@5`                | NextAuth v5 설치                                       |
-| `lib/auth.ts`                         | NextAuth 설정 (Credentials Provider, JWT 콜백)         |
-| `app/api/auth/[...nextauth]/route.ts` | NextAuth API 라우트                                    |
-| `app/team-building/login/page.tsx`    | 로그인 페이지                                          |
-| `middleware.ts`                       | `/team-building/*` 경로 인증 보호 (로그인 페이지 제외) |
+| 대상                                             | 내용                                                    |
+| ------------------------------------------------ | ------------------------------------------------------- |
+| `pnpm add next-auth@beta`                        | NextAuth v5 beta 설치                                   |
+| `lib/auth.ts`                                    | NextAuth 설정 (Credentials Provider, JWT 콜백)          |
+| `app/api/auth/[...nextauth]/route.ts`            | NextAuth API 라우트                                     |
+| `app/team-building/login/page.tsx`               | 로그인 페이지                                           |
+| `proxy.ts`                                       | `/team-building/*` 경로 인증 보호 (Next.js 16 proxy)   |
+| `app/team-building/page.tsx`                     | 서버 컴포넌트에서 `auth()` 체크 (이중 보호)             |
+| `app/team-building/_components/team-building-board.tsx` | 게시판 클라이언트 컴포넌트                        |
 
 #### 3-4. NextAuth 설정 상세
 
 ```typescript
 // lib/auth.ts
-import NextAuth from "next-auth";
+import NextAuth, { type DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { prisma } from "./prisma";
+
+declare module "next-auth" {
+  interface User {
+    memberId?: string;
+    teamId?: string;
+  }
+  interface Session {
+    user: { memberId?: string; teamId?: string } & DefaultSession["user"];
+  }
+}
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -218,7 +231,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       authorize: async (credentials) => {
         // 1. Member 테이블에서 email로 조회
         // 2. phone 뒷자리 4자리 비교
-        // 3. 성공 시 { id: member.id, name: member.name, email: member.email, teamId: member.teamId }
+        // 3. 성공 시 { id, name, email, memberId, teamId }
         // 4. 실패 시 null
       },
     }),
@@ -227,14 +240,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     jwt({ token, user }) {
       if (user) {
-        token.memberId = user.id;
+        token.memberId = user.memberId;
         token.teamId = user.teamId;
       }
       return token;
     },
     session({ session, token }) {
-      session.user.memberId = token.memberId;
-      session.user.teamId = token.teamId;
+      if (session.user) {
+        session.user.memberId = token.memberId as string | undefined;
+        session.user.teamId = token.teamId as string | undefined;
+      }
       return session;
     },
   },
@@ -244,23 +259,45 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 });
 ```
 
-#### 3-5. 미들웨어 설정
+#### 3-5. proxy.ts (Next.js 16 — middleware 대체)
+
+> Next.js 16에서 `middleware.ts`는 `proxy.ts`로 변경됨.
+> 내보내는 함수명도 `middleware` → `proxy`로 변경.
+> 런타임이 Edge가 아닌 Node.js이므로 Prisma 등 서버 모듈 사용 가능.
 
 ```typescript
-// middleware.ts
-export { auth as middleware } from "@/lib/auth";
+// proxy.ts
+import { auth } from "@/lib/auth";
+
+export const proxy = auth((req) => {
+  if (!req.auth && req.nextUrl.pathname !== "/team-building/login") {
+    const loginUrl = new URL("/team-building/login", req.nextUrl.origin);
+    return Response.redirect(loginUrl);
+  }
+});
 
 export const config = {
-  matcher: ["/team-building/((?!login).*)"],
-  // /team-building/login은 제외, 나머지 /team-building/* 경로 보호
+  matcher: ["/team-building/:path*"],
 };
 ```
 
-**주의: 기존 관리자 인증과의 충돌 방지**
+#### 3-6. 경로 보호 전략 (이중 보호)
+
+- **proxy.ts**: `/team-building/*` 접근 시 미인증이면 로그인으로 redirect (1차 보호)
+- **서버 컴포넌트**: `app/team-building/page.tsx`에서 `auth()` 호출 후 `redirect()` (2차 보호)
+- **API 라우트**: `GET /api/team-building/teams`에서 `auth()` 호출 (API 보호)
+
+**기존 관리자 인증과의 충돌 방지:**
 
 - 기존 관리자: 쿠키 기반 (`admin_session`), `/admin` layout에서 서버 사이드 체크
-- 신청자: NextAuth JWT (`next-auth.session-token`), middleware에서 체크
+- 신청자: NextAuth JWT (`authjs.session-token`), proxy + 서버 컴포넌트에서 체크
 - 경로가 다르므로 (`/admin` vs `/team-building`) 충돌 없음
+
+**next-auth v5 beta 참고 사항:**
+
+- `pnpm add next-auth@beta` (v5는 아직 정식 릴리즈 아님, `@5`로 설치 불가)
+- `@auth/core/jwt` 모듈 augmentation은 pnpm에서 resolve 안 됨 → JWT 타입은 콜백에서 `as` 캐스팅으로 처리
+- next-auth beta.30의 peer dependency는 Next.js 15까지만 명시 — Next.js 16에서도 동작 확인됨
 
 ---
 
@@ -581,18 +618,19 @@ export type SerializedTeam = {
 
 #### Step 5: NextAuth 설정
 
-1. `pnpm add next-auth@5`
+1. `pnpm add next-auth@beta`
 2. `lib/auth.ts` NextAuth 설정
 3. `app/api/auth/[...nextauth]/route.ts` 라우트
-4. `middleware.ts` 경로 보호
+4. `proxy.ts` 경로 보호 (Next.js 16)
 5. `app/team-building/login/page.tsx` 로그인 페이지
 
 #### Step 6: 팀 모집 게시판
 
-1. `app/team-building/layout.tsx` 레이아웃
-2. `app/team-building/page.tsx` 게시판 메인
-3. `GET /api/team-building/teams` API
-4. 검색/필터 기능
+1. `app/team-building/layout.tsx` 레이아웃 (헤더, 로그아웃)
+2. `app/team-building/page.tsx` 서버 컴포넌트 (auth 체크 + redirect)
+3. `app/team-building/_components/team-building-board.tsx` 게시판 클라이언트 컴포넌트
+4. `GET /api/team-building/teams` API
+5. 검색/필터 기능
 
 ---
 
@@ -602,21 +640,22 @@ export type SerializedTeam = {
 | ---------------------------------------------------- | --------------- | ----------------------------------------------------------- |
 | `prisma/schema.prisma`                               | 수정            | enum 2개 추가, Team 필드 3개 추가                           |
 | `lib/validations/team.ts`                            | 수정            | recruitmentStatus, recruitmentNote 추가, teamName 조건 변경 |
-| `lib/auth.ts`                                        | **신규**        | NextAuth v5 설정                                            |
-| `middleware.ts`                                      | **신규**        | /team-building 경로 보호                                    |
-| `app/_components/registration-form.tsx`              | 수정            | 모집 여부 선택, 소개글 필드 추가                            |
-| `app/api/register/route.ts`                          | 수정            | 새 필드 저장 로직                                           |
-| `app/api/auth/[...nextauth]/route.ts`                | **신규**        | NextAuth API 핸들러                                         |
-| `app/api/team-building/teams/route.ts`               | **신규**        | 모집 팀 조회 API                                            |
-| `app/api/admin/teams/[teamId]/status/route.ts`       | **신규**        | 팀 상태 변경 API                                            |
-| `app/api/admin/teams/[teamId]/recruitment/route.ts`  | **신규**        | 모집 상태 변경 API                                          |
-| `app/api/admin/members/[memberId]/transfer/route.ts` | **신규**        | 멤버 이동 API                                               |
-| `app/team-building/layout.tsx`                       | **신규**        | 팀빌딩 레이아웃                                             |
-| `app/team-building/login/page.tsx`                   | **신규**        | 로그인 페이지                                               |
-| `app/team-building/page.tsx`                         | **신규**        | 모집 게시판                                                 |
-| `app/admin/page.tsx`                                 | 수정            | 쿼리에 새 필드 포함                                         |
-| `app/admin/_components/team-table.tsx`               | **전면 재작성** | 리스트형 → 스프레드시트 2행 구조, 인라인 편집, 필터 바      |
-| `app/admin/_components/team-detail-modal.tsx`        | **폐기 (삭제)** | 시트에 모든 정보 인라인 노출                                |
+| `lib/auth.ts`                                               | **신규**        | NextAuth v5 beta 설정                                       |
+| `proxy.ts`                                                  | **신규**        | /team-building 경로 보호 (Next.js 16 proxy)                 |
+| `app/_components/registration-form.tsx`                     | 수정            | 모집 여부 선택, 소개글 필드 추가                            |
+| `app/api/register/route.ts`                                 | 수정            | 새 필드 저장 로직                                           |
+| `app/api/auth/[...nextauth]/route.ts`                       | **신규**        | NextAuth API 핸들러                                         |
+| `app/api/team-building/teams/route.ts`                      | **신규**        | 모집 팀 조회 API                                            |
+| `app/api/admin/teams/[teamId]/status/route.ts`              | **신규**        | 팀 상태 변경 API                                            |
+| `app/api/admin/teams/[teamId]/recruitment/route.ts`         | **신규**        | 모집 상태 변경 API                                          |
+| `app/api/admin/members/[memberId]/transfer/route.ts`        | **신규**        | 멤버 이동 API                                               |
+| `app/team-building/layout.tsx`                              | **신규**        | 팀빌딩 레이아웃 (헤더, 로그아웃)                            |
+| `app/team-building/login/page.tsx`                          | **신규**        | 로그인 페이지                                               |
+| `app/team-building/page.tsx`                                | **신규**        | 서버 컴포넌트 (auth 체크 + redirect)                        |
+| `app/team-building/_components/team-building-board.tsx`     | **신규**        | 모집 게시판 클라이언트 컴포넌트                             |
+| `app/admin/page.tsx`                                        | 수정            | 쿼리에 새 필드 포함                                         |
+| `app/admin/_components/team-table.tsx`                      | **전면 재작성** | 리스트형 → 스프레드시트 2행 구조, 인라인 편집, 필터 바      |
+| `app/admin/_components/team-detail-modal.tsx`               | **폐기 (삭제)** | 시트에 모든 정보 인라인 노출                                |
 
 ### 미정/후속 작업
 
