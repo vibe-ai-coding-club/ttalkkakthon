@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { RegistrationForm } from "../_components/registration-form";
+import { RegistrationForm } from "../_components/register/registration-form";
 
 export const metadata: Metadata = {
   title: "참가 신청 - 딸깍톤 2026",
