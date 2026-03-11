@@ -8,10 +8,15 @@ export async function GET() {
     return NextResponse.json({ success: false, message: "인증이 필요합니다." }, { status: 401 });
   }
 
+  const myTeamId = session.user.teamId ?? null;
+
+  // 모집중인 팀 + 내 팀 (모집중이 아니더라도)
   const teams = await prisma.team.findMany({
     where: {
-      status: "CONFIRMED",
-      recruitmentStatus: "RECRUITING",
+      OR: [
+        { recruitmentStatus: "RECRUITING" },
+        ...(myTeamId ? [{ id: myTeamId }] : []),
+      ],
     },
     select: {
       id: true,
@@ -34,6 +39,7 @@ export async function GET() {
     experienceLevel: t.experienceLevel,
     membersCount: t._count.members,
     maxMembers: 4,
+    isMyTeam: t.id === myTeamId,
   }));
 
   return NextResponse.json({ success: true, teams: result });

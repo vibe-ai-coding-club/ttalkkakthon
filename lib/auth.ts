@@ -49,10 +49,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   session: { strategy: "jwt" },
   callbacks: {
-    jwt({ token, user }) {
+    async jwt({ token, user }) {
       if (user) {
         token.memberId = user.memberId;
         token.teamId = user.teamId;
+      }
+      // 매 요청마다 DB에서 최신 teamId를 조회
+      if (token.memberId) {
+        const member = await prisma.member.findUnique({
+          where: { id: token.memberId as string },
+          select: { teamId: true },
+        });
+        if (member) {
+          token.teamId = member.teamId;
+        }
       }
       return token;
     },

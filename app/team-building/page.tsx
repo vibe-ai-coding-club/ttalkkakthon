@@ -9,7 +9,7 @@ const TeamBuildingPage = async () => {
     redirect("/team-building/login");
   }
 
-  return <TeamBuildingBoard />;
+  return <TeamBuildingBoard userName={session.user.name ?? ""} />;
 };
 
 export default TeamBuildingPage;
