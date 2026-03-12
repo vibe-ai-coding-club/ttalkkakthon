@@ -133,8 +133,6 @@ export const RegistrationForm = () => {
     [],
   );
 
-  const needsTeamName = form.participationType === "TEAM";
-
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
 
@@ -150,10 +148,6 @@ export const RegistrationForm = () => {
     if (!form.phone) newErrors.phone = "전화번호를 입력해주세요";
     else if (!PHONE_REGEX.test(form.phone))
       newErrors.phone = "올바른 전화번호를 입력해주세요";
-
-    if (needsTeamName) {
-      if (!form.teamName.trim()) newErrors.teamName = "팀 이름을 입력해주세요";
-    }
 
     if (form.participationType === "TEAM") {
       form.members.forEach((member, i) => {
@@ -213,8 +207,6 @@ export const RegistrationForm = () => {
     if (!hasBasic || !hasRefund || !form.hasDeposited || !form.privacyConsent)
       return false;
 
-    if (needsTeamName && !form.teamName.trim()) return false;
-
     if (form.participationType === "TEAM") {
       return form.members.every(
         (m) =>
@@ -238,7 +230,7 @@ export const RegistrationForm = () => {
         email: form.email,
         name: form.name,
         phone: form.phone,
-        teamName: needsTeamName ? form.teamName : undefined,
+        teamName: `${form.name.trim()}의 팀`,
         members: form.participationType === "TEAM" ? form.members : undefined,
         experienceLevel: form.experienceLevel,
         motivation: form.motivation || undefined,
