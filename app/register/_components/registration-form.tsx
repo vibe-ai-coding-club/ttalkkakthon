@@ -3,10 +3,10 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { ExperienceSection } from "./experience-section";
-import { LeaderInfoSection } from "./leader-info-section";
 import { MotivationSection } from "./motivation-section";
 import { ParticipationTypeSection } from "./participation-type-section";
 import { PaymentSection } from "./payment-section";
+import { PersonalInfoSection } from "./personal-info-section";
 import { PrivacySection } from "./privacy-section";
 import { TeamMembersSection } from "./team-members-section";
 import { Toast } from "./toast";
@@ -73,7 +73,10 @@ export const RegistrationForm = () => {
       return next;
     });
     if (field === "email") {
-      setDupStatus((prev) => ({ ...prev, [`members.${index}.email`]: "idle" }));
+      setDupStatus((prev) => ({
+        ...prev,
+        [`members.${index}.email`]: "idle",
+      }));
     }
   };
 
@@ -103,7 +106,7 @@ export const RegistrationForm = () => {
     const isDup = await checkDuplicateEmail(form.email);
     if (isDup) {
       setDupStatus((prev) => ({ ...prev, email: "duplicate" }));
-      setErrors((prev) => ({ ...prev, email: "이미 등록된 이메일입니다" }));
+      setErrors((prev) => ({ ...prev, email: "사용중인 이메일입니다" }));
     } else {
       setDupStatus((prev) => ({ ...prev, email: "available" }));
     }
@@ -122,7 +125,7 @@ export const RegistrationForm = () => {
       const isDup = await checkDuplicateEmail(value);
       if (isDup) {
         setDupStatus((prev) => ({ ...prev, [field]: "duplicate" }));
-        setErrors((prev) => ({ ...prev, [field]: "이미 등록된 이메일입니다" }));
+        setErrors((prev) => ({ ...prev, [field]: "사용중인 이메일입니다" }));
       } else {
         setDupStatus((prev) => ({ ...prev, [field]: "available" }));
       }
@@ -264,13 +267,9 @@ export const RegistrationForm = () => {
   return (
     <>
       <form onSubmit={handleSubmit} className="space-y-8 sm:space-y-7">
-        <ParticipationTypeSection
-          form={form}
-          errors={errors}
-          update={update}
-        />
+        <ParticipationTypeSection form={form} errors={errors} update={update} />
 
-        <LeaderInfoSection
+        <PersonalInfoSection
           form={form}
           errors={errors}
           dupStatus={dupStatus}
@@ -282,9 +281,11 @@ export const RegistrationForm = () => {
           form={form}
           errors={errors}
           dupStatus={dupStatus}
+          update={update}
           updateMember={updateMember}
           addMember={addMember}
           removeMember={removeMember}
+          checkEmailDuplicate={checkEmailDuplicate}
           checkMemberEmailDuplicate={checkMemberEmailDuplicate}
         />
 

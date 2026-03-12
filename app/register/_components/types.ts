@@ -62,6 +62,20 @@ export const MAX_MEMBERS = 3;
 
 export type DuplicateStatus = "idle" | "checking" | "available" | "duplicate";
 
+export const emailDescription = (
+  status: DuplicateStatus | undefined,
+  defaultText = "투표 인증 및 프로젝트 등록을 위해 수집하고 있어요",
+): string => {
+  switch (status) {
+    case "checking":
+      return "중복 확인중";
+    case "available":
+      return "사용 가능한 이메일입니다";
+    default:
+      return defaultText;
+  }
+};
+
 export const checkDuplicateEmail = async (value: string): Promise<boolean> => {
   try {
     const res = await fetch("/api/check-duplicate", {

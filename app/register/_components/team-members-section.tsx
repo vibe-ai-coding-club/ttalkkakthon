@@ -1,14 +1,23 @@
-import { FieldLabel, FormError, FormInput } from "@/app/_components/register";
+import { FieldLabel, FormInput } from "@/app/_components/register";
 import type { DuplicateStatus, FormState, MemberState } from "./types";
-import { formatPhone, MAX_MEMBERS, toDigits } from "./types";
+import { emailDescription, formatPhone, MAX_MEMBERS, toDigits } from "./types";
 
 type Props = {
   form: FormState;
   errors: Record<string, string>;
   dupStatus: Record<string, DuplicateStatus>;
-  updateMember: (index: number, field: keyof MemberState, value: string) => void;
+  update: (
+    field: keyof Omit<FormState, "members" | "hasDeposited">,
+    value: string,
+  ) => void;
+  updateMember: (
+    index: number,
+    field: keyof MemberState,
+    value: string,
+  ) => void;
   addMember: () => void;
   removeMember: (index: number) => void;
+  checkEmailDuplicate: () => void;
   checkMemberEmailDuplicate: (index: number, value: string) => void;
 };
 
@@ -16,9 +25,11 @@ export const TeamMembersSection = ({
   form,
   errors,
   dupStatus,
+  update,
   updateMember,
   addMember,
   removeMember,
+  checkEmailDuplicate,
   checkMemberEmailDuplicate,
 }: Props) => {
   if (form.participationType !== "TEAM") return null;
@@ -29,7 +40,7 @@ export const TeamMembersSection = ({
         <FieldLabel as="legend">
           팀원{" "}
           <span className="typo-body3 font-normal text-gray-500">
-            ({form.members.length}/{MAX_MEMBERS})
+            ({form.members.length + 1}/{MAX_MEMBERS + 1})
           </span>
         </FieldLabel>
         {form.members.length < MAX_MEMBERS && (
@@ -47,8 +58,10 @@ export const TeamMembersSection = ({
       <div className="space-y-3 rounded-xl bg-gray-50 p-4">
         <div className="flex items-center justify-between">
           <span>
-            <span className="typo-subtitle2">팀장</span>
-            <span className="typo-caption1 ml-2 text-gray-500">팀 대표로 참여해요</span>
+            <span className="typo-subtitle6 sm:typo-h7">팀장</span>
+            <span className="typo-subtitle4 sm:typo-subtitle3 ml-2 text-gray-500">
+              팀 대표로 참여해요
+            </span>
           </span>
         </div>
 
@@ -61,20 +74,10 @@ export const TeamMembersSection = ({
               type="text"
               variant="white"
               value={form.name}
-              disabled
+              onChange={(e) => update("name", e.target.value)}
               placeholder="홍길동"
-            />
-          </div>
-          <div>
-            <FieldLabel size="sm" required>
-              연락처
-            </FieldLabel>
-            <FormInput
-              type="tel"
-              variant="white"
-              value={formatPhone(form.phone)}
-              disabled
-              placeholder="010-1234-5678 형식으로 작성해 주세요"
+              maxLength={50}
+              error={errors.name}
             />
           </div>
           <div>
@@ -85,8 +88,28 @@ export const TeamMembersSection = ({
               type="email"
               variant="white"
               value={form.email}
-              disabled
+              onChange={(e) => update("email", e.target.value)}
+              onBlur={checkEmailDuplicate}
               placeholder="example@email.com"
+              description={emailDescription(
+                dupStatus.email,
+                "투표 시 사용됩니다",
+              )}
+              error={errors.email}
+            />
+          </div>
+          <div>
+            <FieldLabel size="sm" required>
+              연락처
+            </FieldLabel>
+            <FormInput
+              type="tel"
+              inputMode="numeric"
+              variant="white"
+              value={formatPhone(form.phone)}
+              onChange={(e) => update("phone", toDigits(e.target.value))}
+              placeholder="010-1234-5678 형식으로 작성해 주세요"
+              error={errors.phone}
             />
           </div>
         </div>
@@ -126,6 +149,26 @@ export const TeamMembersSection = ({
               />
             </div>
 
+            {/* 이메일 */}
+            <div>
+              <FieldLabel size="sm" required>
+                이메일
+              </FieldLabel>
+              <FormInput
+                type="email"
+                variant="white"
+                value={member.email}
+                onChange={(e) => updateMember(i, "email", e.target.value)}
+                onBlur={() => checkMemberEmailDuplicate(i, member.email)}
+                placeholder="example@email.com"
+                description={emailDescription(
+                  dupStatus[`members.${i}.email`],
+                  "투표 시 사용됩니다",
+                )}
+                error={errors[`members.${i}.email`]}
+              />
+            </div>
+
             {/* 연락처 */}
             <div>
               <FieldLabel size="sm" required>
@@ -136,47 +179,12 @@ export const TeamMembersSection = ({
                 inputMode="numeric"
                 variant="white"
                 value={formatPhone(member.phone)}
-                onChange={(e) => updateMember(i, "phone", toDigits(e.target.value))}
+                onChange={(e) =>
+                  updateMember(i, "phone", toDigits(e.target.value))
+                }
                 placeholder="010-1234-5678 형식으로 작성해 주세요"
                 error={errors[`members.${i}.phone`]}
               />
-            </div>
-
-            {/* 이메일 */}
-            <div>
-              <FieldLabel size="sm" required>
-                이메일
-              </FieldLabel>
-              <div className="flex gap-2">
-                <FormInput
-                  type="email"
-                  variant="white"
-                  value={member.email}
-                  onChange={(e) => updateMember(i, "email", e.target.value)}
-                  onBlur={() => checkMemberEmailDuplicate(i, member.email)}
-                  placeholder="example@email.com"
-                  className="flex-1"
-                />
-                <button
-                  type="button"
-                  onClick={() => checkMemberEmailDuplicate(i, member.email)}
-                  disabled={
-                    !member.email ||
-                    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(member.email) ||
-                    dupStatus[`members.${i}.email`] === "checking"
-                  }
-                  className="shrink-0 rounded-lg bg-white px-3 py-2 typo-caption1 font-medium text-gray-600 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
-                >
-                  {dupStatus[`members.${i}.email`] === "checking" ? "확인 중..." : "중복확인"}
-                </button>
-              </div>
-              {errors[`members.${i}.email`] ? (
-                <FormError>{errors[`members.${i}.email`]}</FormError>
-              ) : dupStatus[`members.${i}.email`] === "available" ? (
-                <p className="typo-caption1 mt-1 text-success">사용 가능한 이메일입니다</p>
-              ) : (
-                <p className="typo-caption1 mt-1 text-gray-400">투표 시 사용됩니다</p>
-              )}
             </div>
           </div>
         </div>

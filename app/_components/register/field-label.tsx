@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import type { ReactNode } from "react";
 
 type Props = {
   children: ReactNode;
@@ -22,9 +22,7 @@ export const FieldLabel = ({
     {...(Tag === "label" ? { htmlFor } : {})}
     className={cn(
       "block text-gray-900",
-      size === "lg"
-        ? "typo-subtitle5 sm:typo-h6 mb-2"
-        : "typo-subtitle4 mb-1",
+      size === "lg" ? "typo-subtitle5 sm:typo-h6 mb-3" : "typo-subtitle4 mb-3",
       className,
     )}
   >
