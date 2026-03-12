@@ -10,8 +10,8 @@
   - 동의: `privacyConsent`
 - Section 렌더 순서:
   1. `ParticipationTypeSection` — 참가 유형 라디오
-  2. `LeaderInfoSection` — 이름/이메일/연락처
-  3. `TeamMembersSection` — 팀원 카드 (팀 참여 시)
+  2. `PersonalInfoSection` — 이름/이메일/연락처 (개인 참여 시)
+  3. `TeamMembersSection` — 팀장 + 팀원 카드 (팀 참여 시)
   4. `PaymentSection` — 참가비 안내/환불계좌/입금여부
   5. `ExperienceSection` — 개발 경험 라디오
   6. `MotivationSection` — 참여 동기 textarea
@@ -28,7 +28,7 @@
   - 성공 시 폼 초기화.
 - UX:
   - 전화번호 자동 하이픈 포맷.
-  - 이메일 중복확인 (리더 + 팀원).
+  - 이메일 `onBlur` 자동 중복확인 (description 동적 변경: idle → checking → available / error).
   - 허니팟 필드(`website`) 포함.
   - 제출 버튼: 입력 준비도(`isReady`)에 따라 `primary | gray` 스타일 변경.
   - 버튼 하단 안내: "제출된 정보는 행사 운영 목적으로만 사용돼요".

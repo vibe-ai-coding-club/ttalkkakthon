@@ -6,7 +6,7 @@
 
 - `registration-form.md`
 - `participation-type-section.md`
-- `leader-info-section.md`
+- `personal-info-section.md`
 - `team-members-section.md`
 - `payment-section.md`
 - `experience-section.md`
