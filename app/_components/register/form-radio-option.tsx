@@ -25,7 +25,7 @@ export const FormRadioOption = ({
 }: Props) => (
   <label
     className={cn(
-      "flex cursor-pointer items-center gap-3 rounded-lg p-4 bg-gray-50 border transition-colors",
+      "flex cursor-pointer items-center gap-3 rounded-lg p-3.5 sm:p-4 bg-gray-50 border transition-colors",
       checked
         ? variant === "primary"
           ? "border-primary-400"
@@ -37,8 +37,8 @@ export const FormRadioOption = ({
     <input type="radio" name={name} value={value} checked={checked} onChange={onChange} className="sr-only" />
     <RadioDot checked={checked} />
     <span className="flex items-center gap-2">
-      <span className="typo-subtitle5 text-gray-700">{label}</span>
-      {description && <span className="typo-body1 text-gray-500">{description}</span>}
+      <span className="typo-subtitle6 text-gray-900 sm:typo-subtitle5 sm:text-gray-700">{label}</span>
+      {description && <span className="typo-body3 text-gray-850 sm:typo-body1 sm:text-gray-500">{description}</span>}
     </span>
   </label>
 );

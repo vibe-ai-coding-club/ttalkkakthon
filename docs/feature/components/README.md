@@ -29,8 +29,7 @@
 - `info-card.md`
 - `sponsor-section.md`
 - `footer-section.md`
-- `registration-form.md`
-- `member-fieldset.md`
+- `register/` — 참가 신청 관련 컴포넌트 (별도 디렉토리)
 - `admin-auth-guard.md`
 - `login-form.md`
 - `logout-button.md`
