@@ -7,7 +7,7 @@ export type TimetableEntry = {
 
 export const timetable: TimetableEntry[] = [
   {
-    time: "10:30 – 11:00",
+    time: "10:00 – 11:00",
     title: "참가자 입장",
     note: "현장 등록 및 자리 배치",
     type: "default",

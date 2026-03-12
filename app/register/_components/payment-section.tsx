@@ -36,7 +36,7 @@ export const PaymentSection = ({ form, errors, setForm, update }: Props) => {
           참가비 안내
         </FieldLabel>
         <div className="rounded-xl bg-gray-0 p-5 space-y-3">
-          <div className="space-y-1">
+          <div>
             <p className="typo-body3 text-gray-600">
               참가비:{" "}
               <span className="font-semibold text-foreground">
