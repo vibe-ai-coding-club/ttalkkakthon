@@ -188,6 +188,13 @@ html {
   letter-spacing: -0.2px;
 }
 
+@utility typo-subtitle5 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.2px;
+}
+
 /* Body */
 @utility typo-body1 {
   font-size: 16px;

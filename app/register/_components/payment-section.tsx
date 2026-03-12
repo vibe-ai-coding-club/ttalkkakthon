@@ -1,4 +1,9 @@
-import { FieldLabel, FormInput, FormRadioOption } from "@/app/_components/register";
+import {
+  FieldLabel,
+  FormInput,
+  FormRadioOption,
+} from "@/app/_components/register";
+import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
 import type { FormState } from "./types";
 
@@ -6,30 +11,70 @@ type Props = {
   form: FormState;
   errors: Record<string, string>;
   setForm: Dispatch<SetStateAction<FormState>>;
-  update: (field: keyof Omit<FormState, "members" | "hasDeposited">, value: string) => void;
+  update: (
+    field: keyof Omit<FormState, "members" | "hasDeposited">,
+    value: string,
+  ) => void;
 };
 
 export const PaymentSection = ({ form, errors, setForm, update }: Props) => {
   if (!form.participationType) return null;
 
+  const isTeam = form.participationType === "TEAM";
+
   return (
     <div className="space-y-6">
-      <div className="rounded-xl bg-primary-025 p-5 space-y-2">
-        <p className="typo-subtitle1">참가비 안내</p>
-        <p className="typo-body3 text-gray-600">
-          참가비: <span className="font-semibold text-foreground">1인당 ₩15,000</span> (점심 식사, 공간 이용, 다과 및
-          운영 비용 포함)
+      <div className="rounded-xl bg-gray-50 p-5 space-y-3">
+        <p className="typo-subtitle1 flex items-center gap-1.5">
+          <span className="text-base">
+            <Image
+              src="/images/alert.png"
+              alt="참가비 안내"
+              width={25}
+              height={25}
+              sizes="25px"
+            />
+          </span>{" "}
+          참가비 안내
         </p>
-        <p className="typo-body3 text-gray-600">
-          입금 계좌: <span className="font-medium text-foreground">3333-12-1608630 카카오뱅크 (예금주: 송채영)</span>
-        </p>
-        <p className="typo-caption1 text-gray-500">
-          참가비는 노쇼 방지 및 원활한 행사 운영을 위한 최소 비용으로 사용됩니다.
-          <br />
-          행사 준비가 시작된 이후에는 환불이 어려울 수 있으니 신청 시 참고해 주세요.
-          <br />
-          선착순 접수로 마감이 된 경우, 환불 처리해드려요.
-        </p>
+        <div className="rounded-xl bg-gray-0 p-5 space-y-3">
+          <div className="space-y-1">
+            <p className="typo-body3 text-gray-600">
+              참가비:{" "}
+              <span className="font-semibold text-foreground">
+                1인당 ₩20,000
+              </span>{" "}
+              <br className="sm:hidden" />
+              (점심 식사, 공간 이용, 다과 및 운영 비용 포함)
+            </p>
+            <p className="typo-body3 text-gray-600">
+              입금 계좌:{" "}
+              <span className="font-semibold text-foreground">
+                3333-12-1608630 카카오뱅크
+              </span>{" "}
+              <br className="sm:hidden" />
+              <span className="font-semibold text-foreground">
+                (예금주: 송채영)
+              </span>
+            </p>
+          </div>
+          <div className="space-y-0.5">
+            <p className="typo-caption1 text-gray-500">
+              참가비는 노쇼 방지 및 원활한 행사 운영을 위한 최소 비용으로
+              사용됩니다.
+            </p>
+            <p className="typo-caption1 text-gray-500">
+              행사 준비가 시작된 이후에는 환불이 어려울 수 있으니 신청 시 참고해
+              주세요.
+            </p>
+            <p className="typo-caption1 text-gray-500">
+              선착순 접수로 마감이 된 경우, 환불 처리해드려요.
+            </p>
+          </div>
+          <p className="typo-caption1 font-medium text-error">
+            *원활한 참가를 위해 입금시 참가자 명으로 입금 부탁드려요!
+          </p>
+        </div>
       </div>
 
       <div>
@@ -82,21 +127,31 @@ export const PaymentSection = ({ form, errors, setForm, update }: Props) => {
       {/* 입금 확인 */}
       <div>
         <FieldLabel as="p" required>
-          모든 팀원이 입금 계좌에 입금하셨나요?
+          참가비 입금 여부
         </FieldLabel>
-        <div className="grid gap-2 sm:grid-cols-2">
+        <div className="grid gap-2 grid-cols-1 sm:grid-cols-2">
           <FormRadioOption
             name="hasDeposited"
             checked={form.hasDeposited === true}
-            onChange={() => setForm((prev) => ({ ...prev, hasDeposited: true }))}
-            label="예"
+            onChange={() =>
+              setForm((prev) => ({ ...prev, hasDeposited: true }))
+            }
+            label={isTeam ? "모든 팀원 완료" : "완료"}
+            description="안내된 계좌로 입금을 마쳤어요"
             className="py-3"
           />
           <FormRadioOption
             name="hasDeposited"
             checked={!form.hasDeposited}
-            onChange={() => setForm((prev) => ({ ...prev, hasDeposited: false }))}
-            label="아니요"
+            onChange={() =>
+              setForm((prev) => ({ ...prev, hasDeposited: false }))
+            }
+            label="미완료"
+            description={
+              isTeam
+                ? "모든 팀원이 참가비를 입금해 주세요"
+                : "참가비를 입금해 주세요"
+            }
             variant="gray"
             className="py-3"
           />

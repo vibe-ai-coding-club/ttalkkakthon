@@ -14,7 +14,7 @@ export const ExperienceSection = ({ form, errors, update }: Props) => {
   return (
     <fieldset className="space-y-2">
       <legend className="typo-subtitle1">개발 경험</legend>
-      <div className="grid gap-2 sm:grid-cols-4">
+      <div className="grid gap-2 grid-cols-1 sm:grid-cols-4">
         {experienceOptions.map((opt) => (
           <FormRadioOption
             key={opt.value}

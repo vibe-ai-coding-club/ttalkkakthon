@@ -25,20 +25,20 @@ export const FormRadioOption = ({
 }: Props) => (
   <label
     className={cn(
-      "flex cursor-pointer items-center gap-3 rounded-lg px-4 py-3.5 transition-colors",
+      "flex cursor-pointer items-center gap-3 rounded-lg p-4 bg-gray-50 border transition-colors",
       checked
         ? variant === "primary"
-          ? "bg-primary-025 ring-2 ring-primary-400"
-          : "bg-gray-100 ring-2 ring-gray-300"
-        : "bg-gray-50",
+          ? "border-primary-400"
+          : "border-gray-300"
+        : "border-transparent",
       className,
     )}
   >
     <input type="radio" name={name} value={value} checked={checked} onChange={onChange} className="sr-only" />
     <RadioDot checked={checked} />
-    <span>
-      <span className="typo-subtitle4">{label}</span>
-      {description && <span className="typo-body3 ml-2 text-gray-500">{description}</span>}
+    <span className="flex items-center gap-2">
+      <span className="typo-subtitle5 text-gray-700">{label}</span>
+      {description && <span className="typo-body1 text-gray-500">{description}</span>}
     </span>
   </label>
 );

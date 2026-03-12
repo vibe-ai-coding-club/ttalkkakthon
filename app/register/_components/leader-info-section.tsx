@@ -31,28 +31,12 @@ export const LeaderInfoSection = ({ form, errors, dupStatus, update, checkEmailD
         />
       </div>
 
-      {/* 연락처 */}
-      <div>
-        <FieldLabel htmlFor="reg-phone" required>
-          연락처
-        </FieldLabel>
-        <FormInput
-          id="reg-phone"
-          type="tel"
-          inputMode="numeric"
-          value={formatPhone(form.phone)}
-          onChange={(e) => update("phone", toDigits(e.target.value))}
-          placeholder="010-1234-5678"
-          error={errors.phone}
-        />
-      </div>
-
       {/* 이메일 */}
       <div>
         <FieldLabel htmlFor="reg-email" required className="mb-1">
           이메일
         </FieldLabel>
-        <p className="typo-caption1 mb-2 text-gray-500">투표 인증 및 프로젝트 등록 시 사용됩니다</p>
+        <p className="typo-caption1 mb-2 text-gray-500">투표 인증 및 프로젝트 등록을 위해 수집하고 있어요</p>
         <div className="flex gap-2">
           <FormInput
             id="reg-email"
@@ -76,6 +60,22 @@ export const LeaderInfoSection = ({ form, errors, dupStatus, update, checkEmailD
         {dupStatus.email === "available" && !errors.email && (
           <p className="typo-caption1 mt-1 text-success">사용 가능한 이메일입니다</p>
         )}
+      </div>
+
+      {/* 연락처 */}
+      <div>
+        <FieldLabel htmlFor="reg-phone" required>
+          연락처
+        </FieldLabel>
+        <FormInput
+          id="reg-phone"
+          type="tel"
+          inputMode="numeric"
+          value={formatPhone(form.phone)}
+          onChange={(e) => update("phone", toDigits(e.target.value))}
+          placeholder="010-1234-5678 형식으로 작성해 주세요"
+          error={errors.phone}
+        />
       </div>
     </div>
   );

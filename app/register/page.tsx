@@ -8,9 +8,13 @@ export const metadata: Metadata = {
 
 export default function RegisterPage() {
   return (
-    <div className="mx-auto max-w-250 px-4 pt-24 pb-20">
-      <h1 className="typo-h3 mb-1">참가 신청</h1>
-      <p className="typo-body3 mb-10 text-gray-600">개인 또는 팀으로 신청해 주세요</p>
+    <div className="mx-auto max-w-250 px-4 pt-25 sm:pt-45 pb-20">
+      <div className="flex flex-col gap-2 sm:gap-3 mb-10">
+        <h1 className="typo-h5 sm:typo-h3 text-gray-950">참가 신청</h1>
+        <p className="typo-subtitle3 sm:typo-h6 text-gray-800">
+          개인 또는 팀으로 신청해 주세요
+        </p>
+      </div>
       <RegistrationForm />
     </div>
   );

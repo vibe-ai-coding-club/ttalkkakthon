@@ -15,7 +15,7 @@ export const ParticipationTypeSection = ({ form, errors, update }: Props) => {
       <legend className="typo-subtitle1">
         참가 유형 <span className="text-error">*</span>
       </legend>
-      <div className="grid gap-2 sm:grid-cols-2">
+      <div className="grid gap-2 grid-cols-1 sm:grid-cols-2">
         <FormRadioOption
           name="participationType"
           value="INDIVIDUAL"
@@ -30,7 +30,7 @@ export const ParticipationTypeSection = ({ form, errors, update }: Props) => {
           checked={form.participationType === "TEAM"}
           onChange={(e) => update("participationType", e.target.value)}
           label="팀 참여"
-          description="팀장 포함 최대 4명"
+          description="단체로 참여해요"
         />
       </div>
       {errors.participationType && <FormError>{errors.participationType}</FormError>}

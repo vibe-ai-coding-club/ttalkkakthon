@@ -263,7 +263,7 @@ export const RegistrationForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit} className="space-y-8 sm:space-y-7">
         <ParticipationTypeSection
           form={form}
           errors={errors}
@@ -288,14 +288,14 @@ export const RegistrationForm = () => {
           checkMemberEmailDuplicate={checkMemberEmailDuplicate}
         />
 
-        <ExperienceSection form={form} errors={errors} update={update} />
-
         <PaymentSection
           form={form}
           errors={errors}
           setForm={setForm}
           update={update}
         />
+
+        <ExperienceSection form={form} errors={errors} update={update} />
 
         <MotivationSection form={form} update={update} />
 
@@ -324,6 +324,9 @@ export const RegistrationForm = () => {
           >
             {isPending ? "등록 중..." : "딸깍톤 신청하기"}
           </button>
+          <p className="typo-caption1 mt-3 text-gray-500">
+            제출된 정보는 행사 운영 목적으로만 사용돼요
+          </p>
         </div>
       </form>
 

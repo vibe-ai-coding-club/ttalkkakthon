@@ -42,7 +42,55 @@ export const TeamMembersSection = ({
           </button>
         )}
       </div>
-      <p className="typo-caption1 text-gray-400">팀장을 제외하고 입력해주세요</p>
+
+      {/* 팀장 */}
+      <div className="space-y-3 rounded-xl bg-gray-50 p-4">
+        <div className="flex items-center justify-between">
+          <span>
+            <span className="typo-subtitle2">팀장</span>
+            <span className="typo-caption1 ml-2 text-gray-500">팀 대표로 참여해요</span>
+          </span>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-3">
+          <div>
+            <FieldLabel size="sm" required>
+              이름
+            </FieldLabel>
+            <FormInput
+              type="text"
+              variant="white"
+              value={form.name}
+              disabled
+              placeholder="홍길동"
+            />
+          </div>
+          <div>
+            <FieldLabel size="sm" required>
+              연락처
+            </FieldLabel>
+            <FormInput
+              type="tel"
+              variant="white"
+              value={formatPhone(form.phone)}
+              disabled
+              placeholder="010-1234-5678 형식으로 작성해 주세요"
+            />
+          </div>
+          <div>
+            <FieldLabel size="sm" required>
+              이메일
+            </FieldLabel>
+            <FormInput
+              type="email"
+              variant="white"
+              value={form.email}
+              disabled
+              placeholder="example@email.com"
+            />
+          </div>
+        </div>
+      </div>
 
       {form.members.map((member, i) => (
         <div key={i} className="space-y-3 rounded-xl bg-gray-50 p-4">
@@ -61,23 +109,23 @@ export const TeamMembersSection = ({
             )}
           </div>
 
-          {/* 이름 */}
-          <div>
-            <FieldLabel size="sm" required>
-              이름
-            </FieldLabel>
-            <FormInput
-              type="text"
-              variant="white"
-              value={member.name}
-              onChange={(e) => updateMember(i, "name", e.target.value)}
-              placeholder="홍길동"
-              maxLength={50}
-              error={errors[`members.${i}.name`]}
-            />
-          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {/* 이름 */}
+            <div>
+              <FieldLabel size="sm" required>
+                이름
+              </FieldLabel>
+              <FormInput
+                type="text"
+                variant="white"
+                value={member.name}
+                onChange={(e) => updateMember(i, "name", e.target.value)}
+                placeholder="홍길동"
+                maxLength={50}
+                error={errors[`members.${i}.name`]}
+              />
+            </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
             {/* 연락처 */}
             <div>
               <FieldLabel size="sm" required>
@@ -89,7 +137,7 @@ export const TeamMembersSection = ({
                 variant="white"
                 value={formatPhone(member.phone)}
                 onChange={(e) => updateMember(i, "phone", toDigits(e.target.value))}
-                placeholder="010-1234-5678"
+                placeholder="010-1234-5678 형식으로 작성해 주세요"
                 error={errors[`members.${i}.phone`]}
               />
             </div>
