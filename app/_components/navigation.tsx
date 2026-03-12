@@ -23,7 +23,7 @@ export const Navigation = () => {
   };
 
   return (
-    <header className="fixed top-0 right-0 left-0 z-50 border-b border-white bg-white/20 backdrop-blur-[10px]">
+    <header className="fixed top-0 right-0 left-0 z-50 border-b border-white bg-white drop-shadow">
       <nav className="mx-auto hidden w-full max-w-7xl items-center justify-between px-6 py-4.5 md:flex">
         <Link href="/" aria-label="딸깍톤 홈" onClick={handleLogoClick}>
           <Logo />
@@ -68,7 +68,7 @@ export const Navigation = () => {
 
       <nav className="mx-auto flex w-full max-w-191.75 items-center justify-between px-5 pt-6 pb-2.5 md:hidden">
         <Link href="/" aria-label="딸깍톤 홈" onClick={handleLogoClick}>
-          <Logo className="h-5 w-22.5 rounded-[3px]" />
+          <Logo />
         </Link>
 
         <ul className="flex h-10 items-center gap-2.5">
