@@ -28,7 +28,7 @@ export const ABOUT_CARDS: AboutCard[] = [
   },
   {
     title: "쾌적하고 넓은 공간을 제공해요",
-    description: "Desc",
+    description: "AI 선두주자 숭실대학교",
     image: "/images/about-002.webp",
   },
   {
@@ -39,7 +39,7 @@ export const ABOUT_CARDS: AboutCard[] = [
 ];
 
 export const TIMETABLE: TimetableItem[] = [
-  { title: "참가자 입장", time: "10:30 - 11:00" },
+  { title: "참가자 입장", time: "10:00 - 11:00" },
   { title: "팀별 1분 소개", time: "11:00 - 11:30" },
   { title: "개발 시간", time: "11:30 - 16:00" },
   { title: "점심 시간", time: "12:30 - 13:30" },
@@ -103,8 +103,4 @@ export const INFO_TABS: InfoTabItem[] = [
   },
 ];
 
-export const SPONSOR_LOGOS = [
-  "Vibe Coding Club",
-  "Partner A",
-  "Partner B",
-];
+export const SPONSOR_LOGOS = ["Vibe Coding Club", "Partner A", "Partner B"];

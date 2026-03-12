@@ -6,7 +6,7 @@ export const FooterSection = () => {
     <footer id="landing-footer" className="bg-primary-400 px-4 pt-5 pb-[30px] text-white md:px-[60px] md:py-10">
       <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-[50px]">
         <div className="space-y-3 md:space-y-4">
-          <Logo className="bg-white/25" />
+          <Logo variant="white" />
 
           <div className="flex items-center gap-3 text-[12px] leading-[22px] font-medium md:gap-4 md:text-[14px] md:leading-[24px] md:font-bold md:tracking-[-0.2px]">
             <a href="https://www.instagram.com" target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:underline md:gap-1.5">
