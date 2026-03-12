@@ -31,6 +31,7 @@ export const createEmptyMember = (): MemberState => ({
   phone: "",
 });
 
+export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const PHONE_REGEX = /^01[016789]\d{7,8}$/;
 
 export const formatPhone = (digits: string): string => {
