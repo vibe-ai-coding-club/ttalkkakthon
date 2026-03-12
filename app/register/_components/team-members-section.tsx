@@ -1,4 +1,5 @@
 import { FieldLabel, FormInput } from "@/app/_components/register";
+import { cn } from "@/lib/utils";
 import type { DuplicateStatus, FormState, MemberState } from "./types";
 import { emailDescription, formatPhone, MAX_MEMBERS, toDigits } from "./types";
 
@@ -36,8 +37,8 @@ export const TeamMembersSection = ({
 
   return (
     <fieldset className="space-y-3">
-      <div className="flex min-h-9 items-center justify-between">
-        <FieldLabel as="legend">
+      <div className="flex min-h-9 items-end justify-between">
+        <FieldLabel as="legend" className="mb-0">
           팀원{" "}
           <span className="typo-body3 font-normal text-gray-500">
             ({form.members.length + 1}/{MAX_MEMBERS + 1})
@@ -47,9 +48,26 @@ export const TeamMembersSection = ({
           <button
             type="button"
             onClick={addMember}
-            className="typo-caption1 cursor-pointer rounded-md bg-gray-100 px-3 py-1.5 text-gray-600 transition-colors hover:bg-gray-200"
+            className={cn(
+              "flex cursor-pointer items-center justify-center gap-1 rounded-lg bg-gray-100",
+              "px-3.5 py-1.5 text-gray-850",
+              "sm:gap-1.5 sm:rounded-[10px] sm:px-4.5 sm:py-2.5",
+            )}
           >
-            + 팀원 추가
+            <svg
+              className="size-3.5 sm:size-4"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            >
+              <line x1="8" y1="2" x2="8" y2="14" />
+              <line x1="2" y1="8" x2="14" y2="8" />
+            </svg>
+            <span className="typo-btn4 flex h-5.5 items-center sm:typo-subtitle1 sm:h-6 sm:font-semibold">
+              팀원 추가
+            </span>
           </button>
         )}
       </div>
