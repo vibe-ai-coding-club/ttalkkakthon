@@ -42,17 +42,21 @@ export const ProjectDetailModal = ({ project, onClose }: ProjectDetailModalProps
           <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 typo-caption1">
             <dt className="text-muted-foreground">프로젝트명</dt>
             <dd className="font-medium">{project.title}</dd>
-            <dt className="text-muted-foreground">GitHub</dt>
-            <dd>
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-accent hover:underline break-all"
-              >
-                {project.githubUrl}
-              </a>
-            </dd>
+            {project.githubUrl && (
+              <>
+                <dt className="text-muted-foreground">GitHub</dt>
+                <dd>
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-accent hover:underline break-all"
+                  >
+                    {project.githubUrl}
+                  </a>
+                </dd>
+              </>
+            )}
             {project.demoUrl && (
               <>
                 <dt className="text-muted-foreground">데모</dt>

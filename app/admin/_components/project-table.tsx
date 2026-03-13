@@ -100,15 +100,19 @@ export const ProjectTable = ({ projects }: ProjectTableProps) => {
                   <td className={`${tdClass} text-muted-foreground`}>{project.team.leaderName}</td>
                   <td className={`${tdClass} text-muted-foreground`}>{project.team.teamName ?? "-"}</td>
                   <td className={tdClass}>
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="text-accent hover:underline"
-                    >
-                      링크
-                    </a>
+                    {project.githubUrl ? (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-accent hover:underline"
+                      >
+                        링크
+                      </a>
+                    ) : (
+                      <span className="text-muted-foreground">-</span>
+                    )}
                   </td>
                   <td className={tdClass}>
                     {project.demoUrl ? (
