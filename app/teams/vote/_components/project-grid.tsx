@@ -18,9 +18,8 @@ type ProjectData = {
 type ProjectGridProps = {
   projects: ProjectData[];
   votedProjectIds: Set<string>;
-  myTeamId: string | null;
+  myTeamId: string;
   isSessionActive: boolean;
-  isVerified: boolean;
   onVote: (projectId: string) => void;
   onCancel: (projectId: string) => void;
   loadingProjectId: string | null;
@@ -31,7 +30,6 @@ export const ProjectGrid = ({
   votedProjectIds,
   myTeamId,
   isSessionActive,
-  isVerified,
   onVote,
   onCancel,
   loadingProjectId,
@@ -53,7 +51,6 @@ export const ProjectGrid = ({
           isMyTeam={myTeamId === project.teamId}
           isVoted={votedProjectIds.has(project.id)}
           isSessionActive={isSessionActive}
-          isVerified={isVerified}
           onVote={onVote}
           onCancel={onCancel}
           loading={loadingProjectId === project.id}

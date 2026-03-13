@@ -14,7 +14,6 @@ type ProjectCardProps = {
   isMyTeam: boolean;
   isVoted: boolean;
   isSessionActive: boolean;
-  isVerified: boolean;
   onVote: (projectId: string) => void;
   onCancel: (projectId: string) => void;
   loading: boolean;
@@ -25,7 +24,6 @@ export const ProjectCard = ({
   isMyTeam,
   isVoted,
   isSessionActive,
-  isVerified,
   onVote,
   onCancel,
   loading,
@@ -107,15 +105,15 @@ export const ProjectCard = ({
               <button
                 onClick={() => onCancel(project.id)}
                 disabled={loading}
-                className="rounded-lg border border-primary-400 px-4 py-2 typo-btn4 text-primary-400 hover:bg-primary-025 disabled:opacity-50 transition-colors"
+                className="rounded-lg border border-primary-400 px-4 py-2 typo-btn4 text-primary-400 hover:bg-primary-025 disabled:opacity-50 transition-colors cursor-pointer"
               >
                 {loading ? "처리 중..." : "투표 취소"}
               </button>
             ) : (
               <button
                 onClick={() => onVote(project.id)}
-                disabled={loading || !isVerified}
-                className="rounded-lg bg-primary-400 px-4 py-2 typo-btn4 text-white hover:bg-primary-500 disabled:opacity-50 transition-colors"
+                disabled={loading}
+                className="rounded-lg bg-primary-400 px-4 py-2 typo-btn4 text-white hover:bg-primary-500 disabled:opacity-50 transition-colors cursor-pointer"
               >
                 {loading ? "처리 중..." : "투표하기"}
               </button>
