@@ -2,6 +2,8 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
+import { useRegistrationCountdown } from "@/app/_hooks/use-registration-countdown";
+
 import { ExperienceSection } from "./experience-section";
 import { MotivationSection } from "./motivation-section";
 import { ParticipationTypeSection } from "./participation-type-section";
@@ -9,7 +11,7 @@ import { PaymentSection } from "./payment-section";
 import { PersonalInfoSection } from "./personal-info-section";
 import { PrivacySection } from "./privacy-section";
 import { TeamMembersSection } from "./team-members-section";
-import { Toast } from "./toast";
+import { Toast } from "@/app/_components/toast";
 import type { DuplicateStatus, FormState, MemberState } from "./types";
 import {
   checkDuplicateEmail,
@@ -21,6 +23,7 @@ import {
 } from "./types";
 
 export const RegistrationForm = () => {
+  const { isOpen, countdownText } = useRegistrationCountdown();
   const [form, setForm] = useState<FormState>(initialForm);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [dupStatus, setDupStatus] = useState<Record<string, DuplicateStatus>>(
@@ -307,17 +310,23 @@ export const RegistrationForm = () => {
 
         {/* 제출 */}
         <div className="pt-4 text-center">
-          <button
-            type="submit"
-            disabled={isPending}
-            className={`rounded-xl px-5 py-3 text-[18px] leading-6.5 font-semibold tracking-[-0.4px] cursor-pointer transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
-              isReady
-                ? "bg-primary-400 text-white hover:bg-primary-500"
-                : "bg-gray-100 text-gray-850 hover:bg-gray-200"
-            }`}
-          >
-            {isPending ? "등록 중..." : "딸깍톤 신청하기"}
-          </button>
+          {isOpen ? (
+            <button
+              type="submit"
+              disabled={isPending}
+              className={`rounded-xl px-5 py-3 text-[18px] leading-6.5 font-semibold tracking-[-0.4px] cursor-pointer transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+                isReady
+                  ? "bg-primary-400 text-white hover:bg-primary-500"
+                  : "bg-gray-100 text-gray-850 hover:bg-gray-200"
+              }`}
+            >
+              {isPending ? "등록 중..." : "딸깍톤 신청하기"}
+            </button>
+          ) : (
+            <p className="inline-block rounded-xl bg-gray-100 px-5 py-3 text-[18px] leading-6.5 font-semibold tracking-[-0.4px] text-gray-600">
+              {countdownText}
+            </p>
+          )}
           <p className="typo-caption1 mt-3 text-gray-500">
             제출된 정보는 행사 운영 목적으로만 사용돼요
           </p>
