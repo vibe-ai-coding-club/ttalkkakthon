@@ -23,18 +23,18 @@ export type InfoTabItem = {
 
 export const POINT_CARDS: PointCard[] = [
   {
-    title: "단 하루, 8시간 만 진행해요",
-    description: "2026.03.28 (09:30-18:00)",
+    title: "딱 8시간, 가볍게 즐기는 데이톤 ",
+    description: "2026.03.28(토) 10:00 - 18:00, 하루 만에 완성하는 짜릿함!",
     image: "/images/about-001.webp",
   },
   {
-    title: "쾌적하고 넓은 공간을 제공해요",
-    description: "AI 선두주자 숭실대학교",
+    title: "AI 메카, 숭실대의 쾌적한 환경",
+    description: "AI 교육의 선두주자 숭실대학교 정보과학관에서 넓고 편안하게 빌딩하세요.",
     image: "/images/about-002.webp",
   },
   {
-    title: "AI와 대화만 가능하면 참여 가능해요",
-    description: "개인·팀 참가 가능",
+    title: "진입장벽 0%, 끝 코딩 몰라도 OK! ",
+    description: "개인이나 팀, 누구든 상상력만 있다면 메이커가 됩니다.",
     image: "/images/about-003.webp",
   },
 ];

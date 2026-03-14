@@ -132,8 +132,10 @@ export const SplashCursor = ({
   );
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const canvasEl = canvasRef.current;
+    if (!canvasEl) return;
+    // eslint-disable-next-line prefer-const -- early-return guarantees non-null
+    const canvas = canvasEl as HTMLCanvasElement;
 
     const config = {
       SIM_RESOLUTION,

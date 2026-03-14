@@ -1,3 +1,4 @@
+import { MotionSection } from "./_components/motion-section";
 import { AboutSection } from "./sections/about-section";
 import { CultureSection } from "./sections/culture-section";
 import { FloatingStopwatch } from "./sections/floating-stopwatch";
@@ -26,13 +27,27 @@ export default function Home() {
     <div>
       <HeroSection />
       <StopwatchSection />
-      <IntroSection />
-      <AboutSection />
-      <PointSection />
-      <ScheduleSection />
-      <CultureSection />
-      <InfoSection />
-      <SponsorSection />
+      <MotionSection>
+        <IntroSection />
+      </MotionSection>
+      <MotionSection>
+        <AboutSection />
+      </MotionSection>
+      <MotionSection>
+        <PointSection />
+      </MotionSection>
+      <MotionSection>
+        <ScheduleSection />
+      </MotionSection>
+      <MotionSection>
+        <CultureSection />
+      </MotionSection>
+      <MotionSection>
+        <InfoSection />
+      </MotionSection>
+      <MotionSection>
+        <SponsorSection />
+      </MotionSection>
       <FloatingStopwatch />
     </div>
   );

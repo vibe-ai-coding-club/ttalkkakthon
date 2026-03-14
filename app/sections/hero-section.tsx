@@ -523,7 +523,7 @@ export const HeroSection = () => {
         />
       </div>
 
-      <div className="pointer-events-none absolute inset-0 z-[1]">
+      <div className="pointer-events-none absolute inset-0 z-[9]">
         <SplashCursor
           BACK_COLOR={{ r: 0.5, g: 0, b: 0 }}
           TRANSPARENT
@@ -535,7 +535,7 @@ export const HeroSection = () => {
         />
       </div>
 
-      <div className="hero-glitch z-10 w-[120%] max-w-[760px] xl:w-[50%]">
+      <div className="hero-glitch pointer-events-none z-[8] w-[120%] max-w-[760px] select-none xl:w-[50%]" draggable={false}>
         <Image
           src="/images/hero.webp"
           alt="딸깍톤 히어로"
