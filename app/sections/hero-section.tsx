@@ -22,25 +22,6 @@ type Size = {
 
 type GamePhase = "idle" | "active" | "returning" | "success";
 
-const PARTICLES = [
-  // 좌상단 — 모서리에서 삐져나옴 (포스터 좌상단)
-  { id: 1, top: "-4%", left: "-6%", size: "120px", duration: "9s", delay: "0s", opacity: "0.9", rotate: "15deg" },
-  // 우상단 — 모서리에서 삐져나옴 (포스터 우상단)
-  { id: 2, top: "-3%", left: "90%", size: "140px", duration: "8s", delay: "-2s", opacity: "0.85", rotate: "-20deg" },
-  // 좌측 중앙
-  { id: 3, top: "45%", left: "-5%", size: "110px", duration: "11s", delay: "-4s", opacity: "0.8", rotate: "35deg" },
-  // 우측 중앙
-  { id: 4, top: "38%", left: "92%", size: "90px", duration: "10s", delay: "-1s", opacity: "0.75", rotate: "-45deg" },
-  // 좌하단 — 모서리에서 삐져나옴 (포스터 좌하단)
-  { id: 5, top: "82%", left: "-4%", size: "130px", duration: "8s", delay: "-5s", opacity: "0.85", rotate: "60deg" },
-  // 우하단 — 모서리에서 삐져나옴 (포스터 우하단)
-  { id: 6, top: "85%", left: "88%", size: "120px", duration: "9s", delay: "-3s", opacity: "0.9", rotate: "-30deg" },
-  // 상단 중앙 작은 것
-  { id: 7, top: "6%", left: "42%", size: "40px", duration: "12s", delay: "-6s", opacity: "0.5", rotate: "80deg" },
-  // 하단 중앙 작은 것
-  { id: 8, top: "75%", left: "55%", size: "35px", duration: "13s", delay: "-7s", opacity: "0.45", rotate: "-70deg" },
-];
-
 const MOBILE_BREAKPOINT = 768;
 const CATCHABLE_AFTER_MS = 5000;
 
@@ -528,31 +509,6 @@ export const HeroSection = () => {
       ref={sectionRef}
       className="relative bg-primary-400 flex h-[1112px] max-h-[90svh] flex-col items-center justify-center gap-10 overflow-hidden bg-[#FE2A80] px-4 pt-[140px] pb-[80px] md:gap-14 md:px-8 md:pt-[230px] md:pb-[130px]"
     >
-      {/* 떠다니는 파티클 */}
-      {/* {PARTICLES.map((p) => (
-        <Image
-          key={p.id}
-          src="/images/particle.webp"
-          alt=""
-          width={140}
-          height={140}
-          aria-hidden
-          className="hero-particle z-[5]"
-          style={
-            {
-              top: p.top,
-              left: p.left,
-              width: p.size,
-              height: p.size,
-              "--particle-duration": p.duration,
-              "--particle-delay": p.delay,
-              "--particle-opacity": p.opacity,
-              "--particle-rotate": p.rotate,
-            } as React.CSSProperties
-          }
-        />
-      ))} */}
-
       <div className="pointer-events-none absolute inset-0 z-0">
         <PixelBlast
           color="#ffffff"

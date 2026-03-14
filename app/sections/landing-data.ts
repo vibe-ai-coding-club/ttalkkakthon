@@ -1,4 +1,4 @@
-export type AboutCard = {
+export type PointCard = {
   title: string;
   description: string;
   image: string;
@@ -20,7 +20,7 @@ export type InfoTabItem = {
   content: string[];
 };
 
-export const ABOUT_CARDS: AboutCard[] = [
+export const POINT_CARDS: PointCard[] = [
   {
     title: "단 하루, 8시간 만 진행해요",
     description: "2026.03.28 (10:00-18:00)",
@@ -50,8 +50,7 @@ export const TIMETABLE: TimetableItem[] = [
 export const CULTURE_ITEMS: CultureItem[] = [
   {
     title: "바이브코딩 대환영",
-    description:
-      "이게 왜 돌아가지? 상관없어요. 작동만 하면 합격이에요. 진지하고 논리적인 질문은 정중히 사절해요.",
+    description: "이게 왜 돌아가지? 상관없어요. 작동만 하면 합격이에요. 진지하고 논리적인 질문은 정중히 사절해요.",
     image: "/images/culture-001.webp",
   },
   {
@@ -68,14 +67,12 @@ export const CULTURE_ITEMS: CultureItem[] = [
   },
   {
     title: "버그는 곧 의도된 기능",
-    description:
-      "에러 창이 뜬다고요? 훌륭해요! 심사위원의 '대체 왜?' 질문을 방어할 뻔뻔한 설명을 준비해봐요.",
+    description: "에러 창이 뜬다고요? 훌륭해요! 심사위원의 '대체 왜?' 질문을 방어할 뻔뻔한 설명을 준비해봐요.",
     image: "/images/culture-004.webp",
   },
   {
     title: "쓸모없음이 곧 최고의 스펙",
-    description:
-      "완벽히 무가치하고 쓸모없을수록 더 매력적이에요. 우리는 기발함과 유쾌함에 가장 높은 점수를 줘요.",
+    description: "완벽히 무가치하고 쓸모없을수록 더 매력적이에요. 우리는 기발함과 유쾌함에 가장 높은 점수를 줘요.",
     image: "/images/culture-005.webp",
   },
 ];
