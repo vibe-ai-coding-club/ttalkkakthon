@@ -1,18 +1,13 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type PointerEvent as ReactPointerEvent,
-} from "react";
 import confetti from "canvas-confetti";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 
 import Image from "next/image";
 
 import { Icon } from "@/app/_components/icon";
+import { PixelBlast } from "@/app/_components/pixel-blast";
 import clsx from "clsx";
 
 type Position = {
@@ -30,11 +25,9 @@ type GamePhase = "idle" | "active" | "returning" | "success";
 const MOBILE_BREAKPOINT = 768;
 const CATCHABLE_AFTER_MS = 5000;
 
-const clamp = (value: number, min: number, max: number) =>
-  Math.min(Math.max(value, min), max);
+const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
-const lerp = (start: number, end: number, ratio: number) =>
-  start + (end - start) * ratio;
+const lerp = (start: number, end: number, ratio: number) => start + (end - start) * ratio;
 
 const hasOverlap = (
   draggable: { left: number; top: number; right: number; bottom: number },
@@ -155,15 +148,11 @@ export const HeroSection = () => {
     }
 
     const { sectionRect } = rects;
-    const elapsed = gameStartedAtRef.current
-      ? performance.now() - gameStartedAtRef.current
-      : 0;
+    const elapsed = gameStartedAtRef.current ? performance.now() - gameStartedAtRef.current : 0;
     const progress = clamp(elapsed / CATCHABLE_AFTER_MS, 0, 1);
     const bounds = getBounds(sectionRect);
-    const nextX =
-      bounds.minX + Math.random() * Math.max(1, bounds.maxX - bounds.minX);
-    const nextY =
-      bounds.minY + Math.random() * Math.max(1, bounds.maxY - bounds.minY);
+    const nextX = bounds.minX + Math.random() * Math.max(1, bounds.maxX - bounds.minX);
+    const nextY = bounds.minY + Math.random() * Math.max(1, bounds.maxY - bounds.minY);
     const moveDuration = isMobile ? 120 : Math.round(lerp(170, 720, progress));
 
     setTransitionMs(moveDuration);
@@ -177,9 +166,7 @@ export const HeroSection = () => {
     }
 
     const queueNextEscape = () => {
-      const elapsed = gameStartedAtRef.current
-        ? performance.now() - gameStartedAtRef.current
-        : 0;
+      const elapsed = gameStartedAtRef.current ? performance.now() - gameStartedAtRef.current : 0;
       if (elapsed >= CATCHABLE_AFTER_MS) {
         return;
       }
@@ -194,13 +181,7 @@ export const HeroSection = () => {
     };
 
     queueNextEscape();
-  }, [
-    clearDesktopEscapeTimer,
-    dragging,
-    isMobile,
-    phase,
-    randomizeRunawayPosition,
-  ]);
+  }, [clearDesktopEscapeTimer, dragging, isMobile, phase, randomizeRunawayPosition]);
 
   const scheduleMobileTeleport = useCallback(() => {
     clearMobileTimers();
@@ -209,8 +190,7 @@ export const HeroSection = () => {
     }
 
     const queueNextTeleport = () => {
-      const interval =
-        100 * Math.pow(1.5, Math.floor(mobileJumpCountRef.current / 3));
+      const interval = 100 * Math.pow(1.5, Math.floor(mobileJumpCountRef.current / 3));
 
       mobileTeleportTimerRef.current = window.setTimeout(() => {
         setIsRunawayVisible(false);
@@ -252,14 +232,7 @@ export const HeroSection = () => {
 
     randomizeRunawayPosition();
     scheduleDesktopEscape();
-  }, [
-    getRects,
-    isMobile,
-    phase,
-    randomizeRunawayPosition,
-    scheduleDesktopEscape,
-    scheduleMobileTeleport,
-  ]);
+  }, [getRects, isMobile, phase, randomizeRunawayPosition, scheduleDesktopEscape, scheduleMobileTeleport]);
 
   const evaluateDropOverlap = useCallback(
     (position: Position) => {
@@ -340,16 +313,8 @@ export const HeroSection = () => {
       }
 
       const bounds = getBounds(sectionRect);
-      const nextX = clamp(
-        event.clientX - sectionRect.left - dragOffsetRef.current.x,
-        bounds.minX,
-        bounds.maxX,
-      );
-      const nextY = clamp(
-        event.clientY - sectionRect.top - dragOffsetRef.current.y,
-        bounds.minY,
-        bounds.maxY,
-      );
+      const nextX = clamp(event.clientX - sectionRect.left - dragOffsetRef.current.x, bounds.minX, bounds.maxX);
+      const nextY = clamp(event.clientY - sectionRect.top - dragOffsetRef.current.y, bounds.minY, bounds.maxY);
       const nextPosition = { x: nextX, y: nextY };
 
       setRunawayPosition(nextPosition);
@@ -413,21 +378,13 @@ export const HeroSection = () => {
     if (isMobile || phase !== "active" || dragging) {
       return;
     }
-    const elapsed = gameStartedAtRef.current
-      ? performance.now() - gameStartedAtRef.current
-      : 0;
+    const elapsed = gameStartedAtRef.current ? performance.now() - gameStartedAtRef.current : 0;
     if (elapsed >= CATCHABLE_AFTER_MS) {
       return;
     }
     randomizeRunawayPosition();
     scheduleDesktopEscape();
-  }, [
-    dragging,
-    isMobile,
-    phase,
-    randomizeRunawayPosition,
-    scheduleDesktopEscape,
-  ]);
+  }, [dragging, isMobile, phase, randomizeRunawayPosition, scheduleDesktopEscape]);
 
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
@@ -515,13 +472,7 @@ export const HeroSection = () => {
       return;
     }
     scheduleDesktopEscape();
-  }, [
-    dragging,
-    isMobile,
-    phase,
-    scheduleDesktopEscape,
-    scheduleMobileTeleport,
-  ]);
+  }, [dragging, isMobile, phase, scheduleDesktopEscape, scheduleMobileTeleport]);
 
   useEffect(() => {
     return () => {
@@ -530,12 +481,7 @@ export const HeroSection = () => {
       clearSuccessTimers();
       clearCelebrationTimers();
     };
-  }, [
-    clearCelebrationTimers,
-    clearDesktopEscapeTimer,
-    clearMobileTimers,
-    clearSuccessTimers,
-  ]);
+  }, [clearCelebrationTimers, clearDesktopEscapeTimer, clearMobileTimers, clearSuccessTimers]);
 
   // 글리치 버스트 타이밍: 8s 주기, 0.6s 버스트 → 3.4s 대기 → 0.6s 버스트 → 3.4s 대기
   useEffect(() => {
@@ -561,9 +507,22 @@ export const HeroSection = () => {
     <section
       id="hero"
       ref={sectionRef}
-      className="relative bg-primary-400 flex h-[1112px] max-h-[100svh] flex-col items-center justify-center gap-10 overflow-hidden bg-[#FE2A80] px-4 pt-[140px] pb-[80px] md:gap-14 md:px-8 md:pt-[230px] md:pb-[130px]"
+      className="relative bg-primary-400 flex h-[1112px] max-h-[90svh] flex-col items-center justify-center gap-10 overflow-hidden bg-[#FE2A80] px-4 pt-[140px] pb-[80px] md:gap-14 md:px-8 md:pt-[230px] md:pb-[130px]"
     >
-      <div className="hero-glitch w-[120%] max-w-[941px] xl:w-[50%]">
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <PixelBlast
+          color="#ffffff"
+          pixelSize={3}
+          patternScale={2}
+          patternDensity={1.5}
+          speed={1.2}
+          edgeFade={0.3}
+          enableRipples={false}
+          transparent
+        />
+      </div>
+
+      <div className="hero-glitch z-10 w-[120%] max-w-[941px] xl:w-[50%]">
         <Image
           src="/images/hero.webp"
           alt="딸깍톤 히어로"
@@ -606,14 +565,12 @@ export const HeroSection = () => {
         />
       </div>
 
-      <div className="relative mx-auto flex w-full max-w-[1280px] flex-col items-center text-center">
+      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-col items-center text-center">
         <div ref={ctaSlotRef} className="relative inline-flex">
           <button
             type="button"
             className={`inline-flex h-[50px] min-w-[160px] items-center justify-center rounded-xl bg-gray-100 px-5 text-[18px] leading-[26px] font-semibold tracking-[-0.4px] text-gray-850 whitespace-nowrap transition-[opacity,colors] duration-300 ease-out hover:bg-gray-200 md:h-[66px] md:min-w-[420px] md:rounded-2xl md:px-8 md:text-[24px] md:leading-[34px] md:font-bold ${
-              phase === "idle"
-                ? "pointer-events-auto opacity-100"
-                : "pointer-events-none opacity-0"
+              phase === "idle" ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
             }`}
             onMouseEnter={onIdleButtonMouseEnter}
             onPointerDown={onIdleButtonPointerDown}
@@ -623,18 +580,14 @@ export const HeroSection = () => {
 
           <div
             className={`absolute inset-0 inline-flex h-[50px] min-w-[160px] items-center justify-center rounded-xl border px-5 text-center text-[14px] leading-[22px] font-semibold tracking-[-0.3px] transition-[opacity,colors] duration-500 ease-out md:h-[66px] md:min-w-[420px] md:rounded-2xl md:px-8 md:text-[18px] md:leading-[28px] ${
-              phase === "active"
-                ? "pointer-events-none opacity-100"
-                : "pointer-events-none opacity-0"
+              phase === "active" ? "pointer-events-none opacity-100" : "pointer-events-none opacity-0"
             } ${
               isOverDropZone
                 ? "border-primary-200 bg-primary-050 text-primary-200"
                 : "border-white/50 bg-white/15 text-white/85"
             }`}
           >
-            <span className="md:whitespace-nowrap">
-              Mission: 버튼을 제자리로 돌려놓아라!
-            </span>
+            <span className="md:whitespace-nowrap">Mission: 버튼을 제자리로 돌려놓아라!</span>
           </div>
         </div>
       </div>
@@ -652,8 +605,7 @@ export const HeroSection = () => {
             transitionDuration: `${transitionMs}ms`,
             transitionTimingFunction: "cubic-bezier(0.2, 0.9, 0.2, 1)",
             opacity: isRunawayVisible ? 1 : 0,
-            cursor:
-              phase === "active" ? (dragging ? "grabbing" : "grab") : "default",
+            cursor: phase === "active" ? (dragging ? "grabbing" : "grab") : "default",
           }}
           onMouseEnter={onRunawayMouseEnter}
           onPointerDown={onRunawayPointerDown}
@@ -663,12 +615,9 @@ export const HeroSection = () => {
         >
           <span
             className={clsx(
-              phase === "success"
-                ? "opacity-100"
-                : phase === "active"
-                  ? "opacity-100"
-                  : "opacity-0"
-            , "flex items-center")}
+              phase === "success" ? "opacity-100" : phase === "active" ? "opacity-100" : "opacity-0",
+              "flex items-center",
+            )}
           >
             {phase === "success" ? (
               <span className="inline-flex items-center gap-[10px]">
@@ -682,9 +631,7 @@ export const HeroSection = () => {
         </button>
       )}
 
-      {(phase === "returning" || phase === "success") && (
-        <div className="absolute inset-0 z-20 pointer-events-auto" />
-      )}
+      {(phase === "returning" || phase === "success") && <div className="absolute inset-0 z-20 pointer-events-auto" />}
     </section>
   );
 };
