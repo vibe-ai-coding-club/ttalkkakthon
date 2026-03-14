@@ -95,7 +95,10 @@ export async function POST(request: NextRequest) {
     });
     if (voteCount >= session.maxVotes) {
       return NextResponse.json(
-        { success: false, message: `최대 ${session.maxVotes}개까지 투표할 수 있습니다.` },
+        {
+          success: false,
+          message: `최대 ${session.maxVotes}개까지 투표할 수 있습니다.`,
+        },
         { status: 403 },
       );
     }

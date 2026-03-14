@@ -20,7 +20,9 @@ const AdminLayout = async ({
       <style>{`body { overflow: hidden; }`}</style>
       <div className="fixed inset-0 z-100 flex flex-col overflow-hidden bg-background">
         <div className="flex-1 overflow-y-auto overscroll-contain">
-          <AdminAuthGuard isAuthenticated={isAuthenticated}>{children}</AdminAuthGuard>
+          <AdminAuthGuard isAuthenticated={isAuthenticated}>
+            {children}
+          </AdminAuthGuard>
         </div>
       </div>
     </>

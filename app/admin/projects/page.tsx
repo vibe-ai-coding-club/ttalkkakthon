@@ -58,7 +58,8 @@ const AdminProjectsPage = async () => {
 
       <div className="space-y-3">
         <div className="typo-caption1 text-muted-foreground">
-          총 <strong className="text-foreground">{totalProjects}</strong>개 프로젝트
+          총 <strong className="text-foreground">{totalProjects}</strong>개
+          프로젝트
         </div>
 
         <ProjectTable projects={serializedProjects} />

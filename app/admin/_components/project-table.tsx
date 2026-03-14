@@ -28,13 +28,15 @@ type ProjectTableProps = {
 
 const PAGE_SIZE = 20;
 
-const thClass = "px-2.5 py-1.5 text-left typo-caption2 font-medium text-muted-foreground whitespace-nowrap";
+const thClass =
+  "px-2.5 py-1.5 text-left typo-caption2 font-medium text-muted-foreground whitespace-nowrap";
 const tdClass = "px-2.5 py-1.5 typo-caption1";
 
 export const ProjectTable = ({ projects }: ProjectTableProps) => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
-  const [selectedProject, setSelectedProject] = useState<SerializedProject | null>(null);
+  const [selectedProject, setSelectedProject] =
+    useState<SerializedProject | null>(null);
 
   const filtered = useMemo(() => {
     if (!search.trim()) return projects;
@@ -84,8 +86,13 @@ export const ProjectTable = ({ projects }: ProjectTableProps) => {
           <tbody>
             {paged.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-4 py-6 text-center text-muted-foreground typo-caption1">
-                  {search ? "검색 결과가 없습니다." : "등록된 프로젝트가 없습니다."}
+                <td
+                  colSpan={7}
+                  className="px-4 py-6 text-center text-muted-foreground typo-caption1"
+                >
+                  {search
+                    ? "검색 결과가 없습니다."
+                    : "등록된 프로젝트가 없습니다."}
                 </td>
               </tr>
             ) : (
@@ -95,10 +102,16 @@ export const ProjectTable = ({ projects }: ProjectTableProps) => {
                   onClick={() => setSelectedProject(project)}
                   className="border-b border-border last:border-b-0 hover:bg-muted/50 cursor-pointer transition-colors"
                 >
-                  <td className={`${tdClass} text-muted-foreground`}>{page * PAGE_SIZE + i + 1}</td>
+                  <td className={`${tdClass} text-muted-foreground`}>
+                    {page * PAGE_SIZE + i + 1}
+                  </td>
                   <td className={`${tdClass} font-medium`}>{project.title}</td>
-                  <td className={`${tdClass} text-muted-foreground`}>{project.team.leaderName}</td>
-                  <td className={`${tdClass} text-muted-foreground`}>{project.team.teamName ?? "-"}</td>
+                  <td className={`${tdClass} text-muted-foreground`}>
+                    {project.team.leaderName}
+                  </td>
+                  <td className={`${tdClass} text-muted-foreground`}>
+                    {project.team.teamName ?? "-"}
+                  </td>
                   <td className={tdClass}>
                     {project.githubUrl ? (
                       <a
@@ -129,7 +142,9 @@ export const ProjectTable = ({ projects }: ProjectTableProps) => {
                       <span className="text-muted-foreground">-</span>
                     )}
                   </td>
-                  <td className={`${tdClass} text-muted-foreground whitespace-nowrap`}>
+                  <td
+                    className={`${tdClass} text-muted-foreground whitespace-nowrap`}
+                  >
                     {new Date(project.createdAt).toLocaleDateString("ko-KR")}
                   </td>
                 </tr>
@@ -163,7 +178,12 @@ export const ProjectTable = ({ projects }: ProjectTableProps) => {
       )}
 
       {/* 상세 모달 */}
-      {selectedProject && <ProjectDetailModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
+      {selectedProject && (
+        <ProjectDetailModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+        />
+      )}
     </div>
   );
 };

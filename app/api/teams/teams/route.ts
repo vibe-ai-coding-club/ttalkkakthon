@@ -5,7 +5,10 @@ import { NextResponse } from "next/server";
 export async function GET() {
   const session = await auth();
   if (!session?.user) {
-    return NextResponse.json({ success: false, message: "인증이 필요합니다." }, { status: 401 });
+    return NextResponse.json(
+      { success: false, message: "인증이 필요합니다." },
+      { status: 401 },
+    );
   }
 
   const myTeamId = session.user.teamId ?? null;
@@ -27,7 +30,14 @@ export async function GET() {
         orderBy: { isLeader: "desc" },
       },
       projects: {
-        select: { id: true, title: true, githubUrl: true, demoUrl: true, linkUrl: true, description: true },
+        select: {
+          id: true,
+          title: true,
+          githubUrl: true,
+          demoUrl: true,
+          linkUrl: true,
+          description: true,
+        },
         take: 1,
         orderBy: { createdAt: "desc" },
       },
@@ -38,18 +48,27 @@ export async function GET() {
 
   const result = teams.map((t) => ({
     id: t.id,
-    leaderName: t.members.find((m) => m.isLeader)?.name ?? t.members[0]?.name ?? "",
+    leaderName:
+      t.members.find((m) => m.isLeader)?.name ?? t.members[0]?.name ?? "",
     teamName: t.teamName,
     motivation: t.motivation,
     recruitmentNote: t.recruitmentNote,
     participationType: t.participationType,
     experienceLevel: t.experienceLevel,
-    members: t.members.map((m) => ({ id: m.id, name: m.name, isLeader: m.isLeader })),
+    members: t.members.map((m) => ({
+      id: m.id,
+      name: m.name,
+      isLeader: m.isLeader,
+    })),
     project: t.projects[0] ?? null,
     membersCount: t._count.members,
     maxMembers: 4,
     isMyTeam: t.id === myTeamId,
   }));
 
-  return NextResponse.json({ success: true, teams: result, myMemberId: session.user.memberId ?? null });
+  return NextResponse.json({
+    success: true,
+    teams: result,
+    myMemberId: session.user.memberId ?? null,
+  });
 }

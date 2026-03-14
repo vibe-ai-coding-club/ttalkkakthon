@@ -53,13 +53,17 @@ export const ProjectCard = ({
       )}
 
       {/* 팀명 */}
-      <p className="typo-caption1 text-muted-foreground mb-1">{project.teamName}</p>
+      <p className="typo-caption1 text-muted-foreground mb-1">
+        {project.teamName}
+      </p>
 
       {/* 프로젝트명 */}
       <h3 className="typo-subtitle1 mb-2 line-clamp-1">{project.title}</h3>
 
       {/* 설명 */}
-      <p className="typo-body3 text-muted-foreground mb-4 line-clamp-2">{project.description}</p>
+      <p className="typo-body3 text-muted-foreground mb-4 line-clamp-2">
+        {project.description}
+      </p>
 
       {/* 링크 */}
       <div className="flex gap-2 mb-4">

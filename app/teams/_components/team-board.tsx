@@ -83,7 +83,9 @@ const EditableCell = ({
         className={`w-full text-left cursor-text hover:bg-accent/5 rounded px-1 -mx-1 transition-colors ${className ?? ""}`}
         title="클릭하여 수정"
       >
-        {value || <span className="text-muted-foreground/40 italic">{placeholder}</span>}
+        {value || (
+          <span className="text-muted-foreground/40 italic">{placeholder}</span>
+        )}
       </button>
     );
   }
@@ -136,7 +138,13 @@ const ProjectModal = ({
       const res = await fetch("/api/teams/project", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, githubUrl, demoUrl, linkUrl }),
+        body: JSON.stringify({
+          title,
+          description,
+          githubUrl,
+          demoUrl,
+          linkUrl,
+        }),
       });
       const json = await res.json();
       if (json.success) {
@@ -254,7 +262,11 @@ const ProjectModal = ({
 // 외부 링크 아이콘
 const LinkIcon = () => (
   <svg className="size-3 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-    <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5zm7.25-.75a.75.75 0 01.75-.75h3.5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0V6.31l-5.47 5.47a.75.75 0 01-1.06-1.06l5.47-5.47H12.25a.75.75 0 01-.75-.75z" clipRule="evenodd" />
+    <path
+      fillRule="evenodd"
+      d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5zm7.25-.75a.75.75 0 01.75-.75h3.5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0V6.31l-5.47 5.47a.75.75 0 01-1.06-1.06l5.47-5.47H12.25a.75.75 0 01-.75-.75z"
+      clipRule="evenodd"
+    />
   </svg>
 );
 
@@ -305,7 +317,9 @@ export const TeamBoard = () => {
   }, [teams, search, expFilter]);
 
   const recruitingTeams = useMemo(() => {
-    return teams.filter((t) => t.membersCount < t.maxMembers && t.participationType === "TEAM");
+    return teams.filter(
+      (t) => t.membersCount < t.maxMembers && t.participationType === "TEAM",
+    );
   }, [teams]);
 
   const lookingForTeam = useMemo(() => {
@@ -338,7 +352,9 @@ export const TeamBoard = () => {
   const isLeader = useMemo(() => {
     if (!myTeam || !myMemberId) return false;
     // 정상: isLeader 플래그로 판별
-    const flagged = myTeam.members.some((m) => m.id === myMemberId && m.isLeader);
+    const flagged = myTeam.members.some(
+      (m) => m.id === myMemberId && m.isLeader,
+    );
     if (flagged) return true;
     // 방어: 팀에 리더가 없으면 첫 번째 멤버를 리더로 간주
     const hasAnyLeader = myTeam.members.some((m) => m.isLeader);
@@ -403,9 +419,7 @@ export const TeamBoard = () => {
     (project: Project) => {
       if (!myTeam) return;
       setTeams((prev) =>
-        prev.map((t) =>
-          t.id === myTeam.id ? { ...t, project } : t,
-        ),
+        prev.map((t) => (t.id === myTeam.id ? { ...t, project } : t)),
       );
     },
     [myTeam],
@@ -528,9 +542,7 @@ export const TeamBoard = () => {
                               className="font-medium"
                             />
                           ) : (
-                            <span>
-                              {team.teamName || team.leaderName}
-                            </span>
+                            <span>{team.teamName || team.leaderName}</span>
                           )}
                           {team.isMyTeam && (
                             <span className="shrink-0 rounded-full bg-accent/10 px-1.5 py-px text-[10px] font-medium text-accent">
@@ -566,17 +578,13 @@ export const TeamBoard = () => {
                         {leader ? (
                           <span
                             className={`font-medium ${
-                              leader.id === myMemberId
-                                ? "text-accent"
-                                : ""
+                              leader.id === myMemberId ? "text-accent" : ""
                             }`}
                           >
                             {leader.name}
                           </span>
                         ) : (
-                          <span className="text-muted-foreground/40">
-                            -
-                          </span>
+                          <span className="text-muted-foreground/40">-</span>
                         )}
                       </td>
                       {/* 팀원 2~4 */}
@@ -596,16 +604,17 @@ export const TeamBoard = () => {
                               {others[idx].name}
                             </span>
                           ) : (
-                            <span className="text-muted-foreground/30">
-                              -
-                            </span>
+                            <span className="text-muted-foreground/30">-</span>
                           )}
                         </td>
                       ))}
                       {/* 프로젝트 */}
                       <td className={`${tdClass} whitespace-nowrap`}>
                         {team.project ? (
-                          <span className="text-muted-foreground" title={team.project.description}>
+                          <span
+                            className="text-muted-foreground"
+                            title={team.project.description}
+                          >
                             {team.project.title}
                           </span>
                         ) : (
@@ -704,7 +713,11 @@ export const TeamBoard = () => {
               viewBox="0 0 20 20"
               fill="currentColor"
             >
-              <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+              <path
+                fillRule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                clipRule="evenodd"
+              />
             </svg>
           </button>
           {recruitingOpen && (
@@ -725,7 +738,8 @@ export const TeamBoard = () => {
                         tabIndex={canJoin ? 0 : undefined}
                         onClick={() => canJoin && handleTransferClick(team)}
                         onKeyDown={(e) => {
-                          if (canJoin && (e.key === "Enter" || e.key === " ")) handleTransferClick(team);
+                          if (canJoin && (e.key === "Enter" || e.key === " "))
+                            handleTransferClick(team);
                         }}
                         className={`w-full rounded-md border p-2.5 text-left transition-colors ${
                           team.isMyTeam
@@ -749,7 +763,10 @@ export const TeamBoard = () => {
                           </span>
                         </div>
                         {team.isMyTeam && isLeader ? (
-                          <div className="mb-1" onClick={(e) => e.stopPropagation()}>
+                          <div
+                            className="mb-1"
+                            onClick={(e) => e.stopPropagation()}
+                          >
                             <EditableCell
                               value={team.recruitmentNote ?? ""}
                               placeholder="모집글 입력"
@@ -802,7 +819,11 @@ export const TeamBoard = () => {
               viewBox="0 0 20 20"
               fill="currentColor"
             >
-              <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+              <path
+                fillRule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                clipRule="evenodd"
+              />
             </svg>
           </button>
           {lookingOpen && (

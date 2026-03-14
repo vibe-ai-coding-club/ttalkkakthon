@@ -31,7 +31,8 @@ export const StatsCards = ({
       <span className="text-border">|</span>
       {byParticipationType.map((item) => (
         <span key={item.participationType}>
-          {participationTypeLabel[item.participationType] ?? item.participationType}{" "}
+          {participationTypeLabel[item.participationType] ??
+            item.participationType}{" "}
           <strong className="text-foreground">{item._count}</strong>
         </span>
       ))}

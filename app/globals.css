@@ -26,36 +26,40 @@
   --color-success: var(--success);
 
   /* Primary */
-  --color-primary-900: #68082F;
-  --color-primary-800: #850A3C;
-  --color-primary-700: #B40E51;
-  --color-primary-600: #D51060;
-  --color-primary-500: #F0146D;
-  --color-primary-400: #FE2A80;
-  --color-primary-300: #FE3E8C;
-  --color-primary-200: #FE6CA7;
-  --color-primary-100: #FE90BC;
-  --color-primary-075: #FEA9CB;
-  --color-primary-050: #FFBDD8;
-  --color-primary-025: #FFD6E7;
+  --color-primary-900: #68082f;
+  --color-primary-800: #850a3c;
+  --color-primary-700: #b40e51;
+  --color-primary-600: #d51060;
+  --color-primary-500: #f0146d;
+  --color-primary-400: #fe2a80;
+  --color-primary-300: #fe3e8c;
+  --color-primary-200: #fe6ca7;
+  --color-primary-100: #fe90bc;
+  --color-primary-075: #fea9cb;
+  --color-primary-050: #ffbdd8;
+  --color-primary-025: #ffd6e7;
 
   /* Grayscale */
-  --color-gray-950: #0A0D0F;
-  --color-gray-900: #15191E;
-  --color-gray-850: #333B45;
-  --color-gray-800: #454E57;
-  --color-gray-700: #5E6973;
-  --color-gray-600: #7B8591;
-  --color-gray-500: #8F98A3;
-  --color-gray-400: #AAB1BC;
-  --color-gray-300: #CDD3DC;
-  --color-gray-200: #E5E8ED;
-  --color-gray-100: #EFF2F5;
-  --color-gray-50: #F4F7F9;
-  --color-gray-0: #FFFFFF;
+  --color-gray-950: #0a0d0f;
+  --color-gray-900: #15191e;
+  --color-gray-850: #333b45;
+  --color-gray-800: #454e57;
+  --color-gray-700: #5e6973;
+  --color-gray-600: #7b8591;
+  --color-gray-500: #8f98a3;
+  --color-gray-400: #aab1bc;
+  --color-gray-300: #cdd3dc;
+  --color-gray-200: #e5e8ed;
+  --color-gray-100: #eff2f5;
+  --color-gray-50: #f4f7f9;
+  --color-gray-0: #ffffff;
 
   /* Font */
-  --font-sans: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  --font-sans:
+    "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont,
+    system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", sans-serif;
   --font-mono: var(--font-geist-mono);
 }
 

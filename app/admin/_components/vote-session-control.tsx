@@ -13,7 +13,10 @@ type VoteSessionControlProps = {
   onRefresh: () => void;
 };
 
-export const VoteSessionControl = ({ session, onRefresh }: VoteSessionControlProps) => {
+export const VoteSessionControl = ({
+  session,
+  onRefresh,
+}: VoteSessionControlProps) => {
   const [maxVotes, setMaxVotes] = useState(session?.maxVotes ?? 5);
   const [loading, setLoading] = useState(false);
 
@@ -68,7 +71,9 @@ export const VoteSessionControl = ({ session, onRefresh }: VoteSessionControlPro
 
         {/* 최대 투표 수 설정 */}
         <div className="flex items-center gap-2">
-          <label className="typo-caption1 text-muted-foreground">1인당 최대 투표 수:</label>
+          <label className="typo-caption1 text-muted-foreground">
+            1인당 최대 투표 수:
+          </label>
           <input
             type="number"
             value={maxVotes}

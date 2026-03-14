@@ -193,15 +193,15 @@ JWT 세션 발급 (memberId, name, teamId 포함)
 
 #### 3-3. 추가할 파일/패키지
 
-| 대상                                             | 내용                                                    |
-| ------------------------------------------------ | ------------------------------------------------------- |
-| `pnpm add next-auth@beta`                        | NextAuth v5 beta 설치                                   |
-| `lib/auth.ts`                                    | NextAuth 설정 (Credentials Provider, JWT 콜백)          |
-| `app/api/auth/[...nextauth]/route.ts`            | NextAuth API 라우트                                     |
-| `app/team-building/login/page.tsx`               | 로그인 페이지                                           |
-| `proxy.ts`                                       | `/team-building/*` 경로 인증 보호 (Next.js 16 proxy)   |
-| `app/team-building/page.tsx`                     | 서버 컴포넌트에서 `auth()` 체크 (이중 보호)             |
-| `app/team-building/_components/team-building-board.tsx` | 게시판 클라이언트 컴포넌트                        |
+| 대상                                                    | 내용                                                 |
+| ------------------------------------------------------- | ---------------------------------------------------- |
+| `pnpm add next-auth@beta`                               | NextAuth v5 beta 설치                                |
+| `lib/auth.ts`                                           | NextAuth 설정 (Credentials Provider, JWT 콜백)       |
+| `app/api/auth/[...nextauth]/route.ts`                   | NextAuth API 라우트                                  |
+| `app/team-building/login/page.tsx`                      | 로그인 페이지                                        |
+| `proxy.ts`                                              | `/team-building/*` 경로 인증 보호 (Next.js 16 proxy) |
+| `app/team-building/page.tsx`                            | 서버 컴포넌트에서 `auth()` 체크 (이중 보호)          |
+| `app/team-building/_components/team-building-board.tsx` | 게시판 클라이언트 컴포넌트                           |
 
 #### 3-4. NextAuth 설정 상세
 
@@ -636,26 +636,26 @@ export type SerializedTeam = {
 
 ### 영향 범위 정리
 
-| 파일                                                 | 변경 유형       | 설명                                                        |
-| ---------------------------------------------------- | --------------- | ----------------------------------------------------------- |
-| `prisma/schema.prisma`                               | 수정            | enum 2개 추가, Team 필드 3개 추가                           |
-| `lib/validations/team.ts`                            | 수정            | recruitmentStatus, recruitmentNote 추가, teamName 조건 변경 |
-| `lib/auth.ts`                                               | **신규**        | NextAuth v5 beta 설정                                       |
-| `proxy.ts`                                                  | **신규**        | /team-building 경로 보호 (Next.js 16 proxy)                 |
-| `app/_components/registration-form.tsx`                     | 수정            | 모집 여부 선택, 소개글 필드 추가                            |
-| `app/api/register/route.ts`                                 | 수정            | 새 필드 저장 로직                                           |
-| `app/api/auth/[...nextauth]/route.ts`                       | **신규**        | NextAuth API 핸들러                                         |
-| `app/api/team-building/teams/route.ts`                      | **신규**        | 모집 팀 조회 API                                            |
-| `app/api/admin/teams/[teamId]/status/route.ts`              | **신규**        | 팀 상태 변경 API                                            |
-| `app/api/admin/teams/[teamId]/recruitment/route.ts`         | **신규**        | 모집 상태 변경 API                                          |
-| `app/api/admin/members/[memberId]/transfer/route.ts`        | **신규**        | 멤버 이동 API                                               |
-| `app/team-building/layout.tsx`                              | **신규**        | 팀빌딩 레이아웃 (헤더, 로그아웃)                            |
-| `app/team-building/login/page.tsx`                          | **신규**        | 로그인 페이지                                               |
-| `app/team-building/page.tsx`                                | **신규**        | 서버 컴포넌트 (auth 체크 + redirect)                        |
-| `app/team-building/_components/team-building-board.tsx`     | **신규**        | 모집 게시판 클라이언트 컴포넌트                             |
-| `app/admin/page.tsx`                                        | 수정            | 쿼리에 새 필드 포함                                         |
-| `app/admin/_components/team-table.tsx`                      | **전면 재작성** | 리스트형 → 스프레드시트 2행 구조, 인라인 편집, 필터 바      |
-| `app/admin/_components/team-detail-modal.tsx`               | **폐기 (삭제)** | 시트에 모든 정보 인라인 노출                                |
+| 파일                                                    | 변경 유형       | 설명                                                        |
+| ------------------------------------------------------- | --------------- | ----------------------------------------------------------- |
+| `prisma/schema.prisma`                                  | 수정            | enum 2개 추가, Team 필드 3개 추가                           |
+| `lib/validations/team.ts`                               | 수정            | recruitmentStatus, recruitmentNote 추가, teamName 조건 변경 |
+| `lib/auth.ts`                                           | **신규**        | NextAuth v5 beta 설정                                       |
+| `proxy.ts`                                              | **신규**        | /team-building 경로 보호 (Next.js 16 proxy)                 |
+| `app/_components/registration-form.tsx`                 | 수정            | 모집 여부 선택, 소개글 필드 추가                            |
+| `app/api/register/route.ts`                             | 수정            | 새 필드 저장 로직                                           |
+| `app/api/auth/[...nextauth]/route.ts`                   | **신규**        | NextAuth API 핸들러                                         |
+| `app/api/team-building/teams/route.ts`                  | **신규**        | 모집 팀 조회 API                                            |
+| `app/api/admin/teams/[teamId]/status/route.ts`          | **신규**        | 팀 상태 변경 API                                            |
+| `app/api/admin/teams/[teamId]/recruitment/route.ts`     | **신규**        | 모집 상태 변경 API                                          |
+| `app/api/admin/members/[memberId]/transfer/route.ts`    | **신규**        | 멤버 이동 API                                               |
+| `app/team-building/layout.tsx`                          | **신규**        | 팀빌딩 레이아웃 (헤더, 로그아웃)                            |
+| `app/team-building/login/page.tsx`                      | **신규**        | 로그인 페이지                                               |
+| `app/team-building/page.tsx`                            | **신규**        | 서버 컴포넌트 (auth 체크 + redirect)                        |
+| `app/team-building/_components/team-building-board.tsx` | **신규**        | 모집 게시판 클라이언트 컴포넌트                             |
+| `app/admin/page.tsx`                                    | 수정            | 쿼리에 새 필드 포함                                         |
+| `app/admin/_components/team-table.tsx`                  | **전면 재작성** | 리스트형 → 스프레드시트 2행 구조, 인라인 편집, 필터 바      |
+| `app/admin/_components/team-detail-modal.tsx`           | **폐기 (삭제)** | 시트에 모든 정보 인라인 노출                                |
 
 ### 미정/후속 작업
 
@@ -673,6 +673,7 @@ export type SerializedTeam = {
 **변경 내용**:
 
 1. **Member 모델에 환불계좌 칼럼 추가** (옵셔널)
+
    ```prisma
    model Member {
      // ...기존 필드

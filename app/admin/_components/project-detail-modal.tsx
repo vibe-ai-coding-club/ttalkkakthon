@@ -8,7 +8,10 @@ type ProjectDetailModalProps = {
   onClose: () => void;
 };
 
-export const ProjectDetailModal = ({ project, onClose }: ProjectDetailModalProps) => {
+export const ProjectDetailModal = ({
+  project,
+  onClose,
+}: ProjectDetailModalProps) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -38,7 +41,9 @@ export const ProjectDetailModal = ({ project, onClose }: ProjectDetailModalProps
 
         {/* 프로젝트 정보 */}
         <section className="space-y-2">
-          <h3 className="typo-caption1 font-medium text-muted-foreground">프로젝트 정보</h3>
+          <h3 className="typo-caption1 font-medium text-muted-foreground">
+            프로젝트 정보
+          </h3>
           <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 typo-caption1">
             <dt className="text-muted-foreground">프로젝트명</dt>
             <dd className="font-medium">{project.title}</dd>
@@ -77,13 +82,19 @@ export const ProjectDetailModal = ({ project, onClose }: ProjectDetailModalProps
 
         {/* 설명 */}
         <section className="space-y-2">
-          <h3 className="typo-caption1 font-medium text-muted-foreground">프로젝트 설명</h3>
-          <p className="typo-caption1 whitespace-pre-wrap">{project.description}</p>
+          <h3 className="typo-caption1 font-medium text-muted-foreground">
+            프로젝트 설명
+          </h3>
+          <p className="typo-caption1 whitespace-pre-wrap">
+            {project.description}
+          </p>
         </section>
 
         {/* 팀 정보 */}
         <section className="space-y-2">
-          <h3 className="typo-caption1 font-medium text-muted-foreground">팀 정보</h3>
+          <h3 className="typo-caption1 font-medium text-muted-foreground">
+            팀 정보
+          </h3>
           <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 typo-caption1">
             <dt className="text-muted-foreground">대표자</dt>
             <dd>{project.team.leaderName}</dd>
@@ -100,7 +111,9 @@ export const ProjectDetailModal = ({ project, onClose }: ProjectDetailModalProps
 
         {/* 등록 일시 */}
         <section className="space-y-2">
-          <h3 className="typo-caption1 font-medium text-muted-foreground">등록 일시</h3>
+          <h3 className="typo-caption1 font-medium text-muted-foreground">
+            등록 일시
+          </h3>
           <p className="typo-caption1">
             {new Date(project.createdAt).toLocaleString("ko-KR", {
               year: "numeric",

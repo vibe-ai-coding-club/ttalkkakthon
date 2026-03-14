@@ -41,7 +41,9 @@ export const ConfirmModal = ({
     >
       <div className="w-full max-w-sm rounded-lg border border-border bg-background p-5 space-y-4">
         <h3 className="typo-subtitle2">{title}</h3>
-        <p className="typo-caption1 text-muted-foreground whitespace-pre-line">{message}</p>
+        <p className="typo-caption1 text-muted-foreground whitespace-pre-line">
+          {message}
+        </p>
         <div className="flex justify-end gap-2">
           <button
             ref={cancelRef}

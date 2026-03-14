@@ -28,20 +28,17 @@ const iconGapClassMap: Record<ButtonSize, string> = {
 };
 
 const textClassMap: Record<ButtonSize, string> = {
-  xsmall:
-    "text-[12px] leading-[22px] font-medium tracking-[0px]",
-  small:
-    "text-[16px] leading-[24px] font-semibold tracking-[-0.2px]",
-  medium:
-    "text-[18px] leading-[26px] font-semibold tracking-[-0.4px]",
-  large:
-    "text-[24px] leading-[34px] font-bold tracking-[-0.4px]",
+  xsmall: "text-[12px] leading-[22px] font-medium tracking-[0px]",
+  small: "text-[16px] leading-[24px] font-semibold tracking-[-0.2px]",
+  medium: "text-[18px] leading-[26px] font-semibold tracking-[-0.4px]",
+  large: "text-[24px] leading-[34px] font-bold tracking-[-0.4px]",
 };
 
 const ghostOverrideClassMap: Record<ButtonSize, string> = {
   xsmall: "",
   small: "",
-  medium: "h-[48px] px-[24px] text-[16px] leading-[24px] tracking-[-0.2px] rounded-[14px]",
+  medium:
+    "h-[48px] px-[24px] text-[16px] leading-[24px] tracking-[-0.2px] rounded-[14px]",
   large: "rounded-[18px]",
 };
 
@@ -64,7 +61,10 @@ const stateClassMap: Record<"primary" | "gary", Record<ButtonState, string>> = {
   },
 };
 
-export type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "color"> & {
+export type ButtonProps = Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "color"
+> & {
   color?: ButtonColor;
   size?: ButtonSize;
   state?: ButtonState;
@@ -99,7 +99,9 @@ export const Button = ({
       {...props}
     >
       {leftIcon ? (
-        <span className={cn("shrink-0", iconSizeClassMap[size])}>{leftIcon}</span>
+        <span className={cn("shrink-0", iconSizeClassMap[size])}>
+          {leftIcon}
+        </span>
       ) : null}
       {children}
     </button>

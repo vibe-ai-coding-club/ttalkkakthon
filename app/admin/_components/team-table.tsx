@@ -210,7 +210,9 @@ export const TeamTable = ({ teams: initialTeams }: TeamTableProps) => {
       if (filters.search.trim()) {
         const q = filters.search.toLowerCase();
         const matchesMember = t.members.some(
-          (m) => m.name.toLowerCase().includes(q) || m.email.toLowerCase().includes(q),
+          (m) =>
+            m.name.toLowerCase().includes(q) ||
+            m.email.toLowerCase().includes(q),
         );
         if (!matchesMember && !t.teamName?.toLowerCase().includes(q))
           return false;
@@ -352,7 +354,11 @@ export const TeamTable = ({ teams: initialTeams }: TeamTableProps) => {
         sourceTeamId: dragData.sourceTeamId,
         targetTeamId,
         memberName: dragData.memberName,
-        sourceTeamName: sourceTeam.teamName || sourceTeam.members.find((m) => m.isLeader)?.name || sourceTeam.members[0]?.name || "",
+        sourceTeamName:
+          sourceTeam.teamName ||
+          sourceTeam.members.find((m) => m.isLeader)?.name ||
+          sourceTeam.members[0]?.name ||
+          "",
       });
       setDragData(null);
       return;

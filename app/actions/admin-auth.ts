@@ -42,7 +42,10 @@ export const verifyAdminSession = async (): Promise<boolean> => {
   }
 };
 
-export const adminLogin = async (_prevState: ActionState, formData: FormData): Promise<ActionState> => {
+export const adminLogin = async (
+  _prevState: ActionState,
+  formData: FormData,
+): Promise<ActionState> => {
   const raw = { password: formData.get("password") };
   const result = adminLoginSchema.safeParse(raw);
 
@@ -59,7 +62,9 @@ export const adminLogin = async (_prevState: ActionState, formData: FormData): P
   const inputBuffer = Buffer.from(password);
   const expectedBuffer = Buffer.from(adminPassword);
 
-  const isValid = inputBuffer.length === expectedBuffer.length && timingSafeEqual(inputBuffer, expectedBuffer);
+  const isValid =
+    inputBuffer.length === expectedBuffer.length &&
+    timingSafeEqual(inputBuffer, expectedBuffer);
 
   if (!isValid) {
     return {

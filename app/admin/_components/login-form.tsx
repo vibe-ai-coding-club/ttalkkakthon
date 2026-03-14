@@ -15,11 +15,16 @@ export const LoginForm = () => {
   return (
     <form action={formAction} className="space-y-4">
       {state.message && !state.success && (
-        <div className="rounded-lg border border-error/30 bg-error/5 p-2.5 typo-caption1 text-error">{state.message}</div>
+        <div className="rounded-lg border border-error/30 bg-error/5 p-2.5 typo-caption1 text-error">
+          {state.message}
+        </div>
       )}
 
       <div>
-        <label htmlFor="admin-password" className="block typo-caption1 font-medium mb-1">
+        <label
+          htmlFor="admin-password"
+          className="block typo-caption1 font-medium mb-1"
+        >
           비밀번호
         </label>
         <input

@@ -34,7 +34,9 @@ type Props = {
 export const VotePage = ({ voter }: Props) => {
   const [projects, setProjects] = useState<ProjectData[]>([]);
   const [session, setSession] = useState<SessionData>(null);
-  const [votedProjectIds, setVotedProjectIds] = useState<Set<string>>(new Set());
+  const [votedProjectIds, setVotedProjectIds] = useState<Set<string>>(
+    new Set(),
+  );
   const [loadingProjectId, setLoadingProjectId] = useState<string | null>(null);
   const [pageLoading, setPageLoading] = useState(true);
   const [error, setError] = useState("");
@@ -88,7 +90,9 @@ export const VotePage = ({ voter }: Props) => {
       if (json.success) {
         setVotedProjectIds((prev) => new Set([...prev, projectId]));
         setProjects((prev) =>
-          prev.map((p) => (p.id === projectId ? { ...p, voteCount: p.voteCount + 1 } : p)),
+          prev.map((p) =>
+            p.id === projectId ? { ...p, voteCount: p.voteCount + 1 } : p,
+          ),
         );
       } else {
         alert(json.message);
@@ -118,7 +122,9 @@ export const VotePage = ({ voter }: Props) => {
           return next;
         });
         setProjects((prev) =>
-          prev.map((p) => (p.id === projectId ? { ...p, voteCount: p.voteCount - 1 } : p)),
+          prev.map((p) =>
+            p.id === projectId ? { ...p, voteCount: p.voteCount - 1 } : p,
+          ),
         );
       } else {
         alert(json.message);
@@ -164,22 +170,24 @@ export const VotePage = ({ voter }: Props) => {
         </div>
 
         <div className="h-4 w-px bg-border" />
-        <span className="typo-body3 text-muted-foreground">
-          {voter.name}님
-        </span>
+        <span className="typo-body3 text-muted-foreground">{voter.name}님</span>
 
         {isSessionActive && (
           <>
             <div className="h-4 w-px bg-border" />
             <span className="typo-body3 text-muted-foreground">
-              남은 투표: <strong className="text-foreground">{remainingVotes}</strong>/{session?.maxVotes}
+              남은 투표:{" "}
+              <strong className="text-foreground">{remainingVotes}</strong>/
+              {session?.maxVotes}
             </span>
           </>
         )}
       </div>
 
       {error && (
-        <div className="mb-6 rounded-lg bg-error/10 p-4 text-error typo-body3">{error}</div>
+        <div className="mb-6 rounded-lg bg-error/10 p-4 text-error typo-body3">
+          {error}
+        </div>
       )}
 
       {/* 프로젝트 그리드 */}

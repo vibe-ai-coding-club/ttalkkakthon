@@ -81,9 +81,7 @@ export const RegistrationSettingControl = () => {
         onClick={handleToggle}
         disabled={loading}
         className={`rounded-md px-3 py-1 typo-btn4 text-white transition-colors disabled:opacity-50 cursor-pointer ${
-          isClosed
-            ? "bg-success hover:opacity-90"
-            : "bg-error hover:opacity-90"
+          isClosed ? "bg-success hover:opacity-90" : "bg-error hover:opacity-90"
         }`}
       >
         {loading ? "처리 중..." : isClosed ? "신청 오픈" : "신청 마감"}

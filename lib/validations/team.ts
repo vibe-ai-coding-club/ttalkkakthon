@@ -18,9 +18,7 @@ const teamMemberSchema = z.object({
     .min(1, "이름을 입력해주세요")
     .max(50, "이름은 50자 이하로 입력해주세요"),
   email: z.string().email("올바른 이메일 주소를 입력해주세요"),
-  phone: z
-    .string()
-    .regex(PHONE_REGEX, "올바른 전화번호를 입력해주세요"),
+  phone: z.string().regex(PHONE_REGEX, "올바른 전화번호를 입력해주세요"),
 });
 
 export const teamRegistrationSchema = z
@@ -32,9 +30,7 @@ export const teamRegistrationSchema = z
       .string()
       .min(1, "이름을 입력해주세요")
       .max(50, "이름은 50자 이하로 입력해주세요"),
-    phone: z
-      .string()
-      .regex(PHONE_REGEX, "올바른 전화번호를 입력해주세요"),
+    phone: z.string().regex(PHONE_REGEX, "올바른 전화번호를 입력해주세요"),
     // 팀 전용
     teamName: z
       .string()
@@ -53,19 +49,16 @@ export const teamRegistrationSchema = z
       .optional()
       .or(z.literal("")),
     // 환불 계좌 정보
-    refundBank: z
-      .string()
-      .min(1, "은행명을 입력해주세요"),
-    refundAccount: z
-      .string()
-      .min(1, "계좌번호를 입력해주세요"),
-    refundAccountHolder: z
-      .string()
-      .min(1, "예금주를 입력해주세요"),
+    refundBank: z.string().min(1, "은행명을 입력해주세요"),
+    refundAccount: z.string().min(1, "계좌번호를 입력해주세요"),
+    refundAccountHolder: z.string().min(1, "예금주를 입력해주세요"),
     hasDeposited: z.boolean(),
     privacyConsent: z
       .boolean()
-      .refine((val) => val === true, "개인정보 수집·이용 및 초상권 활용에 동의해주세요"),
+      .refine(
+        (val) => val === true,
+        "개인정보 수집·이용 및 초상권 활용에 동의해주세요",
+      ),
   })
   .refine(
     (data) => {

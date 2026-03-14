@@ -15,14 +15,19 @@ export const AdminNav = () => {
   return (
     <nav className="flex gap-1 rounded-lg bg-muted p-1">
       {navItems.map((item) => {
-        const isActive = item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
+        const isActive =
+          item.href === "/admin"
+            ? pathname === "/admin"
+            : pathname.startsWith(item.href);
 
         return (
           <Link
             key={item.href}
             href={item.href}
             className={`rounded-md px-3 py-1.5 typo-caption1 font-medium transition-colors ${
-              isActive ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+              isActive
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
             }`}
           >
             {item.label}

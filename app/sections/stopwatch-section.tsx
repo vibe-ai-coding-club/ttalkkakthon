@@ -13,8 +13,12 @@ import {
 const TimeBlock = ({ label, value }: { label: string; value: string }) => {
   return (
     <div className="flex items-center gap-1 font-bold tracking-[-0.4px] text-white md:gap-2">
-      <span className="text-[20px] leading-[30px] md:text-[46px] md:leading-[64px]">{value}</span>
-      <span className="text-[20px] leading-[30px] md:text-[46px] md:leading-[64px]">{label}</span>
+      <span className="text-[20px] leading-[30px] md:text-[46px] md:leading-[64px]">
+        {value}
+      </span>
+      <span className="text-[20px] leading-[30px] md:text-[46px] md:leading-[64px]">
+        {label}
+      </span>
     </div>
   );
 };
@@ -56,11 +60,21 @@ export const StopwatchSection = () => {
     >
       <div className="mx-auto max-w-[1280px]">
         <div className="flex items-center justify-center gap-2.5 md:gap-3.5">
-          <Icon type="twinkle" width={16} height={16} className="text-white md:size-6" />
+          <Icon
+            type="twinkle"
+            width={16}
+            height={16}
+            className="text-white md:size-6"
+          />
           <p className="text-[20px] leading-[30px] font-bold tracking-[-0.4px] text-white md:text-[34px] md:leading-[52px]">
             신청 마감까지
           </p>
-          <Icon type="twinkle" width={16} height={16} className="text-white md:size-6" />
+          <Icon
+            type="twinkle"
+            width={16}
+            height={16}
+            className="text-white md:size-6"
+          />
         </div>
 
         <div className="mt-3 flex flex-wrap items-center justify-center gap-3.5 md:mt-[14px] md:gap-7">

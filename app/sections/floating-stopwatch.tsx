@@ -72,9 +72,14 @@ export const FloatingStopwatch = () => {
       const footerRect = footer.getBoundingClientRect();
 
       const shouldShow = sectionRect.bottom < 0;
-      const footerVisibleHeight = getVisibleHeight(footerRect, window.innerHeight);
+      const footerVisibleHeight = getVisibleHeight(
+        footerRect,
+        window.innerHeight,
+      );
       const stickyBottom =
-        footerVisibleHeight >= FOOTER_TRIGGER ? footerVisibleHeight + FOOTER_MARGIN : BASE_BOTTOM;
+        footerVisibleHeight >= FOOTER_TRIGGER
+          ? footerVisibleHeight + FOOTER_MARGIN
+          : BASE_BOTTOM;
 
       setIsVisible(shouldShow);
       setBottomOffset(stickyBottom);

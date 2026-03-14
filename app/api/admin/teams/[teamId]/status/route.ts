@@ -2,7 +2,12 @@ import { verifyAdminSession } from "@/app/actions/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-const VALID_STATUSES = ["PENDING", "CONFIRMED", "WAITLISTED", "REFUNDED"] as const;
+const VALID_STATUSES = [
+  "PENDING",
+  "CONFIRMED",
+  "WAITLISTED",
+  "REFUNDED",
+] as const;
 
 export async function PATCH(
   request: NextRequest,
@@ -10,7 +15,10 @@ export async function PATCH(
 ) {
   const isAdmin = await verifyAdminSession();
   if (!isAdmin) {
-    return NextResponse.json({ success: false, message: "인증이 필요합니다." }, { status: 401 });
+    return NextResponse.json(
+      { success: false, message: "인증이 필요합니다." },
+      { status: 401 },
+    );
   }
 
   const { teamId } = await params;
@@ -18,7 +26,10 @@ export async function PATCH(
   const { status } = body;
 
   if (!VALID_STATUSES.includes(status)) {
-    return NextResponse.json({ success: false, message: "올바르지 않은 상태값입니다." }, { status: 400 });
+    return NextResponse.json(
+      { success: false, message: "올바르지 않은 상태값입니다." },
+      { status: 400 },
+    );
   }
 
   try {
@@ -30,6 +41,9 @@ export async function PATCH(
 
     return NextResponse.json({ success: true, team });
   } catch {
-    return NextResponse.json({ success: false, message: "팀을 찾을 수 없습니다." }, { status: 404 });
+    return NextResponse.json(
+      { success: false, message: "팀을 찾을 수 없습니다." },
+      { status: 404 },
+    );
   }
 }

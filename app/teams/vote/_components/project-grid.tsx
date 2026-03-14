@@ -37,7 +37,9 @@ export const ProjectGrid = ({
   if (projects.length === 0) {
     return (
       <div className="py-20 text-center">
-        <p className="typo-body1 text-muted-foreground">등록된 프로젝트가 없습니다.</p>
+        <p className="typo-body1 text-muted-foreground">
+          등록된 프로젝트가 없습니다.
+        </p>
       </div>
     );
   }

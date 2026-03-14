@@ -13,7 +13,10 @@ export async function POST(request: NextRequest) {
     const result = schema.safeParse(body);
 
     if (!result.success) {
-      return NextResponse.json({ duplicate: false, message: "잘못된 요청입니다." }, { status: 400 });
+      return NextResponse.json(
+        { duplicate: false, message: "잘못된 요청입니다." },
+        { status: 400 },
+      );
     }
 
     const { value } = result.data;
@@ -24,6 +27,9 @@ export async function POST(request: NextRequest) {
     });
     return NextResponse.json({ duplicate: !!existingMember });
   } catch {
-    return NextResponse.json({ duplicate: false, message: "서버 오류가 발생했습니다." }, { status: 500 });
+    return NextResponse.json(
+      { duplicate: false, message: "서버 오류가 발생했습니다." },
+      { status: 500 },
+    );
   }
 }

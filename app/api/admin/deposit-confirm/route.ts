@@ -22,7 +22,10 @@ export async function POST(request: NextRequest) {
     const result = schema.safeParse(body);
 
     if (!result.success) {
-      return NextResponse.json({ success: false, message: "잘못된 요청입니다." }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: "잘못된 요청입니다." },
+        { status: 400 },
+      );
     }
 
     await prisma.team.update({
@@ -33,6 +36,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Deposit confirm error:", error);
-    return NextResponse.json({ success: false, message: "서버 오류가 발생했습니다." }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "서버 오류가 발생했습니다." },
+      { status: 500 },
+    );
   }
 }

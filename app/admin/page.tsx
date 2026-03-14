@@ -9,7 +9,13 @@ const AdminPage = async () => {
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-  const [teams, totalTeams, byParticipationType, byExperienceLevel, recentWeekCount] = await Promise.all([
+  const [
+    teams,
+    totalTeams,
+    byParticipationType,
+    byExperienceLevel,
+    recentWeekCount,
+  ] = await Promise.all([
     prisma.team.findMany({
       include: { members: true },
       orderBy: { createdAt: "desc" },

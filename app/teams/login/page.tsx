@@ -83,7 +83,9 @@ const LoginPage = () => {
               inputMode="numeric"
               maxLength={4}
               value={phoneLast4}
-              onChange={(e) => setPhoneLast4(e.target.value.replace(/\D/g, "").slice(0, 4))}
+              onChange={(e) =>
+                setPhoneLast4(e.target.value.replace(/\D/g, "").slice(0, 4))
+              }
               placeholder="1234"
               className={inputClass}
             />

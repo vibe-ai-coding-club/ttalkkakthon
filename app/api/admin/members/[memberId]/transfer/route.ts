@@ -10,7 +10,10 @@ export async function PATCH(
 ) {
   const isAdmin = await verifyAdminSession();
   if (!isAdmin) {
-    return NextResponse.json({ success: false, message: "인증이 필요합니다." }, { status: 401 });
+    return NextResponse.json(
+      { success: false, message: "인증이 필요합니다." },
+      { status: 401 },
+    );
   }
 
   const { memberId } = await params;
@@ -18,21 +21,32 @@ export async function PATCH(
   const { targetTeamId } = body;
 
   if (!targetTeamId) {
-    return NextResponse.json({ success: false, message: "대상 팀을 선택해주세요." }, { status: 400 });
+    return NextResponse.json(
+      { success: false, message: "대상 팀을 선택해주세요." },
+      { status: 400 },
+    );
   }
 
   try {
     const member = await prisma.member.findUnique({
       where: { id: memberId },
-      include: { team: { include: { members: { orderBy: { createdAt: "asc" } } } } },
+      include: {
+        team: { include: { members: { orderBy: { createdAt: "asc" } } } },
+      },
     });
 
     if (!member) {
-      return NextResponse.json({ success: false, message: "멤버를 찾을 수 없습니다." }, { status: 404 });
+      return NextResponse.json(
+        { success: false, message: "멤버를 찾을 수 없습니다." },
+        { status: 404 },
+      );
     }
 
     if (member.teamId === targetTeamId) {
-      return NextResponse.json({ success: false, message: "같은 팀으로는 이동할 수 없습니다." }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: "같은 팀으로는 이동할 수 없습니다." },
+        { status: 400 },
+      );
     }
 
     const targetTeamMemberCount = await prisma.member.count({
@@ -40,11 +54,19 @@ export async function PATCH(
     });
 
     if (targetTeamMemberCount >= MAX_MEMBERS_PER_TEAM) {
-      return NextResponse.json({ success: false, message: "대상 팀의 인원이 가득 찼습니다. (최대 4명)" }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          message: "대상 팀의 인원이 가득 찼습니다. (최대 4명)",
+        },
+        { status: 400 },
+      );
     }
 
     const sourceTeamId = member.teamId;
-    const remainingMembers = member.team.members.filter((m) => m.id !== memberId);
+    const remainingMembers = member.team.members.filter(
+      (m) => m.id !== memberId,
+    );
     const sourceTeamEmpty = remainingMembers.length === 0;
 
     await prisma.$transaction(async (tx) => {
@@ -91,6 +113,9 @@ export async function PATCH(
     });
   } catch (error) {
     console.error("Member transfer error:", error);
-    return NextResponse.json({ success: false, message: "서버 오류가 발생했습니다." }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "서버 오류가 발생했습니다." },
+      { status: 500 },
+    );
   }
 }

@@ -41,7 +41,11 @@ export const InfoTab = ({ tabs }: InfoTabProps) => {
 
       <ul>
         {tabs[activeIndex]?.content.map((content, index) => (
-          <InfoCard key={`${tabs[activeIndex].label}-${index}`} index={index} content={content} />
+          <InfoCard
+            key={`${tabs[activeIndex].label}-${index}`}
+            index={index}
+            content={content}
+          />
         ))}
       </ul>
     </div>

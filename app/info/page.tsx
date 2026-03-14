@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "행사 정보",
-  description: "딸깍톤 2026 행사 안내사항, 규칙, 심사기준, 문의처 등 모든 정보를 확인하세요.",
+  description:
+    "딸깍톤 2026 행사 안내사항, 규칙, 심사기준, 문의처 등 모든 정보를 확인하세요.",
 };
 
 export default function InfoPage() {
@@ -24,7 +25,9 @@ export default function InfoPage() {
           </div>
           <div className="rounded-lg border border-border p-4">
             <p className="mb-1 text-sm text-muted-foreground">참가자격</p>
-            <p className="font-medium">AI와 대화가 가능한 사람, 진지함 빼고 즐길 준비가 된 사람</p>
+            <p className="font-medium">
+              AI와 대화가 가능한 사람, 진지함 빼고 즐길 준비가 된 사람
+            </p>
           </div>
         </div>
       </section>
@@ -81,7 +84,10 @@ export default function InfoPage() {
               desc: "경고. 이 행사는 인류의 발전과 실용성을 절대 장려하지 않습니다. 당신의 결과물이 완벽하게 무가치하고 쓸모없을수록, 우승과 가까워집니다.",
             },
           ].map((rule) => (
-            <div key={rule.title} className="rounded-lg border border-border p-4">
+            <div
+              key={rule.title}
+              className="rounded-lg border border-border p-4"
+            >
               <p className="mb-1 font-semibold">
                 {rule.emoji} {rule.title}
               </p>
@@ -96,11 +102,13 @@ export default function InfoPage() {
         <h2 className="mb-4 text-xl font-semibold">심사 기준</h2>
         <div className="rounded-lg border border-border p-4 text-sm space-y-2">
           <p>
-            심사는 <strong>현장 심사</strong>와 <strong>참가자 투표</strong>를 합산하여 진행됩니다.
+            심사는 <strong>현장 심사</strong>와 <strong>참가자 투표</strong>를
+            합산하여 진행됩니다.
           </p>
           <p>비중: 참가자 투표 50% + 심사위원 50%</p>
           <p className="text-muted-foreground">
-            점수는 매우 주관적입니다. 발표력은 실력보다 뻔뻔함이 중요할 수 있습니다.
+            점수는 매우 주관적입니다. 발표력은 실력보다 뻔뻔함이 중요할 수
+            있습니다.
           </p>
         </div>
       </section>

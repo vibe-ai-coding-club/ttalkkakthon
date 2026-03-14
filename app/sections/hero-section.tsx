@@ -1,7 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import confetti from "canvas-confetti";
 
 import { Icon } from "@/app/_components/icon";
@@ -21,13 +27,15 @@ type GamePhase = "idle" | "active" | "returning" | "success";
 const MOBILE_BREAKPOINT = 768;
 const CATCHABLE_AFTER_MS = 5000;
 
-const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
 
-const lerp = (start: number, end: number, ratio: number) => start + (end - start) * ratio;
+const lerp = (start: number, end: number, ratio: number) =>
+  start + (end - start) * ratio;
 
 const hasOverlap = (
   draggable: { left: number; top: number; right: number; bottom: number },
-  target: { left: number; top: number; right: number; bottom: number }
+  target: { left: number; top: number; right: number; bottom: number },
 ) => {
   const overlapLeft = Math.max(draggable.left, target.left);
   const overlapTop = Math.max(draggable.top, target.top);
@@ -56,7 +64,10 @@ export const HeroSection = () => {
 
   const [isMobile, setIsMobile] = useState(false);
   const [phase, setPhase] = useState<GamePhase>("idle");
-  const [runawayPosition, setRunawayPosition] = useState<Position>({ x: 0, y: 0 });
+  const [runawayPosition, setRunawayPosition] = useState<Position>({
+    x: 0,
+    y: 0,
+  });
   const [dragging, setDragging] = useState(false);
   const [isOverDropZone, setIsOverDropZone] = useState(false);
   const [isRunawayVisible, setIsRunawayVisible] = useState(true);
@@ -127,7 +138,7 @@ export const HeroSection = () => {
         maxY: Math.max(paddingY, sectionRect.height - runawayHeight - paddingY),
       };
     },
-    [isMobile]
+    [isMobile],
   );
 
   const randomizeRunawayPosition = useCallback(() => {
@@ -140,11 +151,15 @@ export const HeroSection = () => {
     }
 
     const { sectionRect } = rects;
-    const elapsed = gameStartedAtRef.current ? performance.now() - gameStartedAtRef.current : 0;
+    const elapsed = gameStartedAtRef.current
+      ? performance.now() - gameStartedAtRef.current
+      : 0;
     const progress = clamp(elapsed / CATCHABLE_AFTER_MS, 0, 1);
     const bounds = getBounds(sectionRect);
-    const nextX = bounds.minX + Math.random() * Math.max(1, bounds.maxX - bounds.minX);
-    const nextY = bounds.minY + Math.random() * Math.max(1, bounds.maxY - bounds.minY);
+    const nextX =
+      bounds.minX + Math.random() * Math.max(1, bounds.maxX - bounds.minX);
+    const nextY =
+      bounds.minY + Math.random() * Math.max(1, bounds.maxY - bounds.minY);
     const moveDuration = isMobile ? 120 : Math.round(lerp(170, 720, progress));
 
     setTransitionMs(moveDuration);
@@ -158,7 +173,9 @@ export const HeroSection = () => {
     }
 
     const queueNextEscape = () => {
-      const elapsed = gameStartedAtRef.current ? performance.now() - gameStartedAtRef.current : 0;
+      const elapsed = gameStartedAtRef.current
+        ? performance.now() - gameStartedAtRef.current
+        : 0;
       if (elapsed >= CATCHABLE_AFTER_MS) {
         return;
       }
@@ -173,7 +190,13 @@ export const HeroSection = () => {
     };
 
     queueNextEscape();
-  }, [clearDesktopEscapeTimer, dragging, isMobile, phase, randomizeRunawayPosition]);
+  }, [
+    clearDesktopEscapeTimer,
+    dragging,
+    isMobile,
+    phase,
+    randomizeRunawayPosition,
+  ]);
 
   const scheduleMobileTeleport = useCallback(() => {
     clearMobileTimers();
@@ -182,7 +205,8 @@ export const HeroSection = () => {
     }
 
     const queueNextTeleport = () => {
-      const interval = 100 * Math.pow(1.5, Math.floor(mobileJumpCountRef.current / 3));
+      const interval =
+        100 * Math.pow(1.5, Math.floor(mobileJumpCountRef.current / 3));
 
       mobileTeleportTimerRef.current = window.setTimeout(() => {
         setIsRunawayVisible(false);
@@ -224,7 +248,14 @@ export const HeroSection = () => {
 
     randomizeRunawayPosition();
     scheduleDesktopEscape();
-  }, [getRects, isMobile, phase, randomizeRunawayPosition, scheduleDesktopEscape, scheduleMobileTeleport]);
+  }, [
+    getRects,
+    isMobile,
+    phase,
+    randomizeRunawayPosition,
+    scheduleDesktopEscape,
+    scheduleMobileTeleport,
+  ]);
 
   const evaluateDropOverlap = useCallback(
     (position: Position) => {
@@ -249,7 +280,7 @@ export const HeroSection = () => {
 
       return hasOverlap(draggable, dropZone);
     },
-    [getRects]
+    [getRects],
   );
 
   const completeMission = useCallback(() => {
@@ -280,7 +311,10 @@ export const HeroSection = () => {
       const buttonRect = event.currentTarget.getBoundingClientRect();
       event.currentTarget.setPointerCapture(event.pointerId);
       dragPointerIdRef.current = event.pointerId;
-      dragOffsetRef.current = { x: event.clientX - buttonRect.left, y: event.clientY - buttonRect.top };
+      dragOffsetRef.current = {
+        x: event.clientX - buttonRect.left,
+        y: event.clientY - buttonRect.top,
+      };
 
       clearDesktopEscapeTimer();
       clearMobileTimers();
@@ -288,7 +322,7 @@ export const HeroSection = () => {
       setDragging(true);
       setIsRunawayVisible(true);
     },
-    [clearDesktopEscapeTimer, clearMobileTimers, phase]
+    [clearDesktopEscapeTimer, clearMobileTimers, phase],
   );
 
   const onRunawayPointerMove = useCallback(
@@ -302,14 +336,22 @@ export const HeroSection = () => {
       }
 
       const bounds = getBounds(sectionRect);
-      const nextX = clamp(event.clientX - sectionRect.left - dragOffsetRef.current.x, bounds.minX, bounds.maxX);
-      const nextY = clamp(event.clientY - sectionRect.top - dragOffsetRef.current.y, bounds.minY, bounds.maxY);
+      const nextX = clamp(
+        event.clientX - sectionRect.left - dragOffsetRef.current.x,
+        bounds.minX,
+        bounds.maxX,
+      );
+      const nextY = clamp(
+        event.clientY - sectionRect.top - dragOffsetRef.current.y,
+        bounds.minY,
+        bounds.maxY,
+      );
       const nextPosition = { x: nextX, y: nextY };
 
       setRunawayPosition(nextPosition);
       setIsOverDropZone(evaluateDropOverlap(nextPosition));
     },
-    [dragging, evaluateDropOverlap, getBounds]
+    [dragging, evaluateDropOverlap, getBounds],
   );
 
   const onRunawayPointerEnd = useCallback(
@@ -342,7 +384,7 @@ export const HeroSection = () => {
       runawayPosition,
       scheduleDesktopEscape,
       scheduleMobileTeleport,
-    ]
+    ],
   );
 
   const onIdleButtonPointerDown = useCallback(
@@ -353,7 +395,7 @@ export const HeroSection = () => {
       event.preventDefault();
       initializeGame();
     },
-    [initializeGame, isMobile, phase]
+    [initializeGame, isMobile, phase],
   );
 
   const onIdleButtonMouseEnter = useCallback(() => {
@@ -367,13 +409,21 @@ export const HeroSection = () => {
     if (isMobile || phase !== "active" || dragging) {
       return;
     }
-    const elapsed = gameStartedAtRef.current ? performance.now() - gameStartedAtRef.current : 0;
+    const elapsed = gameStartedAtRef.current
+      ? performance.now() - gameStartedAtRef.current
+      : 0;
     if (elapsed >= CATCHABLE_AFTER_MS) {
       return;
     }
     randomizeRunawayPosition();
     scheduleDesktopEscape();
-  }, [dragging, isMobile, phase, randomizeRunawayPosition, scheduleDesktopEscape]);
+  }, [
+    dragging,
+    isMobile,
+    phase,
+    randomizeRunawayPosition,
+    scheduleDesktopEscape,
+  ]);
 
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
@@ -461,7 +511,13 @@ export const HeroSection = () => {
       return;
     }
     scheduleDesktopEscape();
-  }, [dragging, isMobile, phase, scheduleDesktopEscape, scheduleMobileTeleport]);
+  }, [
+    dragging,
+    isMobile,
+    phase,
+    scheduleDesktopEscape,
+    scheduleMobileTeleport,
+  ]);
 
   useEffect(() => {
     return () => {
@@ -470,7 +526,12 @@ export const HeroSection = () => {
       clearSuccessTimers();
       clearCelebrationTimers();
     };
-  }, [clearCelebrationTimers, clearDesktopEscapeTimer, clearMobileTimers, clearSuccessTimers]);
+  }, [
+    clearCelebrationTimers,
+    clearDesktopEscapeTimer,
+    clearMobileTimers,
+    clearSuccessTimers,
+  ]);
 
   return (
     <section
@@ -489,7 +550,9 @@ export const HeroSection = () => {
           <button
             type="button"
             className={`inline-flex h-[50px] min-w-[160px] items-center justify-center rounded-xl bg-gray-100 px-5 text-[18px] leading-[26px] font-semibold tracking-[-0.4px] text-gray-850 whitespace-nowrap transition-[opacity,colors] duration-300 ease-out hover:bg-gray-200 md:h-[66px] md:min-w-[420px] md:rounded-2xl md:px-8 md:text-[24px] md:leading-[34px] md:font-bold ${
-              phase === "idle" ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+              phase === "idle"
+                ? "pointer-events-auto opacity-100"
+                : "pointer-events-none opacity-0"
             }`}
             onMouseEnter={onIdleButtonMouseEnter}
             onPointerDown={onIdleButtonPointerDown}
@@ -499,12 +562,18 @@ export const HeroSection = () => {
 
           <div
             className={`absolute inset-0 inline-flex h-[50px] min-w-[160px] items-center justify-center rounded-xl border px-5 text-center text-[14px] leading-[22px] font-semibold tracking-[-0.3px] transition-[opacity,colors] duration-500 ease-out md:h-[66px] md:min-w-[420px] md:rounded-2xl md:px-8 md:text-[18px] md:leading-[28px] ${
-              phase === "active" ? "pointer-events-none opacity-100" : "pointer-events-none opacity-0"
+              phase === "active"
+                ? "pointer-events-none opacity-100"
+                : "pointer-events-none opacity-0"
             } ${
-              isOverDropZone ? "border-primary-200 bg-primary-050 text-primary-200" : "border-white/50 bg-white/15 text-white/85"
+              isOverDropZone
+                ? "border-primary-200 bg-primary-050 text-primary-200"
+                : "border-white/50 bg-white/15 text-white/85"
             }`}
           >
-            <span className="md:whitespace-nowrap">Mission: 버튼을 제자리로 돌려놓아라!</span>
+            <span className="md:whitespace-nowrap">
+              Mission: 버튼을 제자리로 돌려놓아라!
+            </span>
           </div>
         </div>
       </div>
@@ -522,7 +591,8 @@ export const HeroSection = () => {
             transitionDuration: `${transitionMs}ms`,
             transitionTimingFunction: "cubic-bezier(0.2, 0.9, 0.2, 1)",
             opacity: isRunawayVisible ? 1 : 0,
-            cursor: phase === "active" ? (dragging ? "grabbing" : "grab") : "default",
+            cursor:
+              phase === "active" ? (dragging ? "grabbing" : "grab") : "default",
           }}
           onMouseEnter={onRunawayMouseEnter}
           onPointerDown={onRunawayPointerDown}
@@ -530,7 +600,15 @@ export const HeroSection = () => {
           onPointerUp={onRunawayPointerEnd}
           onPointerCancel={onRunawayPointerEnd}
         >
-          <span className={phase === "success" ? "opacity-100" : phase === "active" ? "opacity-100" : "opacity-0"}>
+          <span
+            className={
+              phase === "success"
+                ? "opacity-100"
+                : phase === "active"
+                  ? "opacity-100"
+                  : "opacity-0"
+            }
+          >
             {phase === "success" ? (
               <span className="inline-flex items-center gap-[10px]">
                 <Icon type="check" width={24} height={24} />
