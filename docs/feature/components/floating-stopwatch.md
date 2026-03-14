@@ -2,7 +2,7 @@
 
 ## 목적
 
-랜딩 페이지 스크롤 진행 중에도 신청 마감 카운트다운을 하단에 고정 노출.
+랜딩 페이지 스크롤 진행 중에도 신청 시작/마감 카운트다운을 하단에 고정 노출.
 
 ## 동작/UI
 
@@ -12,7 +12,12 @@
 - Footer(`landing-footer`)가 화면에 `20px` 이상 보이기 시작하면 Footer 가시 높이를 계산해 고정 위치를 조정.
   - Mobile: `Footer 상단 + 20px`
   - Desktop: `Footer 상단 + 30px`
-- 마감 시각/카운트다운 계산은 `StopwatchSection`과 동일한 로직(`app/sections/stopwatch-time.ts`)을 공유.
+- 카운트다운 로직은 `useRegistrationCountdown` 훅(`app/_hooks/use-registration-countdown.ts`)을 사용해 `StopwatchSection`, `Navigation`, `RegistrationForm`과 공유.
+- 시간 상수는 `lib/registration-time.ts`에서 관리.
+- 3단계 phase에 따라 라벨 변경:
+  - `before-start`: "신청 시작까지" + 카운트다운
+  - `open`: "신청 마감까지" + 카운트다운
+  - `closed`: "신청이 마감되었어요" 문구 노출
 - 배경은 투명(`rgba(255,255,255,0)`) + `backdrop-blur(10px)`를 사용하고, 테두리는 `primary-200`(`#FE6CA7`) 1px로 노출.
 - 플로팅 내부 텍스트/구분자 색상은 `primary-900`으로 통일.
 - 반응형 스타일

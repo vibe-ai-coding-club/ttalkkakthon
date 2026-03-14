@@ -27,6 +27,13 @@
   - `POST /api/register`로 JSON 전송.
   - 성공/실패 토스트 표시.
   - 성공 시 폼 초기화.
+- 신청 시간 제어:
+  - `useRegistrationCountdown` 훅으로 신청 기간 상태 확인.
+  - 신청 기간(`open`) 중: 제출 버튼 정상 노출.
+  - 신청 시작 전(`before-start`): 제출 버튼 대신 카운트다운 텍스트("신청 시작까지 00일 00시 00분 00초") 노출.
+  - 신청 마감 후(`closed`): "신청이 마감되었어요" 텍스트 노출.
+  - 어드민 `isClosed` 설정 시에도 마감 상태로 처리.
+  - Toast 컴포넌트는 `app/_components/toast.tsx` 공통 컴포넌트 사용.
 - UX:
   - 전화번호 자동 하이픈 포맷.
   - 이메일 `onBlur` 자동 중복확인 (description 동적 변경: idle → checking → available / error).
