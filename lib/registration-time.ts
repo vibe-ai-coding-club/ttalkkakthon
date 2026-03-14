@@ -1,4 +1,4 @@
-export const REGISTRATION_START = new Date("2026-03-14T16:00:00+09:00");
+export const REGISTRATION_START = new Date("2026-03-14T17:00:00+09:00");
 export const REGISTRATION_DEADLINE = new Date("2026-03-20T23:59:59+09:00");
 
 export type RegistrationPhase = "before-start" | "open" | "closed";
