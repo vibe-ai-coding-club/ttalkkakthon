@@ -6,7 +6,8 @@ import { useRegistrationCountdown } from "@/app/_hooks/use-registration-countdow
 import { pad } from "@/lib/registration-time";
 
 const BASE_BOTTOM = 50;
-const FOOTER_MARGIN = 30;
+const FOOTER_MARGIN_MOBILE = 20;
+const FOOTER_MARGIN_DESKTOP = 30;
 const FOOTER_TRIGGER = 20;
 
 const TimeBlock = ({ label, value }: { label: string; value: string }) => {
@@ -52,9 +53,11 @@ export const FloatingStopwatch = () => {
         footerRect,
         window.innerHeight,
       );
+      const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+      const footerMargin = isDesktop ? FOOTER_MARGIN_DESKTOP : FOOTER_MARGIN_MOBILE;
       const stickyBottom =
         footerVisibleHeight >= FOOTER_TRIGGER
-          ? footerVisibleHeight + FOOTER_MARGIN
+          ? footerVisibleHeight + footerMargin
           : BASE_BOTTOM;
 
       setIsVisible(shouldShow);
