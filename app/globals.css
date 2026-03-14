@@ -110,6 +110,37 @@ html {
   }
 }
 
+/* ===== Hero Floating Particles ===== */
+@keyframes float-drift {
+  0% {
+    transform: rotate(var(--particle-rotate, 0deg)) translate(0, 0) scale(1);
+  }
+  20% {
+    transform: rotate(calc(var(--particle-rotate, 0deg) + 25deg)) translate(10px, -15px) scale(1.04);
+  }
+  40% {
+    transform: rotate(calc(var(--particle-rotate, 0deg) + 70deg)) translate(-6px, -25px) scale(0.96);
+  }
+  60% {
+    transform: rotate(calc(var(--particle-rotate, 0deg) + 140deg)) translate(12px, -8px) scale(1.03);
+  }
+  80% {
+    transform: rotate(calc(var(--particle-rotate, 0deg) + 280deg)) translate(-4px, -18px) scale(0.98);
+  }
+  100% {
+    transform: rotate(calc(var(--particle-rotate, 0deg) + 360deg)) translate(0, 0) scale(1);
+  }
+}
+
+.hero-particle {
+  position: absolute;
+  pointer-events: none;
+  animation: float-drift var(--particle-duration, 8s) ease-in-out infinite;
+  animation-delay: var(--particle-delay, 0s);
+  opacity: var(--particle-opacity, 0.7);
+  will-change: transform;
+}
+
 /* ===== Hero Glitch Effect ===== */
 /*
   8s 주기: 0~8% 버스트(~0.6s) → 8~100% 대기(~7.4s)
