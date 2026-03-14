@@ -1,7 +1,10 @@
 "use client";
 
-import { toggleDepositConfirmed } from "@/app/actions/admin-actions";
-import { Fragment, useCallback, useMemo, useState } from "react";
+import {
+  toggleDepositConfirmed,
+  updateMemberAdminNote,
+} from "@/app/actions/admin-actions";
+import { Fragment, useCallback, useMemo, useRef, useState } from "react";
 import { ConfirmModal } from "./confirm-modal";
 
 export type SerializedMember = {
@@ -13,6 +16,7 @@ export type SerializedMember = {
   refundBank: string | null;
   refundAccount: string | null;
   refundAccountHolder: string | null;
+  adminNote: string | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -155,6 +159,41 @@ const DragHandle = () => (
     />
   </svg>
 );
+
+const NoteCell = ({
+  memberId,
+  initialNote,
+}: {
+  memberId: string;
+  initialNote: string | null;
+}) => {
+  const [value, setValue] = useState(initialNote ?? "");
+  const [saving, setSaving] = useState(false);
+  const savedRef = useRef(initialNote ?? "");
+
+  const handleBlur = async () => {
+    const trimmed = value.trim();
+    if (trimmed === savedRef.current) return;
+    setSaving(true);
+    const result = await updateMemberAdminNote(memberId, trimmed);
+    if (result.success) {
+      savedRef.current = trimmed;
+    }
+    setSaving(false);
+  };
+
+  return (
+    <input
+      type="text"
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      onBlur={handleBlur}
+      placeholder="-"
+      disabled={saving}
+      className="w-full min-w-24 rounded border border-transparent bg-transparent px-1 py-0.5 typo-caption1 text-muted-foreground outline-none placeholder:text-muted-foreground/40 hover:border-border focus:border-accent focus:bg-background transition-colors disabled:opacity-50"
+    />
+  );
+};
 
 type DragData = { memberId: string; sourceTeamId: string; memberName: string };
 
@@ -467,13 +506,14 @@ export const TeamTable = ({ teams: initialTeams }: TeamTableProps) => {
               <th className={thClass}>경험</th>
               <th className={thClass}>입금</th>
               <th className={thClass}>신청일</th>
+              <th className={thClass}>비고</th>
             </tr>
           </thead>
           <tbody>
             {paged.length === 0 ? (
               <tr>
                 <td
-                  colSpan={11}
+                  colSpan={12}
                   className="px-4 py-6 text-center text-muted-foreground typo-caption1"
                 >
                   {filters.search
@@ -612,6 +652,12 @@ export const TeamTable = ({ teams: initialTeams }: TeamTableProps) => {
                       >
                         {formatDate(team.createdAt)}
                       </td>
+                      <td className={tdClass}>
+                        <NoteCell
+                          memberId={leader.id}
+                          initialNote={leader.adminNote}
+                        />
+                      </td>
                     </tr>
 
                     {/* 멤버 행 */}
@@ -665,6 +711,12 @@ export const TeamTable = ({ teams: initialTeams }: TeamTableProps) => {
                         <td className={tdClass} />
                         <td className={tdClass} />
                         <td className={tdClass} />
+                        <td className={tdClass}>
+                          <NoteCell
+                            memberId={m.id}
+                            initialNote={m.adminNote}
+                          />
+                        </td>
                       </tr>
                     ))}
 
@@ -682,7 +734,7 @@ export const TeamTable = ({ teams: initialTeams }: TeamTableProps) => {
                       >
                         <td
                           className={`${tdClass} typo-caption2 text-muted-foreground/40`}
-                          colSpan={7}
+                          colSpan={8}
                         >
                           {isDropTarget ? (
                             <span className="text-accent font-medium">
