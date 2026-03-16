@@ -3,7 +3,6 @@ import { MotionItem } from "@/app/_components/motion-section";
 import Image from "next/image";
 
 const sponsors = [
-  { name: "링티", src: "/images/sponsor-image-001.png" },
   { name: "나만의 네컷", src: "/images/sponsor-image-002.png" },
 ];
 
