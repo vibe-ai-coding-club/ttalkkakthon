@@ -563,13 +563,13 @@ export const TeamBoard = () => {
                       >
                         {canEdit ? (
                           <EditableCell
-                            value={team.motivation ?? ""}
+                            value={team.recruitmentNote ?? ""}
                             placeholder="주제 입력"
-                            onSave={(v) => updateMyTeam("motivation", v)}
+                            onSave={(v) => updateMyTeam("recruitmentNote", v)}
                           />
                         ) : (
                           <span className="line-clamp-1">
-                            {team.motivation || "-"}
+                            {team.recruitmentNote || "-"}
                           </span>
                         )}
                       </td>
@@ -858,9 +858,9 @@ export const TeamBoard = () => {
                             {experienceLevelLabel[team.experienceLevel]}
                           </span>
                         </div>
-                        {team.motivation && (
+                        {team.recruitmentNote && (
                           <p className="text-[11px] text-muted-foreground line-clamp-2">
-                            {team.motivation}
+                            {team.recruitmentNote}
                           </p>
                         )}
                         {team.isMyTeam && (
