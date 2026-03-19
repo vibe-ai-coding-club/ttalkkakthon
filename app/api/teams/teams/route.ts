@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { auth, ADMIN_EMAIL } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -11,6 +11,7 @@ export async function GET() {
     );
   }
 
+  const isAdmin = session.user.email === ADMIN_EMAIL && !session.user.memberId;
   const myTeamId = session.user.teamId ?? null;
 
   // 환불 제외 전체 팀 조회 (멤버 포함)
@@ -21,7 +22,6 @@ export async function GET() {
     select: {
       id: true,
       teamName: true,
-      motivation: true,
       recruitmentNote: true,
       participationType: true,
       experienceLevel: true,
@@ -46,12 +46,12 @@ export async function GET() {
     orderBy: { createdAt: "asc" },
   });
 
-  const result = teams.map((t) => ({
+  const result = teams.map((t, i) => ({
     id: t.id,
+    order: i + 1,
     leaderName:
       t.members.find((m) => m.isLeader)?.name ?? t.members[0]?.name ?? "",
     teamName: t.teamName,
-    motivation: t.motivation,
     recruitmentNote: t.recruitmentNote,
     participationType: t.participationType,
     experienceLevel: t.experienceLevel,
@@ -70,5 +70,6 @@ export async function GET() {
     success: true,
     teams: result,
     myMemberId: session.user.memberId ?? null,
+    isAdmin,
   });
 }
