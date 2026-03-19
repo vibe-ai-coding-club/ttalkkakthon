@@ -14,6 +14,8 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const [isPending, setIsPending] = useState(false);
 
+  const isAdminEmail = email === "vibecodingclub.team@gmail.com";
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
@@ -22,8 +24,12 @@ const LoginPage = () => {
       setError("이메일을 입력해주세요.");
       return;
     }
-    if (phoneLast4.length !== 4) {
+    if (!isAdminEmail && phoneLast4.length !== 4) {
       setError("전화번호 뒷자리 4자리를 입력해주세요.");
+      return;
+    }
+    if (isAdminEmail && !phoneLast4.trim()) {
+      setError("비밀번호를 입력해주세요.");
       return;
     }
 
@@ -75,18 +81,22 @@ const LoginPage = () => {
 
           <div>
             <label htmlFor="login-phone" className="typo-subtitle2 mb-1 block">
-              전화번호 뒷자리 4자리
+              {isAdminEmail ? "비밀번호" : "전화번호 뒷자리 4자리"}
             </label>
             <input
               id="login-phone"
-              type="text"
-              inputMode="numeric"
-              maxLength={4}
+              type={isAdminEmail ? "password" : "text"}
+              inputMode={isAdminEmail ? undefined : "numeric"}
+              maxLength={isAdminEmail ? undefined : 4}
               value={phoneLast4}
               onChange={(e) =>
-                setPhoneLast4(e.target.value.replace(/\D/g, "").slice(0, 4))
+                setPhoneLast4(
+                  isAdminEmail
+                    ? e.target.value
+                    : e.target.value.replace(/\D/g, "").slice(0, 4),
+                )
               }
-              placeholder="1234"
+              placeholder={isAdminEmail ? "관리자 비밀번호" : "1234"}
               className={inputClass}
             />
           </div>

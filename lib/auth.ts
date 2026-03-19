@@ -15,6 +15,8 @@ declare module "next-auth" {
   }
 }
 
+export const ADMIN_EMAIL = "vibecodingclub.team@gmail.com";
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Credentials({
@@ -26,7 +28,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const email = credentials?.email as string | undefined;
         const phoneLast4 = credentials?.phoneLast4 as string | undefined;
 
-        if (!email || !phoneLast4 || phoneLast4.length !== 4) return null;
+        if (!email || !phoneLast4) return null;
+
+        // 어드민 계정 (코드 기반)
+        const adminPassword = process.env.ADMIN_PASSWORD;
+        if (
+          email === ADMIN_EMAIL &&
+          adminPassword &&
+          phoneLast4 === adminPassword
+        ) {
+          return {
+            id: "admin",
+            name: "관리자",
+            email: ADMIN_EMAIL,
+            // memberId, teamId 없음 → 내 팀/프로젝트 쿼리 비활성화
+          };
+        }
+
+        // 일반 멤버 로그인
+        if (phoneLast4.length !== 4) return null;
 
         const member = await prisma.member.findUnique({
           where: { email },
@@ -54,8 +74,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.memberId = user.memberId;
         token.teamId = user.teamId;
       }
-      // 매 요청마다 DB에서 최신 teamId를 조회
-      if (token.memberId) {
+      // 매 요청마다 DB에서 최신 teamId를 조회 (어드민은 제외)
+      if (token.memberId && token.memberId !== "admin") {
         const member = await prisma.member.findUnique({
           where: { id: token.memberId as string },
           select: { teamId: true },
