@@ -42,8 +42,8 @@ model Team {
   teamName String? @map("team_name") // 팀 이름
 
   // 상태 관리
-  status            TeamStatus        @default(PENDING)
-  recruitmentNote String? @map("recruitment_note") // 팀 모집 소개글
+  status          TeamStatus @default(PENDING)
+  recruitmentNote String?    @map("recruitment_note") // 팀 모집 소개글
 
   // 추가 정보
   experienceLevel ExperienceLevel @default(BEGINNER) @map("experience_level")
@@ -101,10 +101,14 @@ model Project {
   team   Team   @relation(fields: [teamId], references: [id])
 
   title       String
-  description String
+  description String?
 
-  githubUrl String  @map("github_url")
+  features String? @map("features")
+  tools    String? @map("tools")
+
+  githubUrl String? @map("github_url")
   demoUrl   String? @map("demo_url")
+  videoUrl  String? @map("video_url")
   imageUrl  String? @map("image_url")
   linkUrl   String? @map("link_url")
 
