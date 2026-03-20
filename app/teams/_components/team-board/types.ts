@@ -7,9 +7,12 @@ export type Member = {
 export type Project = {
   id: string;
   title: string;
-  description: string;
-  githubUrl: string;
+  description: string | null;
+  features: string | null;
+  tools: string | null;
+  githubUrl: string | null;
   demoUrl: string | null;
+  videoUrl: string | null;
   linkUrl: string | null;
 };
 
