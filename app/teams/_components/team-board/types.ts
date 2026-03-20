@@ -2,6 +2,7 @@ export type Member = {
   id: string;
   name: string;
   isLeader: boolean;
+  seekingTeam: boolean;
 };
 
 export type Project = {
@@ -30,6 +31,12 @@ export type Team = {
   membersCount: number;
   maxMembers: number;
   isMyTeam: boolean;
+};
+
+export type SeekingMember = {
+  memberId: string;
+  memberName: string;
+  team: Team;
 };
 
 export const experienceLevelLabel: Record<string, string> = {

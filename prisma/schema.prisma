@@ -78,7 +78,8 @@ model Member {
   name     String
   email    String  @unique // 투표 인증용
   phone    String // 연락처
-  isLeader Boolean @default(false) @map("is_leader")
+  isLeader    Boolean @default(false) @map("is_leader")
+  seekingTeam Boolean @default(false) @map("seeking_team") // 팀 구하는 중 여부
 
   // 환불 계좌 정보 (멤버 개인)
   refundBank          String? @map("refund_bank")
