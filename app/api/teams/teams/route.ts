@@ -27,7 +27,7 @@ export async function GET() {
       participationType: true,
       experienceLevel: true,
       members: {
-        select: { id: true, name: true, isLeader: true },
+        select: { id: true, name: true, isLeader: true, seekingTeam: true },
         orderBy: { isLeader: "desc" },
       },
       projects: {
@@ -64,6 +64,7 @@ export async function GET() {
       id: m.id,
       name: m.name,
       isLeader: m.isLeader,
+      seekingTeam: m.seekingTeam,
     })),
     project: t.projects[0] ?? null,
     membersCount: t._count.members,
